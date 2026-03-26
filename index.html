@@ -759,22 +759,17 @@ function mCPF(el) {
   }
 }
 function mCNPJ(el) {
-  let v=el.value.replace(/\D/g,'');
-  v=v.replace(/^(\d{2})(\d)/,'$1.$2')
-     .replace(/^(\d{2})\.(\d{3})(\d)/,'$1.$2.$3')
-     .replace(/\.(\d{3})(\d)/,'.$1/$2')
-     .replace(/(\d{4})(\d)/,'$1-$2');
-  el.value=v.slice(0,18);
-  const raw=v.replace(/\D/g,'');
-  // Aguarda 14 digitos antes de validar — sem erro enquanto digita
-  if (raw.length < 14) {
-    clearFB(el);
-    el.classList.remove('err','valid');
-    return;
-  }
+  let v = el.value.replace(/\D/g,'');
+  v = v.replace(/^(\d{2})(\d)/,'$1.$2')
+       .replace(/^(\d{2})\.(\d{3})(\d)/,'$1.$2.$3')
+       .replace(/\.(\d{3})(\d)/,'.$1/$2')
+       .replace(/(\d{4})(\d)/,'$1-$2');
+  el.value = v.slice(0,18);
+  const raw = v.replace(/\D/g,'');
+  if (raw.length < 14) { clearFB(el); el.classList.remove('err','valid'); return; }
   clearFB(el);
   if (!valCNPJ(raw)) showErr(el,'CNPJ inválido — verifique os dígitos');
-  else fetchCNPJ(el,raw);
+  else fetchCNPJ(el, raw);
 }
 function mPhone(el) {
   let v=el.value.replace(/\D/g,'');
@@ -811,140 +806,157 @@ async function fetchCEP(el) {
 }
 
 async function fetchCNPJ(el, cnpj) {
-  const sp=el.closest('.iwrap')?.querySelector('.ispinner');
-  if(sp) sp.style.display='block';
+  const sp = el.closest('.iwrap')?.querySelector('.ispinner');
+  if (sp) sp.style.display = 'block';
   clearFB(el);
   try {
-    const r=await fetch(`https://brasilapi.com.br/api/cnpj/v1/${cnpj}`);
-    if(!r.ok) throw new Error('not found');
-    const d=await r.json();
+    const r = await fetch('https://brasilapi.com.br/api/cnpj/v1/' + cnpj);
+    if (!r.ok) throw new Error('not found');
+    const d = await r.json();
 
-    // ── 1. Dados cadastrais principais ──────────────────────────
-    fill('razao_social',   d.razao_social||'');
-    fill('nome_fantasia',  d.nome_fantasia||'');
-    fill('data_abertura',  d.data_inicio_atividade||''); // YYYY-MM-DD
+    // 1. Dados cadastrais
+    fill('razao_social',  d.razao_social  || '');
+    fill('nome_fantasia', d.nome_fantasia || '');
+    fill('data_abertura', d.data_inicio_atividade || '');
 
-    // Situação cadastral — avisa se não estiver ativa
-    const sit = (d.descricao_situacao_cadastral||'').toUpperCase();
+    // Situação cadastral
+    const sit = (d.descricao_situacao_cadastral || '').toUpperCase();
     if (sit && sit !== 'ATIVA') {
-      toast('⚠ Atenção: situação cadastral da empresa é ' + d.descricao_situacao_cadastral, 'err');
+      toast('⚠ Empresa com situação: ' + d.descricao_situacao_cadastral, 'err');
     }
 
-    // Tipo societário → mapeia para as opções do select
-    const natMap = {
-      '206': 'SLU', '2062': 'SLU',
-      '206-2': 'SLU', '2054': 'LTDA', '206-1': 'LTDA',
-      '2046': 'EI', '2135': 'MEI', '2011': 'S/A', '2014': 'S/A'
-    };
-    const codNat = String(d.codigo_natureza_juridica||'');
-    const tipoMapeado = natMap[codNat] || '';
-    if (tipoMapeado) fill('tipo_atual', tipoMapeado);
-
-    // Porte
-    fill('porte', d.porte||'');
+    // Tipo societário
+    const natMap = {'206':'SLU','2062':'SLU','2054':'LTDA','2046':'EI','2135':'MEI','2011':'S/A','2014':'S/A'};
+    const nat = String(d.codigo_natureza_juridica || '');
+    if (natMap[nat]) fill('tipo_atual', natMap[nat]);
 
     // Capital social
     if (d.capital_social) {
-      const capFmt = Number(d.capital_social).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
-      fill('capital_social', capFmt);
+      fill('capital_social', Number(d.capital_social).toLocaleString('pt-BR',{minimumFractionDigits:2}));
     }
 
-    // ── 2. CNAE ──────────────────────────────────────────────────
+    // 2. CNAE
     if (d.cnae_fiscal) {
-      // Formata como XX.XX-X/XX
       const c = String(d.cnae_fiscal);
-      const fmt = c.length===7
-        ? `${c.slice(0,2)}.${c.slice(2,4)}-${c.slice(4,5)}/${c.slice(5)}`
-        : c;
+      const fmt = c.length === 7 ? c.slice(0,2)+'.'+c.slice(2,4)+'-'+c.slice(4,5)+'/'+c.slice(5) : c;
       fill('cnae', fmt);
     }
     if (d.cnae_fiscal_descricao) fill('atividade_principal', d.cnae_fiscal_descricao);
-
-    // CNAEs secundários
-    if (d.cnaes_secundarios?.length) {
-      const sec = d.cnaes_secundarios.map(x=>{
-        const c=String(x.codigo);
-        const fmt=c.length===7?`${c.slice(0,2)}.${c.slice(2,4)}-${c.slice(4,5)}/${c.slice(5)}`:c;
-        return `${fmt} — ${x.descricao}`;
+    if (d.cnaes_secundarios && d.cnaes_secundarios.length) {
+      const sec = d.cnaes_secundarios.map(function(x){
+        const c = String(x.codigo);
+        const f = c.length===7 ? c.slice(0,2)+'.'+c.slice(2,4)+'-'+c.slice(4,5)+'/'+c.slice(5) : c;
+        return f + ' - ' + x.descricao;
       }).join('\n');
       fill('atividades_secundarias', sec);
     }
 
-    // ── 3. Endereço da sede ──────────────────────────────────────
+    // 3. Endereço da sede
     if (d.cep) {
       const cepF = String(d.cep).replace(/\D/g,'').padStart(8,'0');
-      fill('sede_cep',         cepF.slice(0,5)+'-'+cepF.slice(5));
+      fill('sede_cep',        cepF.slice(0,5) + '-' + cepF.slice(5));
       const logr = [d.descricao_tipo_de_logradouro, d.logradouro].filter(Boolean).join(' ');
-      fill('sede_logradouro',  logr);
-      fill('sede_numero',      d.numero||'');
-      fill('sede_complemento', d.complemento||'');
-      fill('sede_bairro',      d.bairro||'');
-      fill('sede_municipio',   d.municipio||'');
-      fill('sede_uf',          d.uf||'');
+      fill('sede_logradouro', logr);
+      fill('sede_numero',     d.numero      || '');
+      fill('sede_complemento',d.complemento || '');
+      fill('sede_bairro',     d.bairro      || '');
+      fill('sede_municipio',  d.municipio   || '');
+      fill('sede_uf',         d.uf          || '');
     }
 
-    // ── 4. Contato ───────────────────────────────────────────────
+    // 4. Contato
     if (d.ddd_telefone_1) {
       const t = String(d.ddd_telefone_1).replace(/\D/g,'');
       if (t.length >= 10) {
-        const tf = t.length===11
-          ? `(${t.slice(0,2)}) ${t.slice(2,7)}-${t.slice(7)}`
-          : `(${t.slice(0,2)}) ${t.slice(2,6)}-${t.slice(6)}`;
+        const tf = t.length === 11
+          ? '(' + t.slice(0,2) + ') ' + t.slice(2,7) + '-' + t.slice(7)
+          : '(' + t.slice(0,2) + ') ' + t.slice(2,6) + '-' + t.slice(6);
         fill('s0_telefone', tf);
       }
     }
     if (d.email) fill('s0_email', d.email.toLowerCase());
 
-    // ── 5. Sócios (QSA) ──────────────────────────────────────────
-    if (d.qsa?.length) {
-      // Preenche os campos dos sócios s0, s1, s2...
-      d.qsa.slice(0,5).forEach((socio, i) => {
-        const pref = `s${i}_`;
-        fill(pref+'nome', socio.nome_socio||'');
-        // Qualificação → cargo
-        const qual = (socio.qualificacao_socio||'').toLowerCase();
-        if (qual.includes('administrador')) fill(pref+'cargo','Sócio Administrador');
-        else if (qual.includes('diretor'))  fill(pref+'cargo','Diretor');
-        else                                fill(pref+'cargo','Sócio Não Administrador');
-        // CPF parcial se disponível (API retorna mascarado)
-        if (socio.cpf_representante_legal) fill(pref+'cpf', socio.cpf_representante_legal);
+    // 5. Sócios (QSA)
+    if (d.qsa && d.qsa.length) {
+      d.qsa.slice(0,5).forEach(function(socio, i) {
+        var pref = 's' + i + '_';
+        fill(pref + 'nome', socio.nome_socio || '');
+        var qual = (socio.qualificacao_socio || '').toLowerCase();
+        if (qual.indexOf('administrador') !== -1)    S.data[pref + 'cargo'] = 'Sócio Administrador';
+        else if (qual.indexOf('diretor') !== -1)      S.data[pref + 'cargo'] = 'Diretor';
+        else                                          S.data[pref + 'cargo'] = 'Sócio Não Administrador';
+        if (socio.cpf_representante_legal) fill(pref + 'cpf', socio.cpf_representante_legal);
       });
-      // Salva lista de sócios para exibir no toast
-      const nomes = d.qsa.slice(0,5).map(s=>s.nome_socio).filter(Boolean).join(', ');
-      S.data['_qsa_nomes'] = nomes;
     }
 
-    // ── 6. Feedback ──────────────────────────────────────────────
-    const camposPreenchidos = [
-      d.razao_social, d.cnae_fiscal_descricao, d.cep, d.capital_social
-    ].filter(Boolean).length;
+    // 6. Painel de resumo visual
+    var oldPanel = document.getElementById('cnpj-summary');
+    if (oldPanel) oldPanel.remove();
 
-    showOk(el, `✓ CNPJ válido — ${camposPreenchidos * 3}+ campos preenchidos automaticamente`);
+    var rows = [];
+    if (d.razao_social)                 rows.push(['Razão Social',        d.razao_social]);
+    if (d.nome_fantasia)                rows.push(['Nome Fantasia',       d.nome_fantasia]);
+    if (d.descricao_situacao_cadastral) rows.push(['Situação Cadastral',  d.descricao_situacao_cadastral]);
+    if (d.data_inicio_atividade)        rows.push(['Data de Abertura',    fmtDate(d.data_inicio_atividade)]);
+    if (d.capital_social)               rows.push(['Capital Social',      'R$ ' + Number(d.capital_social).toLocaleString('pt-BR',{minimumFractionDigits:2})]);
+    if (d.descricao_natureza_juridica)  rows.push(['Natureza Jurídica',   d.descricao_natureza_juridica]);
+    if (d.cnae_fiscal_descricao)        rows.push(['Atividade Principal', d.cnae_fiscal_descricao]);
+    if (d.porte)                        rows.push(['Porte',               d.porte]);
+    if (d.municipio && d.uf)           rows.push(['Município/UF',      d.municipio + '/' + d.uf]);
+    if (d.ddd_telefone_1)               rows.push(['Telefone',            d.ddd_telefone_1]);
+    if (d.email)                        rows.push(['E-mail',              d.email]);
+    if (d.qsa && d.qsa.length) {
+      var nomes = d.qsa.map(function(s){ return s.nome_socio; }).filter(Boolean).join(' / ');
+      rows.push(['Sócio(s) (' + d.qsa.length + ')', nomes]);
+    }
+    if (d.cnaes_secundarios && d.cnaes_secundarios.length) {
+      rows.push(['CNAEs Secundários', d.cnaes_secundarios.length + ' atividade(s)']);
+    }
+
+    if (rows.length) {
+      var isAtiva = sit === 'ATIVA';
+      var html = '<div id="cnpj-summary" style="margin-top:20px;background:rgba(109,184,138,.07);border:1px solid rgba(109,184,138,.3);border-radius:12px;padding:16px">';
+      html += '<div style="font-family:Montserrat,sans-serif;font-weight:700;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--success);margin-bottom:12px">✓ Dados encontrados na Receita Federal</div>';
+      rows.forEach(function(row) {
+        var isSit = row[0].indexOf('Situa') !== -1;
+        var cor   = isSit ? (isAtiva ? 'var(--success)' : 'var(--danger)') : 'var(--text)';
+        var fw    = isSit ? '700' : '400';
+        html += '<div style="display:flex;gap:10px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:13px">';
+        html += '<div style="color:var(--muted2);flex-shrink:0;width:140px;line-height:1.4">' + row[0] + '</div>';
+        html += '<div style="color:' + cor + ';flex:1;word-break:break-word;line-height:1.4;font-weight:' + fw + '">' + row[1] + '</div>';
+        html += '</div>';
+      });
+      html += '<div style="margin-top:10px;font-size:11px;color:var(--muted);line-height:1.5">⚠ Confirme antes de continuar. Base atualizada mensalmente pela Receita Federal.</div>';
+      html += '</div>';
+      el.closest('.iwrap').insertAdjacentHTML('afterend', html);
+    }
+
     collect(); updateCounter();
+    showOk(el, '✓ CNPJ válido — dados carregados automaticamente');
 
-    // Toast detalhado
-    const msgs = [];
-    if (d.razao_social)           msgs.push('razão social');
-    if (d.cnae_fiscal_descricao)  msgs.push('CNAE');
-    if (d.cep)                    msgs.push('endereço');
-    if (d.capital_social)         msgs.push('capital social');
-    if (d.qsa?.length)            msgs.push(`${d.qsa.length} sócio(s)`);
+    var msgs = [];
+    if (d.razao_social)          msgs.push('razão social');
+    if (d.cnae_fiscal_descricao) msgs.push('CNAE');
+    if (d.cep)                   msgs.push('endereço');
+    if (d.capital_social)        msgs.push('capital social');
+    if (d.qsa && d.qsa.length)   msgs.push(d.qsa.length + ' sócio(s)');
     toast('✓ Dados carregados: ' + msgs.join(', '), 'info');
 
   } catch(e) {
-    // CNPJ válido mas não encontrado na base (empresa nova < 30 dias ou erro de rede)
-    showOk(el, '✓ CNPJ válido — dados não encontrados na base (preencha manualmente)');
-    toast('CNPJ válido, mas não encontrado na base da BrasilAPI. Preencha os campos manualmente.', 'info');
+    showOk(el, '✓ CNPJ válido — empresa não encontrada na base (preencha manualmente)');
+    toast('CNPJ válido, mas não encontrado. Pode ser empresa nova ou recente.', 'info');
   }
   finally {
-    const sp2=el.closest('.iwrap')?.querySelector('.ispinner');
-    if(sp2) sp2.style.display='none';
+    var sp2 = el.closest('.iwrap')?.querySelector('.ispinner');
+    if (sp2) sp2.style.display = 'none';
   }
 }
 
-function fill(name,val) {
-  const el=document.querySelector(`[name="${name}"]`);
-  if(el){ el.value=val; S.data[name]=val; }
+function fill(name, val) {
+  if (!val && val !== 0) return;
+  S.data[name] = String(val);
+  const el = document.querySelector('[name="' + name + '"]');
+  if (el) el.value = String(val);
 }
 function showErr(el,msg){ el.classList.add('err'); el.classList.remove('valid'); clearFB(el); const d=document.createElement('div'); d.className='ferr'; d.textContent=msg; el.parentNode.appendChild(d); }
 function showOk(el,msg){ el.classList.remove('err'); el.classList.add('valid'); clearFB(el); const d=document.createElement('div'); d.className='fok'; d.textContent=msg; el.parentNode.appendChild(d); }

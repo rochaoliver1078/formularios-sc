@@ -1,0 +1,1578 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Souza Cardoso — Legalização Empresarial</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Lato:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+/* ===================== RESET & BASE ===================== */
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Lato',sans-serif;
+  background:#0d0f11;
+  color:#ede9e3;
+  min-height:100vh;
+  overflow-x:hidden;
+  font-size:16px;
+}
+
+/* ===================== CSS VARIABLES ===================== */
+:root{
+  --bg:#0d0f11;
+  --surface:#161a1e;
+  --card:#1c2026;
+  --border:rgba(255,255,255,0.08);
+  --border-hover:rgba(200,169,110,0.35);
+  --gold:#c8a96e;
+  --gold-light:#e2cfa0;
+  --gold-dim:rgba(200,169,110,0.15);
+  --text:#ede9e3;
+  --muted:#7a7670;
+  --muted2:#a09b94;
+  --input:#0a0c0e;
+  --danger:#e07575;
+  --success:#6db88a;
+  --radius:14px;
+  --radius-sm:9px;
+}
+
+/* ===================== BACKGROUND ===================== */
+.bg-art{
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 90% 50% at 50% -5%, rgba(200,169,110,0.10) 0%, transparent 65%),
+    radial-gradient(ellipse 50% 40% at 90% 90%, rgba(200,169,110,0.05) 0%, transparent 55%),
+    #0d0f11;
+}
+.bg-art::before{
+  content:'';position:absolute;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='500' height='500'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4'/%3E%3C/filter%3E%3Crect width='500' height='500' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+  opacity:1;
+}
+
+/* ===================== HEADER ===================== */
+header{
+  position:sticky;top:0;z-index:200;
+  background:rgba(13,15,17,0.92);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
+  padding:14px 20px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.logo{display:flex;align-items:center;gap:12px}
+.logo-ring{
+  width:38px;height:38px;border-radius:50%;
+  border:1.5px solid var(--gold);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Montserrat',sans-serif;font-weight:800;font-size:13px;
+  color:var(--gold);letter-spacing:-1px;flex-shrink:0;
+}
+.logo-text-name{font-family:'Montserrat',sans-serif;font-weight:700;font-size:12px;letter-spacing:.5px;line-height:1.1}
+.logo-text-sub{font-size:9px;letter-spacing:2.5px;color:var(--muted);text-transform:uppercase}
+.header-tag{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);border:1px solid rgba(200,169,110,0.25);padding:4px 10px;border-radius:20px}
+
+/* ===================== PROGRESS ===================== */
+#progress-wrap{
+  position:sticky;top:67px;z-index:150;
+  height:2px;background:var(--border);
+}
+#progress-fill{
+  height:100%;width:0%;
+  background:linear-gradient(90deg,var(--gold),var(--gold-light));
+  transition:width .45s cubic-bezier(.4,0,.2,1);
+}
+
+/* ===================== SCREENS ===================== */
+.screen{display:none;position:relative;z-index:1}
+.screen.active{display:block}
+
+/* ===================== ADMIN ===================== */
+#admin-screen{min-height:100vh}
+.admin-wrap{max-width:640px;margin:0 auto;padding:40px 20px 60px}
+.admin-hero{text-align:center;margin-bottom:44px}
+.admin-hero h1{
+  font-family:'Montserrat',sans-serif;font-weight:800;
+  font-size:clamp(20px,5vw,30px);line-height:1.15;margin-bottom:10px;
+}
+.admin-hero h1 span{color:var(--gold)}
+.admin-hero p{color:var(--muted2);font-size:14px;line-height:1.6;max-width:420px;margin:0 auto}
+
+.section-title{
+  font-family:'Montserrat',sans-serif;font-weight:700;font-size:11px;
+  letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);
+  margin-bottom:16px;display:flex;align-items:center;gap:10px;
+}
+.section-title::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* Client name input */
+.client-input-wrap{margin-bottom:28px}
+.client-input-wrap label{
+  display:block;font-size:12px;font-weight:700;letter-spacing:.5px;
+  color:var(--gold-light);text-transform:uppercase;margin-bottom:8px;
+}
+.client-input-wrap input{
+  width:100%;background:var(--input);border:1px solid var(--border);
+  border-radius:var(--radius-sm);color:var(--text);font-family:'Lato',sans-serif;
+  font-size:16px;padding:14px 16px;outline:none;transition:border-color .2s;
+}
+.client-input-wrap input:focus{border-color:var(--gold)}
+.client-input-wrap input::placeholder{color:var(--muted)}
+
+/* Process cards */
+.process-grid{display:flex;flex-direction:column;gap:12px;margin-bottom:32px}
+.process-card{
+  background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);
+  padding:18px 20px;cursor:pointer;display:flex;align-items:center;gap:16px;
+  transition:all .2s ease;text-align:left;width:100%;
+}
+.process-card:hover,.process-card.selected{
+  border-color:var(--gold);background:rgba(200,169,110,0.08);
+}
+.process-card.selected .pcard-check{opacity:1;transform:scale(1)}
+.pcard-icon{font-size:24px;flex-shrink:0;width:44px;text-align:center}
+.pcard-info{flex:1}
+.pcard-title{font-family:'Montserrat',sans-serif;font-weight:700;font-size:15px;margin-bottom:3px}
+.pcard-desc{font-size:12px;color:var(--muted2);line-height:1.4}
+.pcard-check{
+  width:22px;height:22px;border-radius:50%;background:var(--gold);
+  display:flex;align-items:center;justify-content:center;font-size:11px;color:#111;
+  flex-shrink:0;opacity:0;transform:scale(.6);transition:all .2s;
+}
+
+/* Generate button */
+.gen-btn{
+  width:100%;background:var(--gold);color:#111;border:none;border-radius:var(--radius-sm);
+  font-family:'Montserrat',sans-serif;font-weight:800;font-size:15px;
+  padding:18px;cursor:pointer;transition:all .2s;letter-spacing:.3px;
+}
+.gen-btn:hover{background:var(--gold-light)}
+.gen-btn:disabled{opacity:.3;cursor:not-allowed}
+
+/* Link result */
+#link-result{
+  margin-top:24px;background:var(--card);border:1px solid var(--border);
+  border-radius:var(--radius);padding:20px;display:none;
+}
+.link-result-label{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+.link-box{
+  background:var(--input);border:1px solid var(--border);border-radius:var(--radius-sm);
+  padding:12px 14px;font-size:13px;color:var(--muted2);word-break:break-all;
+  font-family:monospace;margin-bottom:14px;
+}
+.link-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.link-btn{
+  padding:12px;border-radius:var(--radius-sm);border:none;cursor:pointer;
+  font-family:'Montserrat',sans-serif;font-weight:700;font-size:13px;transition:all .2s;
+}
+.link-btn-copy{background:var(--gold);color:#111}
+.link-btn-copy:hover{background:var(--gold-light)}
+.link-btn-preview{background:var(--surface);color:var(--text);border:1px solid var(--border)}
+.link-btn-preview:hover{border-color:var(--gold);color:var(--gold)}
+.copy-confirm{font-size:12px;color:var(--success);text-align:center;height:18px;margin-top:6px}
+
+/* ===================== CLIENT FORM ===================== */
+#form-screen{min-height:100vh;padding-bottom:100px}
+
+/* Step container */
+.step-wrap{
+  max-width:580px;margin:0 auto;padding:0 20px;
+  animation:stepIn .35s cubic-bezier(.4,0,.2,1) forwards;
+}
+@keyframes stepIn{
+  from{opacity:0;transform:translateY(14px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+/* Client greeting */
+.client-greeting{
+  padding:28px 20px 0;max-width:580px;margin:0 auto;
+  text-align:center;
+}
+.greeting-name{
+  display:inline-block;background:var(--gold-dim);
+  border:1px solid rgba(200,169,110,0.25);border-radius:20px;
+  padding:6px 16px;font-size:13px;color:var(--gold);letter-spacing:.5px;
+  margin-bottom:16px;font-family:'Montserrat',sans-serif;font-weight:600;
+}
+.process-tag{
+  font-size:12px;color:var(--muted2);letter-spacing:1.5px;text-transform:uppercase;
+}
+
+/* Step header */
+.step-header{padding:28px 0 22px;border-bottom:1px solid var(--border);margin-bottom:28px}
+.step-counter{
+  font-size:11px;color:var(--gold);letter-spacing:2px;text-transform:uppercase;
+  font-family:'Montserrat',sans-serif;font-weight:600;margin-bottom:8px;
+}
+.step-q{
+  font-family:'Montserrat',sans-serif;font-weight:700;
+  font-size:clamp(17px,4.5vw,23px);line-height:1.25;margin-bottom:6px;
+}
+.step-hint{font-size:13px;color:var(--muted2);line-height:1.5}
+
+/* Option buttons */
+.opt-list{display:flex;flex-direction:column;gap:11px}
+.opt-list.grid2{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.opt{
+  background:var(--input);border:1.5px solid var(--border);border-radius:var(--radius);
+  color:var(--text);font-family:'Lato',sans-serif;font-size:14px;padding:16px 18px;
+  cursor:pointer;text-align:left;transition:all .18s;line-height:1.35;width:100%;
+}
+.opt:hover{border-color:var(--border-hover);background:rgba(200,169,110,0.06)}
+.opt.sel{border-color:var(--gold);background:rgba(200,169,110,0.12);color:var(--gold-light)}
+.opt-t{font-weight:700;font-size:14px;display:block}
+.opt-s{font-size:12px;color:var(--muted2);margin-top:3px;display:block}
+.opt.sel .opt-s{color:rgba(200,169,110,0.65)}
+
+/* Input fields */
+.field-wrap{margin-bottom:22px}
+.field-label{
+  display:block;font-size:12px;font-weight:700;letter-spacing:.5px;
+  color:var(--gold-light);text-transform:uppercase;margin-bottom:8px;
+}
+.field-hint{font-size:12px;color:var(--muted);margin-bottom:8px;line-height:1.4}
+input[type=text],input[type=email],input[type=tel],input[type=date],input[type=number],select,textarea{
+  width:100%;background:var(--input);border:1px solid var(--border);
+  border-radius:var(--radius-sm);color:var(--text);font-family:'Lato',sans-serif;
+  font-size:16px;padding:15px 16px;outline:none;transition:border-color .2s,background .2s;
+  -webkit-appearance:none;appearance:none;
+}
+input:focus,select:focus,textarea:focus{border-color:var(--gold);background:rgba(0,0,0,0.5)}
+input::placeholder,textarea::placeholder{color:var(--muted)}
+select{
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='7' viewBox='0 0 12 7'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237a7670' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 14px center;padding-right:40px;cursor:pointer;
+}
+select option{background:#1c2026;color:var(--text)}
+textarea{resize:vertical;min-height:90px;line-height:1.5}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+@media(max-width:460px){.row2,.row3,.opt-list.grid2{grid-template-columns:1fr}}
+
+/* Validation */
+input.err,select.err,textarea.err{border-color:var(--danger)!important}
+.field-err{font-size:12px;color:var(--danger);margin-top:5px}
+
+/* Section divider */
+.sdiv{border:none;border-top:1px solid var(--border);margin:28px 0 22px}
+.slabel{
+  font-family:'Montserrat',sans-serif;font-weight:700;font-size:11px;
+  letter-spacing:2px;text-transform:uppercase;color:var(--gold);
+  display:flex;align-items:center;gap:10px;margin-bottom:18px;
+}
+.slabel::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* Info box */
+.ibox{
+  background:rgba(200,169,110,0.07);border:1px solid rgba(200,169,110,0.2);
+  border-radius:10px;padding:13px 15px;font-size:13px;color:var(--gold-light);
+  line-height:1.5;margin-bottom:18px;
+}
+.ibox strong{color:var(--gold)}
+
+/* ===================== NAV FOOTER ===================== */
+#nav-footer{
+  position:fixed;bottom:0;left:0;right:0;z-index:180;
+  background:rgba(13,15,17,0.96);backdrop-filter:blur(14px);
+  border-top:1px solid var(--border);padding:12px 20px;
+}
+.nav-inner{max-width:580px;margin:0 auto;display:flex;gap:10px}
+.btn-next{
+  flex:1;background:var(--gold);color:#111;border:none;border-radius:var(--radius-sm);
+  font-family:'Montserrat',sans-serif;font-weight:800;font-size:15px;
+  padding:16px;cursor:pointer;transition:all .2s;letter-spacing:.3px;
+}
+.btn-next:hover{background:var(--gold-light)}
+.btn-next:disabled{opacity:.3;cursor:not-allowed}
+.btn-prev{
+  background:var(--surface);color:var(--text);border:1px solid var(--border);
+  border-radius:var(--radius-sm);font-family:'Lato',sans-serif;font-weight:700;
+  font-size:15px;padding:16px 20px;cursor:pointer;transition:all .2s;white-space:nowrap;
+}
+.btn-prev:hover{border-color:var(--gold);color:var(--gold)}
+
+/* ===================== SUCCESS SCREEN ===================== */
+#success-screen{
+  display:none;min-height:100vh;align-items:center;justify-content:center;
+  flex-direction:column;text-align:center;padding:60px 24px;
+}
+#success-screen.active{display:flex}
+.success-badge{
+  width:76px;height:76px;border-radius:50%;
+  background:rgba(109,184,138,0.12);border:2px solid var(--success);
+  display:flex;align-items:center;justify-content:center;font-size:32px;
+  margin:0 auto 24px;
+}
+.success-title{font-family:'Montserrat',sans-serif;font-size:22px;font-weight:700;margin-bottom:12px}
+.success-msg{color:var(--muted2);font-size:15px;max-width:340px;line-height:1.7;margin:0 auto 10px}
+.success-name{color:var(--gold);font-weight:700}
+.success-divider{width:40px;height:1px;background:var(--border);margin:24px auto}
+.success-footer{font-size:13px;color:var(--muted);max-width:300px;margin:0 auto}
+.success-logo{margin-top:36px;display:flex;align-items:center;justify-content:center;gap:10px;opacity:.5}
+.success-logo-ring{
+  width:30px;height:30px;border-radius:50%;border:1.5px solid var(--gold);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Montserrat',sans-serif;font-weight:800;font-size:10px;color:var(--gold);
+}
+
+/* ===================== TOGGLE MULTI-SELECT ===================== */
+.opt.toggle-multi{}
+</style>
+</head>
+<body>
+
+<div class="bg-art"></div>
+
+<!-- ========== HEADER ========== -->
+<header>
+  <div class="logo">
+    <div class="logo-ring">SC</div>
+    <div>
+      <div class="logo-text-name">SOUZA CARDOSO</div>
+      <div class="logo-text-sub">Contabilidade · Paulistana</div>
+    </div>
+  </div>
+  <div class="header-tag" id="header-tag">Legalização</div>
+</header>
+
+<div id="progress-wrap"><div id="progress-fill"></div></div>
+
+<!-- ========== ADMIN SCREEN ========== -->
+<div id="admin-screen" class="screen active">
+  <div class="admin-wrap">
+    <div class="admin-hero">
+      <h1>Painel <span>Administrativo</span></h1>
+      <p>Escolha o processo e informe o nome do cliente para gerar o link personalizado do formulário.</p>
+    </div>
+
+    <div class="section-title">Nome do Cliente</div>
+    <div class="client-input-wrap">
+      <label>Nome completo do cliente</label>
+      <input type="text" id="admin-client-name" placeholder="Ex: João Carlos da Silva" oninput="updateGenBtn()">
+    </div>
+
+    <div class="section-title">Tipo de Processo</div>
+    <div class="process-grid">
+      <button class="process-card" data-proc="abertura" onclick="selectProcess(this)">
+        <div class="pcard-icon">🏢</div>
+        <div class="pcard-info">
+          <div class="pcard-title">Abertura de Empresa</div>
+          <div class="pcard-desc">MEI, EI, SLU, LTDA, S/A — dados completos para contrato social</div>
+        </div>
+        <div class="pcard-check">✓</div>
+      </button>
+      <button class="process-card" data-proc="alteracao" onclick="selectProcess(this)">
+        <div class="pcard-icon">✏️</div>
+        <div class="pcard-info">
+          <div class="pcard-title">Alteração Contratual</div>
+          <div class="pcard-desc">Endereço, sócios, capital, atividades, razão social, administrador</div>
+        </div>
+        <div class="pcard-check">✓</div>
+      </button>
+      <button class="process-card" data-proc="transformacao" onclick="selectProcess(this)">
+        <div class="pcard-icon">🔄</div>
+        <div class="pcard-info">
+          <div class="pcard-title">Transformação Societária</div>
+          <div class="pcard-desc">MEI→EI, EI→SLU, EI/SLU→LTDA, LTDA→S/A</div>
+        </div>
+        <div class="pcard-check">✓</div>
+      </button>
+      <button class="process-card" data-proc="baixa" onclick="selectProcess(this)">
+        <div class="pcard-icon">📋</div>
+        <div class="pcard-info">
+          <div class="pcard-title">Baixa / Encerramento</div>
+          <div class="pcard-desc">Dissolução de MEI, EI, SLU, LTDA — distrato social</div>
+        </div>
+        <div class="pcard-check">✓</div>
+      </button>
+    </div>
+
+    <button class="gen-btn" id="gen-btn" disabled onclick="generateLink()">Gerar Link do Formulário</button>
+
+    <div id="link-result">
+      <div class="link-result-label">Link gerado — copie e envie pelo WhatsApp</div>
+      <div class="link-box" id="link-box"></div>
+      <div class="link-actions">
+        <button class="link-btn link-btn-copy" onclick="copyLink()">📋 Copiar Link</button>
+        <button class="link-btn link-btn-preview" onclick="previewForm()">👁 Visualizar</button>
+      </div>
+      <div class="copy-confirm" id="copy-confirm"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== FORM SCREEN ========== -->
+<div id="form-screen" class="screen">
+  <div class="client-greeting" id="client-greeting"></div>
+  <div id="step-container"></div>
+</div>
+
+<!-- ========== SUCCESS SCREEN ========== -->
+<div id="success-screen">
+  <div class="success-badge">✓</div>
+  <div class="success-title">Formulário enviado!</div>
+  <div class="success-msg">
+    Obrigado, <span class="success-name" id="success-name"></span>!<br>
+    Suas informações foram recebidas com sucesso.
+  </div>
+  <div class="success-divider"></div>
+  <div class="success-footer">
+    Em breve nossa equipe entrará em contato para dar andamento ao seu processo. Qualquer dúvida, fale com a gente.
+  </div>
+  <div class="success-logo">
+    <div class="success-logo-ring">SC</div>
+    <div style="font-family:'Montserrat',sans-serif;font-size:11px;letter-spacing:1px">SOUZA CARDOSO CONTABILIDADE</div>
+  </div>
+</div>
+
+<!-- ========== NAV FOOTER (form only) ========== -->
+<div id="nav-footer" style="display:none">
+  <div class="nav-inner">
+    <button class="btn-prev" id="btn-prev" onclick="prevStep()">← Voltar</button>
+    <button class="btn-next" id="btn-next" onclick="nextStep()">Continuar →</button>
+  </div>
+</div>
+
+<script>
+/* ===================================================
+   STATE
+=================================================== */
+let STATE = {
+  mode: 'admin',       // 'admin' | 'form'
+  process: null,       // 'abertura' | 'alteracao' | 'transformacao' | 'baixa'
+  clientName: '',
+  steps: [],
+  stepIndex: 0,
+  data: {},            // all collected answers
+  generatedLink: ''
+};
+
+/* ===================================================
+   BOOT — detect URL params
+=================================================== */
+window.addEventListener('DOMContentLoaded', () => {
+  const p = new URLSearchParams(window.location.search);
+  const proc = p.get('f');
+  const name = p.get('n') ? decodeURIComponent(p.get('n')) : '';
+  if (proc && ['abertura','alteracao','transformacao','baixa'].includes(proc)) {
+    STATE.mode = 'form';
+    STATE.process = proc;
+    STATE.clientName = name;
+    launchForm();
+  } else {
+    showScreen('admin');
+  }
+});
+
+/* ===================================================
+   ADMIN LOGIC
+=================================================== */
+let selectedProcess = null;
+
+function selectProcess(card) {
+  document.querySelectorAll('.process-card').forEach(c => c.classList.remove('selected'));
+  card.classList.add('selected');
+  selectedProcess = card.dataset.proc;
+  updateGenBtn();
+}
+
+function updateGenBtn() {
+  const name = document.getElementById('admin-client-name').value.trim();
+  document.getElementById('gen-btn').disabled = !(name && selectedProcess);
+}
+
+function generateLink() {
+  const name = document.getElementById('admin-client-name').value.trim();
+  if (!name || !selectedProcess) return;
+  const base = window.location.href.split('?')[0];
+  const link = `${base}?f=${selectedProcess}&n=${encodeURIComponent(name)}`;
+  STATE.generatedLink = link;
+  document.getElementById('link-box').textContent = link;
+  document.getElementById('link-result').style.display = 'block';
+  document.getElementById('copy-confirm').textContent = '';
+  document.getElementById('link-result').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function copyLink() {
+  navigator.clipboard.writeText(STATE.generatedLink).then(() => {
+    document.getElementById('copy-confirm').textContent = '✓ Link copiado!';
+    setTimeout(()=>document.getElementById('copy-confirm').textContent='', 2500);
+  });
+}
+
+function previewForm() {
+  window.open(STATE.generatedLink, '_blank');
+}
+
+/* ===================================================
+   FORM LAUNCH
+=================================================== */
+function launchForm() {
+  STATE.steps = buildAllSteps();
+  STATE.stepIndex = 0;
+  STATE.data = {};
+  showScreen('form');
+  renderGreeting();
+  renderStep();
+  document.getElementById('nav-footer').style.display = 'block';
+}
+
+function renderGreeting() {
+  const labels = {
+    abertura: 'Abertura de Empresa',
+    alteracao: 'Alteração Contratual',
+    transformacao: 'Transformação Societária',
+    baixa: 'Baixa / Encerramento'
+  };
+  const g = document.getElementById('client-greeting');
+  g.innerHTML = STATE.clientName
+    ? `<div class="greeting-name">Olá, ${STATE.clientName}! 👋</div><div class="process-tag">${labels[STATE.process]}</div>`
+    : `<div class="process-tag">${labels[STATE.process]}</div>`;
+}
+
+/* ===================================================
+   STEP NAVIGATION
+=================================================== */
+function prevStep() {
+  if (STATE.stepIndex === 0) return;
+  STATE.stepIndex--;
+  renderStep();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function nextStep() {
+  if (!validateCurrent()) return;
+  collectData();
+  STATE.steps = buildAllSteps(); // rebuild for branching
+  if (STATE.stepIndex >= STATE.steps.length - 1) {
+    submitForm();
+  } else {
+    STATE.stepIndex++;
+    renderStep();
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+}
+
+function renderStep() {
+  STATE.steps = buildAllSteps();
+  const step = STATE.steps[STATE.stepIndex];
+  if (!step) return;
+
+  // progress
+  const pct = STATE.steps.length > 1 ? Math.round((STATE.stepIndex / (STATE.steps.length - 1)) * 100) : 0;
+  document.getElementById('progress-fill').style.width = pct + '%';
+
+  const container = document.getElementById('step-container');
+  container.innerHTML = `
+    <div class="step-wrap">
+      <div class="step-header">
+        <div class="step-counter">Etapa ${STATE.stepIndex + 1} de ${STATE.steps.length}</div>
+        <div class="step-q">${step.question}</div>
+        ${step.hint ? `<div class="step-hint">${step.hint}</div>` : ''}
+      </div>
+      <div id="step-body">${step.body}</div>
+    </div>
+  `;
+
+  restoreData();
+
+  const isLast = STATE.stepIndex >= STATE.steps.length - 1;
+  document.getElementById('btn-next').textContent = isLast ? '✓ Enviar formulário' : 'Continuar →';
+  document.getElementById('btn-prev').style.display = STATE.stepIndex === 0 ? 'none' : 'block';
+  updateHeaderTag();
+}
+
+function updateHeaderTag() {
+  const t = document.getElementById('header-tag');
+  if (STATE.mode === 'form') {
+    const map = {abertura:'Abertura',alteracao:'Alteração',transformacao:'Transformação',baixa:'Baixa'};
+    t.textContent = map[STATE.process] || 'Formulário';
+  }
+}
+
+/* ===================================================
+   OPT BUTTON HANDLERS
+=================================================== */
+function pick(btn, field) {
+  document.querySelectorAll(`[data-field="${field}"]`).forEach(b => b.classList.remove('sel'));
+  btn.classList.add('sel');
+  STATE.data[field] = btn.dataset.val;
+  STATE.steps = buildAllSteps();
+}
+
+function toggle(btn, field) {
+  btn.classList.toggle('sel');
+  STATE.data[field] = btn.classList.contains('sel') ? 'sim' : '';
+  STATE.steps = buildAllSteps();
+}
+
+/* ===================================================
+   DATA COLLECT & RESTORE
+=================================================== */
+function collectData() {
+  document.querySelectorAll('#step-body input,#step-body select,#step-body textarea').forEach(el => {
+    if (el.name) STATE.data[el.name] = el.value;
+  });
+  document.querySelectorAll('#step-body [data-field]').forEach(btn => {
+    if (btn.classList.contains('sel')) STATE.data[btn.dataset.field] = btn.dataset.val || 'sim';
+  });
+}
+
+function restoreData() {
+  document.querySelectorAll('#step-body input,#step-body select,#step-body textarea').forEach(el => {
+    if (el.name && STATE.data[el.name] !== undefined) el.value = STATE.data[el.name];
+  });
+  document.querySelectorAll('#step-body [data-field]').forEach(btn => {
+    if (STATE.data[btn.dataset.field] && (btn.dataset.val === STATE.data[btn.dataset.field] || (!btn.dataset.val && STATE.data[btn.dataset.field] === 'sim'))) {
+      btn.classList.add('sel');
+    }
+  });
+  // Trigger toggles for conditional sections
+  document.querySelectorAll('[data-toggle-trigger]').forEach(el => {
+    if (STATE.data[el.name] || el.value) triggerToggle(el);
+  });
+}
+
+function triggerToggle(el) {
+  const id = el.dataset.toggleTarget;
+  const vals = (el.dataset.toggleVal || '').split(',');
+  const target = document.getElementById(id);
+  if (!target) return;
+  if (vals.includes(el.value)) target.style.display = 'block';
+  else target.style.display = 'none';
+}
+
+/* ===================================================
+   VALIDATION
+=================================================== */
+function validateCurrent() {
+  collectData();
+  let ok = true;
+  document.querySelectorAll('#step-body [required]').forEach(el => {
+    el.classList.remove('err');
+    const e = el.parentNode.querySelector('.field-err');
+    if (e) e.remove();
+    if (!el.value.trim()) {
+      el.classList.add('err');
+      const div = document.createElement('div');
+      div.className = 'field-err';
+      div.textContent = 'Preenchimento obrigatório';
+      el.parentNode.appendChild(div);
+      ok = false;
+    }
+  });
+  if (!ok) {
+    const f = document.querySelector('#step-body .err');
+    if (f) f.scrollIntoView({behavior:'smooth',block:'center'});
+  }
+  return ok;
+}
+
+/* ===================================================
+   SUBMIT
+=================================================== */
+function submitForm() {
+  collectData();
+  const labels = {
+    abertura:'ABERTURA DE EMPRESA', alteracao:'ALTERAÇÃO CONTRATUAL',
+    transformacao:'TRANSFORMAÇÃO SOCIETÁRIA', baixa:'BAIXA / ENCERRAMENTO'
+  };
+
+  let body = `FORMULÁRIO DE ${labels[STATE.process]}\n`;
+  body += `Cliente: ${STATE.clientName || '(não informado)'}\n`;
+  body += `Data: ${new Date().toLocaleString('pt-BR')}\n`;
+  body += '─'.repeat(50) + '\n\n';
+
+  // Group data nicely
+  const skip = [];
+  for (const [k, v] of Object.entries(STATE.data)) {
+    if (!v || v === '' || skip.includes(k)) continue;
+    body += `${k.replace(/_/g,' ').toUpperCase()}: ${v}\n`;
+  }
+
+  const subj = encodeURIComponent(`[${labels[STATE.process]}] ${STATE.clientName} — ${new Date().toLocaleDateString('pt-BR')}`);
+  const bodyEnc = encodeURIComponent(body);
+  window.location.href = `mailto:adilson.oliveira@oscpaulistana.com.br?subject=${subj}&body=${bodyEnc}`;
+
+  setTimeout(() => {
+    document.getElementById('success-name').textContent = STATE.clientName || '';
+    showScreen('success');
+  }, 600);
+}
+
+/* ===================================================
+   SCREEN MANAGER
+=================================================== */
+function showScreen(name) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  const el = document.getElementById(name + '-screen');
+  if (el) el.classList.add('active');
+  if (name === 'success') {
+    document.getElementById('success-screen').style.display = 'flex';
+    document.getElementById('success-screen').classList.add('active');
+    document.getElementById('nav-footer').style.display = 'none';
+    document.getElementById('progress-wrap').style.display = 'none';
+  }
+  STATE.mode = name;
+}
+
+/* ===================================================
+   STEP BUILDER — ALL PROCESSES
+=================================================== */
+function buildAllSteps() {
+  const p = STATE.process;
+  if (p === 'abertura')     return buildAbertura();
+  if (p === 'alteracao')    return buildAlteracao();
+  if (p === 'transformacao')return buildTransformacao();
+  if (p === 'baixa')        return buildBaixa();
+  return [];
+}
+
+/* ===================== ABERTURA ===================== */
+function buildAbertura() {
+  const d = STATE.data;
+  const steps = [];
+
+  steps.push({
+    question: 'Qual tipo de empresa deseja abrir?',
+    hint: 'Esta escolha define todo o processo, documentos e responsabilidades.',
+    body: `<div class="opt-list">
+      <button class="opt" data-field="tipo" data-val="MEI" onclick="pick(this,'tipo')">
+        <span class="opt-t">MEI — Microempreendedor Individual</span>
+        <span class="opt-s">Faturamento até R$ 81.000/ano · 1 titular · Gratuito e 100% online</span></button>
+      <button class="opt" data-field="tipo" data-val="EI" onclick="pick(this,'tipo')">
+        <span class="opt-t">EI — Empresário Individual</span>
+        <span class="opt-s">1 titular · Sem sócios · Responsabilidade ilimitada · Registro na Junta</span></button>
+      <button class="opt" data-field="tipo" data-val="SLU" onclick="pick(this,'tipo')">
+        <span class="opt-t">SLU — Sociedade Limitada Unipessoal</span>
+        <span class="opt-s">1 sócio · Responsabilidade limitada ao capital · Substitui a EIRELI</span></button>
+      <button class="opt" data-field="tipo" data-val="LTDA" onclick="pick(this,'tipo')">
+        <span class="opt-t">LTDA — Sociedade Limitada</span>
+        <span class="opt-s">2 ou mais sócios · Tipo mais comum · Responsabilidade limitada</span></button>
+      <button class="opt" data-field="tipo" data-val="SA" onclick="pick(this,'tipo')">
+        <span class="opt-t">S/A — Sociedade Anônima</span>
+        <span class="opt-s">2+ acionistas · Emissão de ações · Estrutura mais complexa</span></button>
+    </div>`
+  });
+
+  steps.push({
+    question: 'Qual será o nome da empresa?',
+    hint: 'Informe até 2 opções — caso o primeiro nome não esteja disponível na Junta Comercial.',
+    body: `
+      <div class="field-wrap">
+        <label class="field-label">1ª Opção de Nome *</label>
+        <div class="field-hint">Para LTDA inclua "Ltda" ao final. Ex: Silva Comércio de Alimentos Ltda</div>
+        <input type="text" name="nome_1" placeholder="Nome empresarial principal" required>
+      </div>
+      <div class="field-wrap">
+        <label class="field-label">2ª Opção de Nome</label>
+        <input type="text" name="nome_2" placeholder="Alternativa (caso o 1º esteja indisponível)">
+      </div>
+      <div class="field-wrap">
+        <label class="field-label">Nome Fantasia (se houver)</label>
+        <div class="field-hint">Nome comercial de divulgação, diferente da razão social</div>
+        <input type="text" name="nome_fantasia" placeholder="Nome fantasia (opcional)">
+      </div>`
+  });
+
+  // For LTDA/SA ask number of partners
+  if (d.tipo === 'LTDA' || d.tipo === 'SA') {
+    steps.push({
+      question: 'Quantos sócios terá a empresa?',
+      hint: 'Coletaremos os dados completos de cada sócio para o contrato social.',
+      body: `<div class="opt-list grid2">
+        <button class="opt" data-field="qtd_socios" data-val="2" onclick="pick(this,'qtd_socios')"><span class="opt-t">2 sócios</span></button>
+        <button class="opt" data-field="qtd_socios" data-val="3" onclick="pick(this,'qtd_socios')"><span class="opt-t">3 sócios</span></button>
+        <button class="opt" data-field="qtd_socios" data-val="4" onclick="pick(this,'qtd_socios')"><span class="opt-t">4 sócios</span></button>
+        <button class="opt" data-field="qtd_socios" data-val="5" onclick="pick(this,'qtd_socios')"><span class="opt-t">5 sócios</span></button>
+      </div>`
+    });
+  }
+
+  // Partner data steps
+  const numSocios = (d.tipo === 'SLU' || d.tipo === 'EI' || d.tipo === 'MEI') ? 1 : (parseInt(d.qtd_socios) || (d.tipo === 'LTDA' ? 0 : 0));
+  const socioLabel = d.tipo === 'MEI' ? 'Titular MEI' : d.tipo === 'EI' ? 'Empresário' : 'Sócio';
+  for (let i = 0; i < numSocios; i++) {
+    const p = `s${i}_`;
+    const n = numSocios > 1 ? ` ${i+1}` : '';
+    steps.push({
+      question: `Dados de identificação — ${socioLabel}${n}`,
+      hint: 'Informações conforme constam no RG ou CNH.',
+      body: buildSocioIdBlock(p)
+    });
+    steps.push({
+      question: `Estado civil e endereço — ${socioLabel}${n}`,
+      hint: 'Dados necessários para o preâmbulo do contrato social.',
+      body: buildSocioCivilBlock(p)
+    });
+    steps.push({
+      question: `Endereço residencial — ${socioLabel}${n}`,
+      body: buildSocioEnderecoBlock(p)
+    });
+    if (d.tipo === 'LTDA' || d.tipo === 'SA' || d.tipo === 'SLU') {
+      steps.push({
+        question: `Participação societária — ${socioLabel}${n}`,
+        hint: 'Defina a participação no capital social da empresa.',
+        body: buildSocioQuotasBlock(p)
+      });
+    }
+  }
+
+  steps.push({
+    question: 'Qual será o endereço da sede da empresa?',
+    hint: 'O endereço deve ser compatível com o zoneamento municipal para as atividades escolhidas.',
+    body: buildEnderecoSedeBlock()
+  });
+
+  steps.push({
+    question: 'Qual será a atividade da empresa?',
+    hint: 'Descreva com detalhes o que a empresa vai fazer. Isso define o CNAE e o objeto social.',
+    body: `
+      <div class="field-wrap">
+        <label class="field-label">Atividade Principal *</label>
+        <div class="field-hint">Ex: Comércio varejista de roupas, Prestação de serviços de consultoria em TI...</div>
+        <textarea name="atividade_principal" placeholder="Descreva a atividade principal com detalhes..." required></textarea>
+      </div>
+      <div class="field-wrap">
+        <label class="field-label">Atividades Secundárias</label>
+        <textarea name="atividades_secundarias" placeholder="Liste outras atividades que a empresa também exercerá (opcional)"></textarea>
+      </div>
+      <div class="field-wrap">
+        <label class="field-label">CNAE Principal (se já souber)</label>
+        <input type="text" name="cnae" placeholder="Ex: 47.81-4-00">
+      </div>
+      <div class="field-wrap">
+        <label class="field-label">Natureza da operação *</label>
+        <div class="opt-list grid2">
+          <button class="opt toggle-multi" data-field="op_comercio" data-val="sim" onclick="toggle(this,'op_comercio')">
+            <span class="opt-t">🛒 Comércio</span></button>
+          <button class="opt toggle-multi" data-field="op_servico" data-val="sim" onclick="toggle(this,'op_servico')">
+            <span class="opt-t">🔧 Serviços</span></button>
+          <button class="opt toggle-multi" data-field="op_industria" data-val="sim" onclick="toggle(this,'op_industria')">
+            <span class="opt-t">🏭 Indústria</span></button>
+          <button class="opt toggle-multi" data-field="op_misto" data-val="sim" onclick="toggle(this,'op_misto')">
+            <span class="opt-t">⚡ Misto</span></button>
+        </div>
+      </div>`
+  });
+
+  steps.push({
+    question: 'Qual o capital social da empresa?',
+    hint: 'Valor total a ser integralizado pelos sócios no ato de abertura ou a prazo.',
+    body: `
+      <div class="field-wrap">
+        <label class="field-label">Valor do Capital Social (R$) *</label>
+        <input type="text" name="capital_social" placeholder="Ex: 10.000,00" required>
+      </div>
+      <div class="field-wrap">
+        <label class="field-label">Forma de Integralização *</label>
+        <div class="opt-list">
+          <button class="opt" data-field="integralizacao" data-val="Dinheiro à vista" onclick="pick(this,'integralizacao')">
+            <span class="opt-t">Dinheiro — à vista na abertura</span></button>
+          <button class="opt" data-field="integralizacao" data-val="Dinheiro a prazo" onclick="pick(this,'integralizacao')">
+            <span class="opt-t">Dinheiro — a prazo</span></button>
+          <button class="opt" data-field="integralizacao" data-val="Bens" onclick="pick(this,'integralizacao')">
+            <span class="opt-t">Bens (móveis ou imóveis)</span></button>
+          <button class="opt" data-field="integralizacao" data-val="Misto" onclick="pick(this,'integralizacao')">
+            <span class="opt-t">Misto — dinheiro + bens</span></button>
+        </div>
+      </div>`
+  });
+
+  steps.push({
+    question: 'Qual regime tributário pretende adotar?',
+    body: `<div class="opt-list">
+      <button class="opt" data-field="regime" data-val="Simples Nacional" onclick="pick(this,'regime')">
+        <span class="opt-t">Simples Nacional</span>
+        <span class="opt-s">DAS unificado · ME e EPP · Faturamento até R$ 4,8 mi/ano</span></button>
+      <button class="opt" data-field="regime" data-val="Lucro Presumido" onclick="pick(this,'regime')">
+        <span class="opt-t">Lucro Presumido</span>
+        <span class="opt-s">Base de cálculo presumida · Até R$ 78 mi/ano</span></button>
+      <button class="opt" data-field="regime" data-val="Lucro Real" onclick="pick(this,'regime')">
+        <span class="opt-t">Lucro Real</span>
+        <span class="opt-s">Lucro contábil efetivo · Obrigatório acima de R$ 78 mi/ano</span></button>
+      <button class="opt" data-field="regime" data-val="A definir com contador" onclick="pick(this,'regime')">
+        <span class="opt-t">Não sei ainda</span>
+        <span class="opt-s">Quero orientação da contabilidade</span></button>
+    </div>`
+  });
+
+  steps.push({
+    question: 'Possui Certificado Digital e-CPF?',
+    hint: 'Necessário para assinar documentos digitalmente na Junta Comercial.',
+    body: `<div class="opt-list grid2">
+      <button class="opt" data-field="certificado" data-val="Sim, tenho" onclick="pick(this,'certificado')"><span class="opt-t">✅ Sim, tenho</span></button>
+      <button class="opt" data-field="certificado" data-val="Não tenho" onclick="pick(this,'certificado')"><span class="opt-t">❌ Não tenho</span></button>
+    </div>`
+  });
+
+  steps.push({
+    question: 'Faturamento estimado por ano',
+    body: `<div class="opt-list">
+      <button class="opt" data-field="faturamento" data-val="Até R$ 81.000" onclick="pick(this,'faturamento')">
+        <span class="opt-t">Até R$ 81.000</span><span class="opt-s">Faixa MEI</span></button>
+      <button class="opt" data-field="faturamento" data-val="Até R$ 360.000" onclick="pick(this,'faturamento')">
+        <span class="opt-t">Até R$ 360.000</span><span class="opt-s">Microempresa (ME)</span></button>
+      <button class="opt" data-field="faturamento" data-val="Até R$ 4,8 milhões" onclick="pick(this,'faturamento')">
+        <span class="opt-t">Até R$ 4,8 milhões</span><span class="opt-s">Empresa de Pequeno Porte (EPP)</span></button>
+      <button class="opt" data-field="faturamento" data-val="Acima de R$ 4,8 milhões" onclick="pick(this,'faturamento')">
+        <span class="opt-t">Acima de R$ 4,8 milhões</span></button>
+    </div>`
+  });
+
+  steps.push(stepObsContato('abertura'));
+  return steps;
+}
+
+/* ===================== ALTERAÇÃO ===================== */
+function buildAlteracao() {
+  const d = STATE.data;
+  const steps = [];
+
+  steps.push({
+    question: 'Dados da empresa a ser alterada',
+    hint: 'Informe os dados cadastrais atuais da empresa.',
+    body: `
+      <div class="field-wrap">
+        <label class="field-label">Razão Social *</label>
+        <input type="text" name="razao_social" placeholder="Nome empresarial registrado" required>
+      </div>
+      <div class="row2">
+        <div class="field-wrap">
+          <label class="field-label">CNPJ *</label>
+          <input type="text" name="cnpj" placeholder="00.000.000/0001-00" required>
+        </div>
+        <div class="field-wrap">
+          <label class="field-label">Tipo Societário Atual *</label>
+          <select name="tipo_atual" required>
+            <option value="">Selecione</option>
+            <option>MEI</option><option>EI</option><option>SLU</option>
+            <option>LTDA</option><option>S/A</option><option>Sociedade Simples</option>
+          </select>
+        </div>
+      </div>
+      <div class="field-wrap">
+        <label class="field-label">NIRE (número de registro na Junta)</label>
+        <input type="text" name="nire" placeholder="Número NIRE (opcional)">
+      </div>`
+  });
+
+  steps.push({
+    question: 'O que precisa ser alterado?',
+    hint: 'Selecione todos os itens que serão modificados nesta alteração. Pode marcar mais de um.',
+    body: `<div class="opt-list">
+      <button class="opt toggle-multi" data-field="alt_endereco" onclick="toggle(this,'alt_endereco')">
+        <span class="opt-t">📍 Endereço da Sede</span>
+        <span class="opt-s">Mudança de endereço no mesmo município, outro município ou estado</span></button>
+      <button class="opt toggle-multi" data-field="alt_socios" onclick="toggle(this,'alt_socios')">
+        <span class="opt-t">👥 Quadro Societário</span>
+        <span class="opt-s">Entrada, saída ou substituição de sócio — transferência de quotas</span></button>
+      <button class="opt toggle-multi" data-field="alt_capital" onclick="toggle(this,'alt_capital')">
+        <span class="opt-t">💰 Capital Social</span>
+        <span class="opt-s">Aumento ou redução do capital social</span></button>
+      <button class="opt toggle-multi" data-field="alt_atividades" onclick="toggle(this,'alt_atividades')">
+        <span class="opt-t">🔧 Atividades / CNAEs</span>
+        <span class="opt-s">Inclusão, exclusão ou alteração de atividades econômicas</span></button>
+      <button class="opt toggle-multi" data-field="alt_razao" onclick="toggle(this,'alt_razao')">
+        <span class="opt-t">📝 Razão Social / Nome Fantasia</span>
+        <span class="opt-s">Mudança do nome empresarial ou comercial</span></button>
+      <button class="opt toggle-multi" data-field="alt_admin" onclick="toggle(this,'alt_admin')">
+        <span class="opt-t">👤 Administrador / Responsável Legal</span>
+        <span class="opt-s">Designação ou troca do administrador da empresa</span></button>
+    </div>`
+  });
+
+  if (d.alt_endereco === 'sim') {
+    steps.push({
+      question: 'Qual o novo endereço da sede?',
+      body: `
+        <div class="field-wrap">
+          <label class="field-label">Tipo de mudança *</label>
+          <div class="opt-list">
+            <button class="opt" data-field="tipo_mudanca" data-val="Mesmo município" onclick="pick(this,'tipo_mudanca')">Mesmo município</button>
+            <button class="opt" data-field="tipo_mudanca" data-val="Outro município (mesmo estado)" onclick="pick(this,'tipo_mudanca')">Outro município — mesmo estado</button>
+            <button class="opt" data-field="tipo_mudanca" data-val="Outro estado" onclick="pick(this,'tipo_mudanca')">Outro estado</button>
+          </div>
+        </div>
+        <hr class="sdiv">
+        ${buildEnderecoSedeBlock('novo_')}`
+    });
+  }
+
+  if (d.alt_socios === 'sim') {
+    steps.push({
+      question: 'Qual a movimentação no quadro societário?',
+      body: `
+        <div class="field-wrap">
+          <label class="field-label">Tipo de movimento *</label>
+          <div class="opt-list">
+            <button class="opt" data-field="mov_socios" data-val="Entrada de novo sócio" onclick="pick(this,'mov_socios')">➕ Entrada de novo sócio</button>
+            <button class="opt" data-field="mov_socios" data-val="Saída de sócio" onclick="pick(this,'mov_socios')">➖ Saída de sócio</button>
+            <button class="opt" data-field="mov_socios" data-val="Transferência de quotas entre sócios" onclick="pick(this,'mov_socios')">🔄 Transferência de quotas entre sócios</button>
+            <button class="opt" data-field="mov_socios" data-val="Substituição (saída + entrada)" onclick="pick(this,'mov_socios')">🔁 Substituição — saída e entrada simultânea</button>
+          </div>
+        </div>`
+    });
+    steps.push({
+      question: 'Dados do sócio envolvido na alteração',
+      hint: 'Preencha os dados do sócio que está entrando ou saindo.',
+      body: buildSocioIdBlock('alt_s0_')
+    });
+    steps.push({
+      question: 'Estado civil e endereço do sócio envolvido',
+      body: buildSocioCivilBlock('alt_s0_')
+    });
+    steps.push({
+      question: 'Endereço residencial do sócio',
+      body: buildSocioEnderecoBlock('alt_s0_')
+    });
+    steps.push({
+      question: 'Participação societária após a alteração',
+      hint: 'Informe como ficará a distribuição de quotas após a alteração.',
+      body: `
+        <div class="field-wrap">
+          <label class="field-label">Quotas / % do sócio envolvido</label>
+          <input type="text" name="alt_s0_quotas_pct" placeholder="Ex: 50% ou 5.000 quotas">
+        </div>
+        <div class="field-wrap">
+          <label class="field-label">Valor em R$ das quotas</label>
+          <input type="text" name="alt_s0_quotas_valor" placeholder="Ex: 5.000,00">
+        </div>
+        <div class="field-wrap">
+          <label class="field-label">Cargo / Função</label>
+          <select name="alt_s0_cargo">
+            <option value="">Selecione</option>
+            <option>Sócio Administrador</option>
+            <option>Sócio Não Administrador</option>
+            <option>Diretor</option>
+          </select>
+        </div>
+        <div class="field-wrap">
+          <label class="field-label">Detalhes adicionais</label>
+          <textarea name="alt_socios_obs" placeholder="Descreva condições, valor de cessão, quitações..."></textarea>
+        </div>`
+    });
+  }
+
+  if (d.alt_capital === 'sim') {
+    steps.push({
+      question: 'Alteração do capital social',
+      body: `
+        <div class="field-wrap">
+          <label class="field-label">Tipo de alteração *</label>
+          <div class="opt-list grid2">
+            <button class="opt" data-field="tipo_capital" data-val="Aumento" onclick="pick(this,'tipo_capital')">📈 Aumento</button>
+            <button class="opt" data-field="tipo_capital" data-val="Redução" onclick="pick(this,'tipo_capital')">📉 Redução</button>
+          </div>
+        </div>
+        <div class="row2">
+          <div class="field-wrap">
+            <label class="field-label">Capital Atual (R$) *</label>
+            <input type="text" name="capital_atual" placeholder="Ex: 10.000,00" required>
+          </div>
+          <div class="field-wrap">
+            <label class="field-label">Novo Capital (R$) *</label>
+            <input type="text" name="capital_novo" placeholder="Ex: 50.000,00" required>
+          </div>
+        </div>
+        <div class="field-wrap">
+          <label class="field-label">Origem / Motivo</label>
+          <textarea name="capital_motivo" placeholder="Ex: Aporte em dinheiro pelos sócios, incorporação de lucros..."></textarea>
+        </div>`
+    });
+  }
+
+  if (d.alt_atividades === 'sim') {
+    steps.push({
+      question: 'Quais atividades serão alteradas?',
+      body: `
+        <div class="field-wrap">
+          <label class="field-label">Atividades a INCLUIR</label>
+          <textarea name="ativ_incluir" placeholder="Liste as novas atividades e CNAEs (se souber)"></textarea>
+        </div>
+        <div class="field-wrap">
+          <label class="field-label">Atividades a EXCLUIR</label>
+          <textarea name="ativ_excluir" placeholder="Liste as atividades a remover"></textarea>
+        </div>
+        <div class="field-wrap">
+          <label class="field-label">Nova atividade principal (se mudar)</label>
+          <input type="text" name="nova_ativ_principal" placeholder="Descreva a nova atividade principal">
+        </div>`
+    });
+  }
+
+  if (d.alt_razao === 'sim') {
+    steps.push({
+      question: 'Qual o novo nome da empresa?',
+      hint: 'Informe até 2 opções para pesquisa de viabilidade de nome na Junta.',
+      body: `
+        <div class="field-wrap">
+          <label class="field-label">Nova Razão Social (1ª opção) *</label>
+          <input type="text" name="nova_razao_1" placeholder="Nome empresarial pretendido" required>
+        </div>
+        <div class="field-wrap">
+          <label class="field-label">Nova Razão Social (2ª opção)</label>
+          <input type="text" name="nova_razao_2" placeholder="Alternativa">
+        </div>
+        <div class="field-wrap">
+          <label class="field-label">Novo Nome Fantasia (se alterar)</label>
+          <input type="text" name="novo_nome_fantasia" placeholder="Nome comercial">
+        </div>`
+    });
+  }
+
+  if (d.alt_admin === 'sim') {
+    steps.push({
+      question: 'Dados do novo Administrador',
+      hint: 'Preencha os dados completos do novo responsável legal.',
+      body: buildSocioIdBlock('adm_')
+    });
+    steps.push({
+      question: 'Estado civil e endereço do novo Administrador',
+      body: buildSocioCivilBlock('adm_')
+    });
+    steps.push({
+      question: 'Endereço residencial do novo Administrador',
+      body: buildSocioEnderecoBlock('adm_')
+    });
+  }
+
+  steps.push(stepObsContato('alteracao'));
+  return steps;
+}
+
+/* ===================== TRANSFORMAÇÃO ===================== */
+function buildTransformacao() {
+  const d = STATE.data;
+  const steps = [];
+
+  steps.push({
+    question: 'Dados da empresa atual',
+    body: `
+      <div class="field-wrap">
+        <label class="field-label">Razão Social *</label>
+        <input type="text" name="razao_social" placeholder="Nome registrado atual" required>
+      </div>
+      <div class="row2">
+        <div class="field-wrap">
+          <label class="field-label">CNPJ *</label>
+          <input type="text" name="cnpj" placeholder="00.000.000/0001-00" required>
+        </div>
+        <div class="field-wrap">
+          <label class="field-label">Tipo Atual *</label>
+          <select name="tipo_atual" required>
+            <option value="">Selecione</option>
+            <option>MEI</option><option>EI</option><option>SLU</option><option>LTDA</option><option>S/A</option>
+          </select>
+        </div>
+      </div>`
+  });
+
+  steps.push({
+    question: 'Para qual tipo deseja transformar?',
+    body: `<div class="opt-list">
+      <button class="opt" data-field="transf_para" data-val="MEI → EI/ME" onclick="pick(this,'transf_para')">
+        <span class="opt-t">MEI → EI / ME</span>
+        <span class="opt-s">Desenquadramento por excesso de faturamento ou opção</span></button>
+      <button class="opt" data-field="transf_para" data-val="EI → SLU" onclick="pick(this,'transf_para')">
+        <span class="opt-t">EI → SLU</span>
+        <span class="opt-s">Proteção patrimonial — responsabilidade limitada</span></button>
+      <button class="opt" data-field="transf_para" data-val="EI/SLU → LTDA" onclick="pick(this,'transf_para')">
+        <span class="opt-t">EI / SLU → LTDA</span>
+        <span class="opt-s">Inclusão de sócio(s) e transformação em sociedade</span></button>
+      <button class="opt" data-field="transf_para" data-val="LTDA → S/A" onclick="pick(this,'transf_para')">
+        <span class="opt-t">LTDA → S/A</span>
+        <span class="opt-s">Captação de investimento ou reestruturação societária</span></button>
+      <button class="opt" data-field="transf_para" data-val="Outro" onclick="pick(this,'transf_para')">
+        <span class="opt-t">Outro — especificar</span></button>
+    </div>
+    <div class="field-wrap" style="margin-top:20px">
+      <label class="field-label">Motivo da transformação</label>
+      <textarea name="motivo_transf" placeholder="Descreva o contexto..."></textarea>
+    </div>`
+  });
+
+  steps.push({
+    question: 'Dados do titular / sócio principal',
+    hint: 'Preencha os dados completos para o novo ato constitutivo.',
+    body: buildSocioIdBlock('s0_')
+  });
+  steps.push({ question: 'Estado civil e dados pessoais', body: buildSocioCivilBlock('s0_') });
+  steps.push({ question: 'Endereço residencial', body: buildSocioEnderecoBlock('s0_') });
+
+  if (d.transf_para === 'EI/SLU → LTDA' || d.transf_para === 'LTDA → S/A') {
+    steps.push({
+      question: 'Dados do novo sócio (se houver)',
+      hint: 'Caso esteja incluindo um novo sócio na transformação.',
+      body: buildSocioIdBlock('s1_')
+    });
+    steps.push({ question: 'Estado civil e dados do novo sócio', body: buildSocioCivilBlock('s1_') });
+    steps.push({ question: 'Endereço residencial do novo sócio', body: buildSocioEnderecoBlock('s1_') });
+  }
+
+  steps.push({
+    question: 'Capital social após a transformação',
+    body: `
+      <div class="field-wrap">
+        <label class="field-label">Valor do Capital Social (R$) *</label>
+        <input type="text" name="capital_social" placeholder="Ex: 10.000,00" required>
+      </div>
+      <div class="field-wrap">
+        <label class="field-label">Forma de Integralização</label>
+        <div class="opt-list">
+          <button class="opt" data-field="integralizacao" data-val="Dinheiro à vista" onclick="pick(this,'integralizacao')">Dinheiro — à vista</button>
+          <button class="opt" data-field="integralizacao" data-val="Dinheiro a prazo" onclick="pick(this,'integralizacao')">Dinheiro — a prazo</button>
+          <button class="opt" data-field="integralizacao" data-val="Bens" onclick="pick(this,'integralizacao')">Bens (móveis ou imóveis)</button>
+        </div>
+      </div>`
+  });
+
+  steps.push(stepObsContato('transformacao'));
+  return steps;
+}
+
+/* ===================== BAIXA ===================== */
+function buildBaixa() {
+  const d = STATE.data;
+  const steps = [];
+
+  steps.push({
+    question: 'Dados da empresa a ser encerrada',
+    body: `
+      <div class="field-wrap">
+        <label class="field-label">Razão Social *</label>
+        <input type="text" name="razao_social" placeholder="Nome empresarial registrado" required>
+      </div>
+      <div class="row2">
+        <div class="field-wrap">
+          <label class="field-label">CNPJ *</label>
+          <input type="text" name="cnpj" placeholder="00.000.000/0001-00" required>
+        </div>
+        <div class="field-wrap">
+          <label class="field-label">Tipo Societário *</label>
+          <select name="tipo_baixa" required>
+            <option value="">Selecione</option>
+            <option>MEI</option><option>EI</option><option>SLU</option><option>LTDA</option><option>S/A</option>
+          </select>
+        </div>
+      </div>
+      <div class="field-wrap">
+        <label class="field-label">Data de Abertura da Empresa</label>
+        <input type="date" name="data_abertura">
+      </div>`
+  });
+
+  steps.push({
+    question: 'Qual o motivo do encerramento?',
+    body: `<div class="opt-list">
+      <button class="opt" data-field="motivo_baixa" data-val="Por vontade dos sócios" onclick="pick(this,'motivo_baixa')">Por vontade dos sócios</button>
+      <button class="opt" data-field="motivo_baixa" data-val="Inatividade / sem movimento" onclick="pick(this,'motivo_baixa')">Inatividade — empresa sem movimento</button>
+      <button class="opt" data-field="motivo_baixa" data-val="Dificuldades financeiras" onclick="pick(this,'motivo_baixa')">Dificuldades financeiras</button>
+      <button class="opt" data-field="motivo_baixa" data-val="Transformação societária" onclick="pick(this,'motivo_baixa')">Transformação — abertura de nova empresa</button>
+      <button class="opt" data-field="motivo_baixa" data-val="Conclusão do objeto social" onclick="pick(this,'motivo_baixa')">Conclusão do objeto social</button>
+    </div>`
+  });
+
+  steps.push({
+    question: 'Situação atual da empresa',
+    hint: 'Estas informações são necessárias para o distrato social e obrigações finais.',
+    body: `
+      <div class="field-wrap">
+        <label class="field-label">Possui funcionários registrados? *</label>
+        <div class="opt-list grid2">
+          <button class="opt" data-field="tem_func" data-val="Não" onclick="pick(this,'tem_func')"><span class="opt-t">Não</span></button>
+          <button class="opt" data-field="tem_func" data-val="Sim" onclick="pick(this,'tem_func')"><span class="opt-t">Sim</span></button>
+        </div>
+      </div>
+      <div class="field-wrap">
+        <label class="field-label">Possui débitos fiscais pendentes?</label>
+        <div class="opt-list grid2">
+          <button class="opt" data-field="tem_debitos" data-val="Não" onclick="pick(this,'tem_debitos')"><span class="opt-t">Não</span></button>
+          <button class="opt" data-field="tem_debitos" data-val="Sim" onclick="pick(this,'tem_debitos')"><span class="opt-t">Sim</span></button>
+        </div>
+      </div>
+      <div class="field-wrap">
+        <label class="field-label">Última declaração entregue</label>
+        <select name="ultima_declaracao">
+          <option value="">Selecione</option>
+          <option>2024</option><option>2023</option><option>2022</option>
+          <option>2021 ou antes</option><option>Nunca entregou</option><option>Não sabe</option>
+        </select>
+      </div>`
+  });
+
+  // Sócios para distrato (não MEI)
+  if (d.tipo_baixa !== 'MEI') {
+    steps.push({
+      question: 'Dados do sócio / titular para o distrato',
+      body: buildSocioIdBlock('b_s0_')
+    });
+    steps.push({ question: 'Estado civil e dados pessoais', body: buildSocioCivilBlock('b_s0_') });
+    steps.push({ question: 'Endereço residencial', body: buildSocioEnderecoBlock('b_s0_') });
+  }
+
+  steps.push(stepObsContato('baixa'));
+  return steps;
+}
+
+/* ===================== SHARED BLOCKS ===================== */
+function buildSocioIdBlock(p) {
+  return `
+    <div class="field-wrap">
+      <label class="field-label">Nome Completo *</label>
+      <div class="field-hint">Conforme consta no RG ou CNH</div>
+      <input type="text" name="${p}nome" placeholder="Nome civil completo" required>
+    </div>
+    <div class="row2">
+      <div class="field-wrap">
+        <label class="field-label">CPF *</label>
+        <input type="text" name="${p}cpf" placeholder="000.000.000-00" required>
+      </div>
+      <div class="field-wrap">
+        <label class="field-label">RG / CNH *</label>
+        <input type="text" name="${p}rg" placeholder="Número" required>
+      </div>
+    </div>
+    <div class="row2">
+      <div class="field-wrap">
+        <label class="field-label">Órgão Emissor *</label>
+        <input type="text" name="${p}orgao_emissor" placeholder="Ex: SSP-SP" required>
+      </div>
+      <div class="field-wrap">
+        <label class="field-label">Data de Emissão *</label>
+        <input type="date" name="${p}data_emissao" required>
+      </div>
+    </div>
+    <div class="row2">
+      <div class="field-wrap">
+        <label class="field-label">Data de Nascimento *</label>
+        <input type="date" name="${p}nascimento" required>
+      </div>
+      <div class="field-wrap">
+        <label class="field-label">Naturalidade *</label>
+        <input type="text" name="${p}naturalidade" placeholder="Cidade/UF" required>
+      </div>
+    </div>
+    <div class="row2">
+      <div class="field-wrap">
+        <label class="field-label">Nacionalidade *</label>
+        <select name="${p}nacionalidade" required>
+          <option value="">Selecione</option>
+          <option>brasileiro(a)</option>
+          <option>brasileiro(a) naturalizado(a)</option>
+          <option>estrangeiro(a)</option>
+        </select>
+      </div>
+      <div class="field-wrap">
+        <label class="field-label">Cor / Raça *</label>
+        <select name="${p}cor" required>
+          <option value="">Selecione</option>
+          <option>branca</option><option>preta</option><option>parda</option>
+          <option>amarela</option><option>indígena</option>
+        </select>
+      </div>
+    </div>
+    <div class="row2">
+      <div class="field-wrap">
+        <label class="field-label">Profissão *</label>
+        <input type="text" name="${p}profissao" placeholder="Ex: Administrador" required>
+      </div>
+      <div class="field-wrap">
+        <label class="field-label">WhatsApp / Telefone *</label>
+        <input type="tel" name="${p}telefone" placeholder="(11) 99999-9999" required>
+      </div>
+    </div>
+    <div class="field-wrap">
+      <label class="field-label">E-mail *</label>
+      <input type="email" name="${p}email" placeholder="email@exemplo.com" required>
+    </div>`;
+}
+
+function buildSocioCivilBlock(p) {
+  return `
+    <div class="field-wrap">
+      <label class="field-label">Estado Civil *</label>
+      <div class="opt-list">
+        <button class="opt" data-field="${p}estado_civil" data-val="solteiro(a)" onclick="pick(this,'${p}estado_civil')">Solteiro(a)</button>
+        <button class="opt" data-field="${p}estado_civil" data-val="casado(a)" onclick="pick(this,'${p}estado_civil')">Casado(a)</button>
+        <button class="opt" data-field="${p}estado_civil" data-val="divorciado(a)" onclick="pick(this,'${p}estado_civil')">Divorciado(a)</button>
+        <button class="opt" data-field="${p}estado_civil" data-val="viúvo(a)" onclick="pick(this,'${p}estado_civil')">Viúvo(a)</button>
+        <button class="opt" data-field="${p}estado_civil" data-val="separado(a) judicialmente" onclick="pick(this,'${p}estado_civil')">Separado(a) Judicialmente</button>
+        <button class="opt" data-field="${p}estado_civil" data-val="união estável" onclick="pick(this,'${p}estado_civil')">União Estável</button>
+      </div>
+    </div>
+    ${(STATE.data[p+'estado_civil'] === 'casado(a)' || STATE.data[p+'estado_civil'] === 'união estável') ? `
+    <hr class="sdiv">
+    <div class="slabel">Cônjuge / Companheiro(a)</div>
+    <div class="field-wrap">
+      <label class="field-label">Regime de Bens *</label>
+      <div class="opt-list">
+        <button class="opt" data-field="${p}regime" data-val="comunhão parcial de bens" onclick="pick(this,'${p}regime')">Comunhão Parcial de Bens</button>
+        <button class="opt" data-field="${p}regime" data-val="comunhão universal de bens" onclick="pick(this,'${p}regime')">Comunhão Universal de Bens</button>
+        <button class="opt" data-field="${p}regime" data-val="separação total de bens" onclick="pick(this,'${p}regime')">Separação Total de Bens</button>
+        <button class="opt" data-field="${p}regime" data-val="participação final nos aquestos" onclick="pick(this,'${p}regime')">Participação Final nos Aquestos</button>
+      </div>
+    </div>
+    <div class="row2">
+      <div class="field-wrap">
+        <label class="field-label">Nome do Cônjuge</label>
+        <input type="text" name="${p}conjuge_nome" placeholder="Nome completo">
+      </div>
+      <div class="field-wrap">
+        <label class="field-label">CPF do Cônjuge</label>
+        <input type="text" name="${p}conjuge_cpf" placeholder="000.000.000-00">
+      </div>
+    </div>` : ''}`;
+}
+
+function buildSocioEnderecoBlock(p) {
+  return `
+    <div class="row2">
+      <div class="field-wrap">
+        <label class="field-label">CEP *</label>
+        <input type="text" name="${p}cep" placeholder="00000-000" required>
+      </div>
+      <div class="field-wrap">
+        <label class="field-label">UF *</label>
+        <select name="${p}uf" required>
+          <option value="">UF</option>
+          <option>AC</option><option>AL</option><option>AP</option><option>AM</option>
+          <option>BA</option><option>CE</option><option>DF</option><option>ES</option>
+          <option>GO</option><option>MA</option><option>MT</option><option>MS</option>
+          <option>MG</option><option>PA</option><option>PB</option><option>PR</option>
+          <option>PE</option><option>PI</option><option>RJ</option><option>RN</option>
+          <option>RS</option><option>RO</option><option>RR</option><option>SC</option>
+          <option selected>SP</option><option>SE</option><option>TO</option>
+        </select>
+      </div>
+    </div>
+    <div class="field-wrap">
+      <label class="field-label">Logradouro *</label>
+      <input type="text" name="${p}logradouro" placeholder="Rua, Avenida, Alameda..." required>
+    </div>
+    <div class="row3">
+      <div class="field-wrap">
+        <label class="field-label">Número *</label>
+        <input type="text" name="${p}numero" placeholder="Nº" required>
+      </div>
+      <div class="field-wrap">
+        <label class="field-label">Complemento</label>
+        <input type="text" name="${p}complemento" placeholder="Apto, sala...">
+      </div>
+      <div class="field-wrap">
+        <label class="field-label">Bairro *</label>
+        <input type="text" name="${p}bairro" placeholder="Bairro" required>
+      </div>
+    </div>
+    <div class="field-wrap">
+      <label class="field-label">Município *</label>
+      <input type="text" name="${p}municipio" placeholder="Cidade" required>
+    </div>`;
+}
+
+function buildEnderecoSedeBlock(prefix) {
+  const p = prefix || 'sede_';
+  return `
+    <div class="field-wrap">
+      <label class="field-label">Tipo de Imóvel *</label>
+      <div class="opt-list">
+        <button class="opt" data-field="${p}tipo_imovel" data-val="Próprio" onclick="pick(this,'${p}tipo_imovel')">Imóvel próprio</button>
+        <button class="opt" data-field="${p}tipo_imovel" data-val="Alugado" onclick="pick(this,'${p}tipo_imovel')">Imóvel alugado</button>
+        <button class="opt" data-field="${p}tipo_imovel" data-val="Coworking / Endereço fiscal" onclick="pick(this,'${p}tipo_imovel')">Coworking / Endereço fiscal</button>
+        <button class="opt" data-field="${p}tipo_imovel" data-val="Residencial do sócio" onclick="pick(this,'${p}tipo_imovel')">Residencial do sócio</button>
+      </div>
+    </div>
+    <hr class="sdiv">
+    <div class="row2">
+      <div class="field-wrap">
+        <label class="field-label">CEP *</label>
+        <input type="text" name="${p}cep" placeholder="00000-000" required>
+      </div>
+      <div class="field-wrap">
+        <label class="field-label">UF *</label>
+        <select name="${p}uf" required>
+          <option value="">UF</option>
+          <option>AC</option><option>AL</option><option>AP</option><option>AM</option>
+          <option>BA</option><option>CE</option><option>DF</option><option>ES</option>
+          <option>GO</option><option>MA</option><option>MT</option><option>MS</option>
+          <option>MG</option><option>PA</option><option>PB</option><option>PR</option>
+          <option>PE</option><option>PI</option><option>RJ</option><option>RN</option>
+          <option>RS</option><option>RO</option><option>RR</option><option>SC</option>
+          <option selected>SP</option><option>SE</option><option>TO</option>
+        </select>
+      </div>
+    </div>
+    <div class="field-wrap">
+      <label class="field-label">Logradouro *</label>
+      <input type="text" name="${p}logradouro" placeholder="Rua, Avenida, Alameda..." required>
+    </div>
+    <div class="row3">
+      <div class="field-wrap">
+        <label class="field-label">Número *</label>
+        <input type="text" name="${p}numero" placeholder="Nº" required>
+      </div>
+      <div class="field-wrap">
+        <label class="field-label">Complemento</label>
+        <input type="text" name="${p}complemento" placeholder="Sala, andar...">
+      </div>
+      <div class="field-wrap">
+        <label class="field-label">Bairro *</label>
+        <input type="text" name="${p}bairro" placeholder="Bairro" required>
+      </div>
+    </div>
+    <div class="field-wrap">
+      <label class="field-label">Município *</label>
+      <input type="text" name="${p}municipio" placeholder="Cidade" required>
+    </div>
+    <div class="field-wrap">
+      <label class="field-label">Área aproximada (m²)</label>
+      <input type="text" name="${p}area" placeholder="Ex: 80m²">
+    </div>`;
+}
+
+function buildSocioQuotasBlock(p) {
+  return `
+    <div class="row2">
+      <div class="field-wrap">
+        <label class="field-label">Participação % no Capital *</label>
+        <input type="text" name="${p}quotas_pct" placeholder="Ex: 50%" required>
+      </div>
+      <div class="field-wrap">
+        <label class="field-label">Valor em R$ *</label>
+        <input type="text" name="${p}quotas_valor" placeholder="Ex: 5.000,00" required>
+      </div>
+    </div>
+    <div class="field-wrap">
+      <label class="field-label">Cargo / Função na Empresa *</label>
+      <div class="opt-list">
+        <button class="opt" data-field="${p}cargo" data-val="Sócio Administrador" onclick="pick(this,'${p}cargo')">Sócio Administrador</button>
+        <button class="opt" data-field="${p}cargo" data-val="Sócio Não Administrador" onclick="pick(this,'${p}cargo')">Sócio Não Administrador</button>
+        <button class="opt" data-field="${p}cargo" data-val="Diretor" onclick="pick(this,'${p}cargo')">Diretor</button>
+      </div>
+    </div>`;
+}
+
+function stepObsContato(proc) {
+  return {
+    question: 'Informações adicionais',
+    hint: 'Se tiver alguma observação importante ou dúvida sobre o processo, informe aqui.',
+    body: `
+      <div class="field-wrap">
+        <label class="field-label">Observações / Dúvidas</label>
+        <textarea name="observacoes" placeholder="Informe qualquer detalhe relevante para o processo..."></textarea>
+      </div>
+      <hr class="sdiv">
+      <div class="slabel">Melhor horário para contato</div>
+      <div class="opt-list grid2">
+        <button class="opt" data-field="horario" data-val="Manhã (8h–12h)" onclick="pick(this,'horario')"><span class="opt-t">☀️ Manhã</span><span class="opt-s">8h – 12h</span></button>
+        <button class="opt" data-field="horario" data-val="Tarde (12h–18h)" onclick="pick(this,'horario')"><span class="opt-t">🌤 Tarde</span><span class="opt-s">12h – 18h</span></button>
+        <button class="opt" data-field="horario" data-val="Noite (18h–20h)" onclick="pick(this,'horario')"><span class="opt-t">🌙 Noite</span><span class="opt-s">18h – 20h</span></button>
+        <button class="opt" data-field="horario" data-val="Qualquer horário" onclick="pick(this,'horario')"><span class="opt-t">🕐 Qualquer</span></button>
+      </div>`
+  };
+}
+</script>
+</body>
+</html>

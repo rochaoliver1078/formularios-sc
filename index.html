@@ -552,9 +552,15 @@ function showReview() {
     html += `<div class="review-section">
       <div class="review-section-title">${title}</div>`;
     entries.forEach(([k,v,step]) => {
+      // Format dates for display
+      let displayVal = v;
+      if (v && v.match && v.match(/^\d{4}-\d{2}-\d{2}$/)) {
+        const [yr,mo,dy] = v.split('-');
+        displayVal = `${dy}/${mo}/${yr}`;
+      }
       html += `<div class="review-row">
         <div class="review-key">${k}</div>
-        <div class="review-val">${v||'<em style="color:var(--muted)">Não informado</em>'}</div>
+        <div class="review-val">${displayVal||'<em style="color:var(--muted)">Não informado</em>'}</div>
         ${step!==undefined?`<button class="review-edit" onclick="editStep(${step})">Editar</button>`:''}
       </div>`;
     });
@@ -578,35 +584,84 @@ function editStep(idx) {
 
 function groupDataForReview() {
   const d = S.data;
-  const groups = {};
 
-  // Process info
-  groups['Processo'] = [
-    ['Tipo de processo', {abertura:'Abertura de Empresa',alteracao:'Alteração Contratual',
-      transformacao:'Transformação Societária',baixa:'Baixa / Encerramento'}[S.process]],
-    ['Cliente', S.clientName],
-  ];
-
-  // Dynamic — show all filled fields grouped by prefix
-  const prefixes = {};
-  for (const [k, v] of Object.entries(d)) {
-    if (!v) continue;
-    const parts = k.split('_');
-    const grp = parts.length > 1 ? parts[0] : 'geral';
-    if (!prefixes[grp]) prefixes[grp] = [];
-    prefixes[grp].push([k.replace(/_/g,' '), v]);
-  }
-
-  const labelMap = {
-    s0:'Sócio / Titular 1', s1:'Sócio 2', s2:'Sócio 3', s3:'Sócio 4',
-    sede:'Endereço da Sede', novo:'Novo Endereço', alt:'Alteração',
-    adm:'Administrador', b:'Baixa', transf:'Transformação', geral:'Dados Gerais'
+  const fieldLabels = {
+    tipo:'Tipo de empresa', nome_1:'Nome (1ª opção)', nome_2:'Nome (2ª opção)',
+    nome_fantasia:'Nome fantasia', qtd_socios:'Nº de sócios',
+    capital_social:'Capital social', integralizacao:'Integralização',
+    regime:'Regime tributário', certificado:'Certificado Digital e-CPF',
+    faturamento:'Faturamento estimado', atividade_principal:'Atividade principal',
+    atividades_secundarias:'Atividades secundárias', cnae:'CNAE principal',
+    op_comercio:'Comércio', op_servico:'Serviços', op_industria:'Indústria', op_misto:'Misto',
+    nome:'Nome completo', cpf:'CPF', rg:'RG/CNH', orgao_emissor:'Órgão emissor',
+    data_emissao:'Data emissão RG', nascimento:'Data de nascimento',
+    naturalidade:'Naturalidade', nacionalidade:'Nacionalidade', cor:'Cor/Raça',
+    profissao:'Profissão', telefone:'Telefone/WhatsApp', email:'E-mail',
+    nome_mae:'Nome da mãe', nome_pai:'Nome do pai',
+    estado_civil:'Estado civil', regime:'Regime de bens',
+    conjuge_nome:'Nome do cônjuge', conjuge_cpf:'CPF do cônjuge',
+    cep:'CEP', uf:'UF', logradouro:'Logradouro', numero:'Número',
+    complemento:'Complemento', bairro:'Bairro', municipio:'Município', iptu:'Nº IPTU',
+    quotas_pct:'Participação %', quotas_valor:'Valor em R$', cargo:'Cargo/Função',
+    tipo_imovel:'Tipo de imóvel',
+    cnpj:'CNPJ', razao_social:'Razão social', tipo_atual:'Tipo societário atual',
+    nire:'NIRE', data_abertura:'Data de abertura',
+    alt_endereco:'Alterar endereço', alt_socios:'Alterar sócios',
+    alt_capital:'Alterar capital', alt_atividades:'Alterar atividades',
+    alt_razao:'Alterar razão social', alt_admin:'Alterar administrador',
+    tipo_mudanca:'Tipo de mudança', mov_socios:'Movimento de sócios',
+    tipo_capital:'Tipo de alt. capital', capital_atual:'Capital atual',
+    capital_novo:'Novo capital', capital_motivo:'Motivo/origem',
+    ativ_incluir:'Atividades a incluir', ativ_excluir:'Atividades a excluir',
+    nova_ativ_principal:'Nova atividade principal',
+    nova_razao_1:'Nova razão social (1ª)', nova_razao_2:'Nova razão social (2ª)',
+    novo_nome_fantasia:'Novo nome fantasia', motivo_razao:'Motivo da mudança',
+    transf_para:'Transformação para', motivo_transf:'Motivo',
+    tipo_baixa:'Tipo societário', motivo_baixa:'Motivo do encerramento',
+    tem_func:'Tem funcionários', tem_debitos:'Tem débitos fiscais',
+    tem_bens:'Tem bens registrados', ultima_declaracao:'Última declaração',
+    observacoes:'Observações', horario:'Horário para contato',
   };
-  for (const [pfx, entries] of Object.entries(prefixes)) {
-    const title = labelMap[pfx] || pfx.toUpperCase();
-    if (!groups[title]) groups[title] = [];
-    groups[title].push(...entries.map(([k,v])=>[k,v,undefined]));
+
+  const groupMap = {
+    s0:'👤 Sócio / Titular 1', s1:'👤 Sócio 2', s2:'👤 Sócio 3', s3:'👤 Sócio 4',
+    sede:'📍 Endereço da Sede', novo:'📍 Novo Endereço',
+    adm:'👤 Novo Administrador', alt:'✏️ Dados da Alteração',
+    b:'📋 Dados para Distrato', transf:'🔄 Transformação',
+  };
+
+  const processLabel = {abertura:'Abertura de Empresa',alteracao:'Alteração Contratual',
+    transformacao:'Transformação Societária',baixa:'Baixa / Encerramento'}[S.process];
+
+  const groups = {
+    '📋 Identificação do Processo': [
+      ['Processo', processLabel, undefined],
+      ['Cliente', S.clientName, undefined],
+    ]
+  };
+
+  const buckets = {};
+  for (const [k, v] of Object.entries(d)) {
+    if (!v || v==='') continue;
+    const match = k.match(/^(s\d+|sede|novo|alt|adm|b|transf)_(.+)$/);
+    let grp, fieldKey;
+    if (match) { grp = match[1]; fieldKey = match[2]; }
+    else { grp = 'geral'; fieldKey = k; }
+    if (!buckets[grp]) buckets[grp] = [];
+    buckets[grp].push([fieldLabels[fieldKey] || fieldKey.replace(/_/g,' '), v]);
   }
+
+  if (buckets['geral']?.length) {
+    groups['🏢 Dados da Empresa / Processo'] = buckets['geral'].map(([k,v])=>[k,v,undefined]);
+    delete buckets['geral'];
+  }
+
+  ['s0','s1','s2','s3','sede','novo','adm','alt','b','transf'].forEach(pfx => {
+    if (buckets[pfx]?.length) {
+      groups[groupMap[pfx]||pfx.toUpperCase()] = buckets[pfx].map(([k,v])=>[k,v,undefined]);
+    }
+  });
+
   return groups;
 }
 
@@ -738,7 +793,7 @@ function maskCEP(el) {
 async function fetchCEP(el) {
   const cep = el.value.replace(/\D/g,'');
   const prefix = el.dataset.prefix || '';
-  const spinner = el.parentNode.querySelector('.input-spinner');
+  const spinner = el.closest('.input-wrap')?.querySelector('.input-spinner');
   if (spinner) spinner.style.display = 'block';
   try {
     const r = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
@@ -752,7 +807,10 @@ async function fetchCEP(el) {
     collectData(); updateCounter();
     toast(`CEP ${el.value} preenchido automaticamente ✓`,'info');
   } catch(e) { showFieldErr(el,'Erro ao buscar CEP'); }
-  finally { if (spinner) spinner.style.display = 'none'; }
+  finally {
+    const spinner2 = el.closest('.input-wrap')?.querySelector('.input-spinner');
+    if (spinner2) spinner2.style.display = 'none';
+  }
 }
 
 // CNPJ mask & API
@@ -770,7 +828,7 @@ function maskCNPJ(el) {
 }
 
 async function fetchCNPJ(el, cnpj) {
-  const spinner = el.parentNode.querySelector('.input-spinner');
+  const spinner = el.closest('.input-wrap')?.querySelector('.input-spinner');
   if (spinner) spinner.style.display = 'block';
   try {
     const r = await fetch(`https://publica.cnpj.ws/cnpj/${cnpj}`);
@@ -795,7 +853,10 @@ async function fetchCNPJ(el, cnpj) {
     collectData(); updateCounter();
     toast(`Dados do CNPJ carregados automaticamente ✓`,'info');
   } catch(e) { showFieldOk(el,'✓ CNPJ válido'); }
-  finally { if (spinner) spinner.style.display = 'none'; }
+  finally {
+    const spinner2 = el.closest('.input-wrap')?.querySelector('.input-spinner');
+    if (spinner2) spinner2.style.display = 'none';
+  }
 }
 
 // CPF mask & validation
@@ -908,11 +969,91 @@ async function sendForm() {
     transformacao:'TRANSFORMAÇÃO SOCIETÁRIA',baixa:'BAIXA / ENCERRAMENTO'};
   const processo = labels[S.process];
 
-  let corpo = `FORMULÁRIO: ${processo}\nCliente: ${S.clientName}\nData: ${new Date().toLocaleString('pt-BR')}\n${'─'.repeat(50)}\n\n`;
-  for (const [k,v] of Object.entries(S.data)) {
+  // Human-readable labels for email body
+  const ptLabels = {
+    tipo:'Tipo de empresa', nome_1:'Nome (1ª opção)', nome_2:'Nome (2ª opção)',
+    nome_fantasia:'Nome fantasia', qtd_socios:'Nº de sócios', capital_social:'Capital social',
+    integralizacao:'Integralização', regime:'Regime tributário', certificado:'Certificado Digital',
+    faturamento:'Faturamento estimado', atividade_principal:'Atividade principal',
+    atividades_secundarias:'Atividades secundárias', cnae:'CNAE',
+    observacoes:'Observações', horario:'Horário de contato',
+    cnpj:'CNPJ', razao_social:'Razão social', nire:'NIRE', data_abertura:'Data de abertura',
+    tipo_atual:'Tipo societário atual', tipo_baixa:'Tipo societário',
+    motivo_baixa:'Motivo do encerramento', tem_func:'Funcionários registrados',
+    tem_debitos:'Débitos fiscais', tem_bens:'Bens registrados',
+    ultima_declaracao:'Última declaração', transf_para:'Transformação para',
+    motivo_transf:'Motivo da transformação', tipo_mudanca:'Tipo de mudança',
+    mov_socios:'Movimento de sócios', capital_atual:'Capital atual',
+    capital_novo:'Novo capital', capital_motivo:'Motivo/origem',
+    ativ_incluir:'Incluir atividades', ativ_excluir:'Excluir atividades',
+    nova_razao_1:'Nova razão social (1ª)', nova_razao_2:'Nova razão social (2ª)',
+    novo_nome_fantasia:'Novo nome fantasia',
+  };
+
+  const socioLabel = (pfx) => {
+    const map = {s0:'Sócio/Titular 1',s1:'Sócio 2',s2:'Sócio 3',s3:'Sócio 4',
+      adm:'Administrador',alt_s0:'Sócio na Alteração',b_s0:'Sócio — Distrato'};
+    return map[pfx]||pfx;
+  };
+  const fieldLabel = (k) => {
+    const socioFields = {
+      nome:'Nome completo',cpf:'CPF',rg:'RG/CNH',orgao_emissor:'Órgão emissor',
+      data_emissao:'Data emissão',nascimento:'Nascimento',naturalidade:'Naturalidade',
+      nacionalidade:'Nacionalidade',cor:'Cor/Raça',profissao:'Profissão',
+      telefone:'Telefone',email:'E-mail',nome_mae:'Nome da mãe',nome_pai:'Nome do pai',
+      estado_civil:'Estado civil',regime:'Regime de bens',
+      conjuge_nome:'Cônjuge — nome',conjuge_cpf:'Cônjuge — CPF',
+      cep:'CEP',uf:'UF',logradouro:'Logradouro',numero:'Número',
+      complemento:'Complemento',bairro:'Bairro',municipio:'Município',iptu:'Nº IPTU',
+      quotas_pct:'Participação %',quotas_valor:'Valor quotas',cargo:'Cargo',
+      tipo_imovel:'Tipo de imóvel',
+    };
+    return socioFields[k]||k.replace(/_/g,' ');
+  };
+
+  // Format date fields
+  const formatVal = (k, v) => {
+    if ((k.includes('nascimento')||k.includes('emissao')||k.includes('abertura')) && v.match(/^\d{4}-\d{2}-\d{2}$/)) {
+      const [y,m,d] = v.split('-'); return `${d}/${m}/${y}`;
+    }
+    return v;
+  };
+
+  // Build body grouped
+  let corpo = `╔${'═'.repeat(50)}╗\n`;
+  corpo += `  FORMULÁRIO: ${processo}\n`;
+  corpo += `  Cliente: ${S.clientName}\n`;
+  corpo += `  Data: ${new Date().toLocaleString('pt-BR')}\n`;
+  corpo += `╚${'═'.repeat(50)}╝\n\n`;
+
+  // Geral fields
+  const geralLines = [];
+  const socioData = {};
+  for (const [k, v] of Object.entries(S.data)) {
     if (!v||v==='') continue;
-    corpo += `${k.replace(/_/g,' ').toUpperCase()}: ${v}\n`;
+    const match = k.match(/^(s\d+|sede|novo|alt_s0|adm|b_s0|alt|b|transf)_(.+)$/);
+    if (match) {
+      const pfx = match[1], fk = match[2];
+      if (!socioData[pfx]) socioData[pfx] = [];
+      socioData[pfx].push([fieldLabel(fk), formatVal(fk, v)]);
+    } else {
+      geralLines.push([ptLabels[k]||k.replace(/_/g,' '), formatVal(k,v)]);
+    }
   }
+
+  if (geralLines.length) {
+    corpo += `── DADOS GERAIS ${'─'.repeat(36)}\n`;
+    geralLines.forEach(([k,v]) => corpo += `  ${k}: ${v}\n`);
+    corpo += '\n';
+  }
+
+  const order = ['s0','s1','s2','s3','adm','sede','novo','alt_s0','alt','b_s0','b','transf'];
+  order.forEach(pfx => {
+    if (!socioData[pfx]?.length) return;
+    corpo += `── ${socioLabel(pfx).toUpperCase()} ${'─'.repeat(Math.max(0,36-socioLabel(pfx).length))}\n`;
+    socioData[pfx].forEach(([k,v]) => corpo += `  ${k}: ${v}\n`);
+    corpo += '\n';
+  });
 
   const btn = document.getElementById('btn-next');
   btn.disabled = true; btn.textContent = 'Enviando...';
@@ -926,10 +1067,6 @@ async function sendForm() {
         subject: `[${processo}] ${S.clientName} — ${new Date().toLocaleDateString('pt-BR')}`,
         from_name: S.clientName || 'Formulário SC',
         message: corpo,
-        Processo: processo,
-        Cliente: S.clientName,
-        Data: new Date().toLocaleString('pt-BR'),
-        ...Object.fromEntries(Object.entries(S.data).filter(([,v])=>v&&v!=='').map(([k,v])=>[k.replace(/_/g,' '),v]))
       })
     });
     const json = await res.json();

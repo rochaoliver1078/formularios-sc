@@ -16,6 +16,8 @@ body{font-family:'Lato',sans-serif;background:#0d0f11;color:#ede9e3;min-height:1
   --input:#0a0c0e;--danger:#e07575;--success:#6db88a;--warn:#e0b857;
   --radius:14px;--radius-sm:9px;
 }
+
+/* BG */
 .bg-art{position:fixed;inset:0;z-index:0;pointer-events:none;
   background:radial-gradient(ellipse 90% 50% at 50% -5%,rgba(200,169,110,.10) 0%,transparent 65%),
     radial-gradient(ellipse 50% 40% at 90% 90%,rgba(200,169,110,.05) 0%,transparent 55%),#0d0f11}
@@ -23,35 +25,34 @@ body{font-family:'Lato',sans-serif;background:#0d0f11;color:#ede9e3;min-height:1
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='500' height='500'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4'/%3E%3C/filter%3E%3Crect width='500' height='500' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");opacity:1}
 
 /* HEADER */
-header{position:sticky;top:0;z-index:200;background:rgba(13,15,17,.92);backdrop-filter:blur(16px);
-  border-bottom:1px solid var(--border);padding:14px 20px;display:flex;align-items:center;justify-content:space-between}
+header{position:sticky;top:0;z-index:200;background:rgba(13,15,17,.94);backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);padding:14px 20px;
+  display:flex;align-items:center;justify-content:space-between}
 .logo{display:flex;align-items:center;gap:12px}
-.logo-ring{width:38px;height:38px;border-radius:50%;border:1.5px solid var(--gold);display:flex;
-  align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-weight:800;
-  font-size:13px;color:var(--gold);letter-spacing:-1px;flex-shrink:0}
+.logo-ring{width:38px;height:38px;border-radius:50%;border:1.5px solid var(--gold);
+  display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;
+  font-weight:800;font-size:13px;color:var(--gold);letter-spacing:-1px;flex-shrink:0}
 .logo-text-name{font-family:'Montserrat',sans-serif;font-weight:700;font-size:12px;letter-spacing:.5px;line-height:1.1}
 .logo-text-sub{font-size:9px;letter-spacing:2.5px;color:var(--muted);text-transform:uppercase}
-.header-right{display:flex;align-items:center;gap:10px}
 .header-tag{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);
   border:1px solid rgba(200,169,110,.25);padding:4px 10px;border-radius:20px}
 
-/* PROGRESS BAR */
-#progress-wrap{position:sticky;top:67px;z-index:150;background:var(--border)}
+/* PROGRESS */
+#progress-wrap{position:sticky;top:67px;z-index:150}
 .progress-track{height:3px;background:var(--border)}
 .progress-fill{height:3px;background:linear-gradient(90deg,var(--gold),var(--gold-light));
   transition:width .45s cubic-bezier(.4,0,.2,1);width:0%}
 .progress-label{max-width:620px;margin:0 auto;padding:6px 20px;
   display:flex;justify-content:space-between;align-items:center}
-.progress-step-name{font-size:11px;color:var(--muted2);letter-spacing:.5px}
-.progress-pct{font-size:11px;color:var(--gold);font-family:'Montserrat',sans-serif;font-weight:700}
+.progress-step-name{font-size:11px;color:var(--muted2);letter-spacing:.3px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:70%}
+.progress-pct{font-size:11px;color:var(--gold);font-family:'Montserrat',sans-serif;font-weight:700;flex-shrink:0}
 
 /* MISSING FIELDS COUNTER */
-#fields-counter{
-  position:fixed;bottom:88px;right:16px;z-index:190;
+#fields-counter{position:fixed;bottom:90px;right:16px;z-index:190;
   background:var(--card);border:1px solid var(--border);border-radius:20px;
   padding:7px 13px;font-size:12px;display:flex;align-items:center;gap:6px;
-  box-shadow:0 4px 20px rgba(0,0,0,.4);transition:all .3s;
-}
+  box-shadow:0 4px 20px rgba(0,0,0,.5);transition:all .3s}
 #fields-counter.all-ok{border-color:rgba(109,184,138,.4);color:var(--success)}
 #fields-counter.has-missing{border-color:rgba(224,117,117,.3);color:var(--danger)}
 #fields-counter span{font-weight:700}
@@ -60,65 +61,76 @@ header{position:sticky;top:0;z-index:200;background:rgba(13,15,17,.92);backdrop-
 .screen{display:none;position:relative;z-index:1}
 .screen.active{display:block}
 
-/* ====== ADMIN ====== */
+/* ===== ADMIN ===== */
 #admin-screen{min-height:100vh}
-.admin-wrap{max-width:640px;margin:0 auto;padding:40px 20px 60px}
+.admin-wrap{max-width:640px;margin:0 auto;padding:40px 20px 80px}
 .admin-hero{text-align:center;margin-bottom:44px}
-.admin-hero h1{font-family:'Montserrat',sans-serif;font-weight:800;font-size:clamp(20px,5vw,30px);line-height:1.15;margin-bottom:10px}
+.admin-hero h1{font-family:'Montserrat',sans-serif;font-weight:800;
+  font-size:clamp(20px,5vw,30px);line-height:1.15;margin-bottom:10px}
 .admin-hero h1 span{color:var(--gold)}
 .admin-hero p{color:var(--muted2);font-size:14px;line-height:1.6;max-width:420px;margin:0 auto}
-.section-title{font-family:'Montserrat',sans-serif;font-weight:700;font-size:11px;letter-spacing:2.5px;
-  text-transform:uppercase;color:var(--gold);margin-bottom:16px;display:flex;align-items:center;gap:10px}
-.section-title::after{content:'';flex:1;height:1px;background:var(--border)}
-.client-input-wrap{margin-bottom:28px}
-.client-input-wrap label{display:block;font-size:12px;font-weight:700;letter-spacing:.5px;
+.stitle{font-family:'Montserrat',sans-serif;font-weight:700;font-size:11px;letter-spacing:2.5px;
+  text-transform:uppercase;color:var(--gold);margin-bottom:16px;
+  display:flex;align-items:center;gap:10px}
+.stitle::after{content:'';flex:1;height:1px;background:var(--border)}
+.admin-field{margin-bottom:28px}
+.admin-field label{display:block;font-size:12px;font-weight:700;letter-spacing:.5px;
   color:var(--gold-light);text-transform:uppercase;margin-bottom:8px}
 .process-grid{display:flex;flex-direction:column;gap:12px;margin-bottom:32px}
-.process-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);
+.pcard{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);
   padding:18px 20px;cursor:pointer;display:flex;align-items:center;gap:16px;
-  transition:all .2s ease;text-align:left;width:100%}
-.process-card:hover,.process-card.selected{border-color:var(--gold);background:rgba(200,169,110,.08)}
-.process-card.selected .pcard-check{opacity:1;transform:scale(1)}
+  transition:all .2s;text-align:left;width:100%}
+.pcard:hover,.pcard.sel{border-color:var(--gold);background:rgba(200,169,110,.08)}
+.pcard.sel .pcard-check{opacity:1;transform:scale(1)}
 .pcard-icon{font-size:24px;flex-shrink:0;width:44px;text-align:center}
 .pcard-info{flex:1}
 .pcard-title{font-family:'Montserrat',sans-serif;font-weight:700;font-size:15px;margin-bottom:3px}
 .pcard-desc{font-size:12px;color:var(--muted2);line-height:1.4}
-.pcard-check{width:22px;height:22px;border-radius:50%;background:var(--gold);display:flex;
-  align-items:center;justify-content:center;font-size:11px;color:#111;flex-shrink:0;
-  opacity:0;transform:scale(.6);transition:all .2s}
+.pcard-check{width:22px;height:22px;border-radius:50%;background:var(--gold);
+  display:flex;align-items:center;justify-content:center;font-size:11px;color:#111;
+  flex-shrink:0;opacity:0;transform:scale(.6);transition:all .2s}
 .gen-btn{width:100%;background:var(--gold);color:#111;border:none;border-radius:var(--radius-sm);
   font-family:'Montserrat',sans-serif;font-weight:800;font-size:15px;padding:18px;
-  cursor:pointer;transition:all .2s;letter-spacing:.3px}
+  cursor:pointer;transition:all .2s}
 .gen-btn:hover{background:var(--gold-light)}
 .gen-btn:disabled{opacity:.3;cursor:not-allowed}
 #link-result{margin-top:24px;background:var(--card);border:1px solid var(--border);
   border-radius:var(--radius);padding:20px;display:none}
-.link-result-label{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+.link-lbl{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
 .link-box{background:var(--input);border:1px solid var(--border);border-radius:var(--radius-sm);
-  padding:12px 14px;font-size:13px;color:var(--muted2);word-break:break-all;font-family:monospace;margin-bottom:14px}
-.link-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.link-btn{padding:12px;border-radius:var(--radius-sm);border:none;cursor:pointer;
+  padding:12px 14px;font-size:12px;color:var(--muted2);word-break:break-all;
+  font-family:monospace;margin-bottom:14px;line-height:1.5}
+.link-btns{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.lbtn{padding:12px;border-radius:var(--radius-sm);border:none;cursor:pointer;
   font-family:'Montserrat',sans-serif;font-weight:700;font-size:13px;transition:all .2s}
-.link-btn-copy{background:var(--gold);color:#111}
-.link-btn-copy:hover{background:var(--gold-light)}
-.link-btn-preview{background:var(--surface);color:var(--text);border:1px solid var(--border)}
-.link-btn-preview:hover{border-color:var(--gold);color:var(--gold)}
-.copy-confirm{font-size:12px;color:var(--success);text-align:center;height:18px;margin-top:6px}
+.lbtn-copy{background:var(--gold);color:#111}
+.lbtn-copy:hover{background:var(--gold-light)}
+.lbtn-prev{background:var(--surface);color:var(--text);border:1px solid var(--border)}
+.lbtn-prev:hover{border-color:var(--gold);color:var(--gold)}
+.copy-ok{font-size:12px;color:var(--success);text-align:center;height:18px;margin-top:6px}
 
-/* ====== FORM ====== */
-#form-screen{min-height:100vh;padding-bottom:110px}
-.step-wrap{max-width:580px;margin:0 auto;padding:0 20px;animation:stepIn .3s ease forwards}
-@keyframes stepIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+/* ===== FORM ===== */
+#form-screen{min-height:100vh;padding-bottom:110px;overflow:hidden}
+
+/* Slide animation */
+.step-wrap{max-width:580px;margin:0 auto;padding:0 20px}
+.slide-enter-right{animation:slideFromRight .32s cubic-bezier(.4,0,.2,1) forwards}
+.slide-enter-left{animation:slideFromLeft .32s cubic-bezier(.4,0,.2,1) forwards}
+@keyframes slideFromRight{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:translateX(0)}}
+@keyframes slideFromLeft{from{opacity:0;transform:translateX(-40px)}to{opacity:1;transform:translateX(0)}}
+
 .client-greeting{padding:22px 20px 0;max-width:580px;margin:0 auto;text-align:center}
-.greeting-name{display:inline-block;background:var(--gold-dim);border:1px solid rgba(200,169,110,.25);
-  border-radius:20px;padding:6px 16px;font-size:13px;color:var(--gold);letter-spacing:.5px;
+.greeting-name{display:inline-block;background:var(--gold-dim);
+  border:1px solid rgba(200,169,110,.25);border-radius:20px;
+  padding:6px 16px;font-size:13px;color:var(--gold);letter-spacing:.5px;
   margin-bottom:12px;font-family:'Montserrat',sans-serif;font-weight:600}
 .process-tag{font-size:12px;color:var(--muted2);letter-spacing:1.5px;text-transform:uppercase}
+
 .step-header{padding:24px 0 20px;border-bottom:1px solid var(--border);margin-bottom:24px}
 .step-counter{font-size:11px;color:var(--gold);letter-spacing:2px;text-transform:uppercase;
   font-family:'Montserrat',sans-serif;font-weight:600;margin-bottom:8px}
-.step-q{font-family:'Montserrat',sans-serif;font-weight:700;font-size:clamp(17px,4.5vw,22px);
-  line-height:1.25;margin-bottom:6px}
+.step-q{font-family:'Montserrat',sans-serif;font-weight:700;
+  font-size:clamp(17px,4.5vw,22px);line-height:1.25;margin-bottom:6px}
 .step-hint{font-size:13px;color:var(--muted2);line-height:1.6}
 
 /* OPT BUTTONS */
@@ -134,116 +146,127 @@ header{position:sticky;top:0;z-index:200;background:rgba(13,15,17,.92);backdrop-
 .opt.sel .opt-s{color:rgba(200,169,110,.65)}
 
 /* INPUTS */
-.field-wrap{margin-bottom:20px}
-.field-label{display:block;font-size:12px;font-weight:700;letter-spacing:.5px;
+.fw{margin-bottom:20px}
+.flabel{display:block;font-size:12px;font-weight:700;letter-spacing:.5px;
   color:var(--gold-light);text-transform:uppercase;margin-bottom:6px}
-.field-hint{font-size:12.5px;color:var(--muted2);margin-bottom:8px;line-height:1.5;
-  background:rgba(255,255,255,.02);border-left:2px solid rgba(200,169,110,.3);
-  padding:6px 10px;border-radius:0 6px 6px 0}
-.field-example{font-size:11px;color:var(--muted);margin-bottom:6px;font-style:italic}
-input[type=text],input[type=email],input[type=tel],input[type=date],input[type=number],select,textarea{
-  width:100%;background:var(--input);border:1px solid var(--border);border-radius:var(--radius-sm);
-  color:var(--text);font-family:'Lato',sans-serif;font-size:16px;padding:15px 16px;
-  outline:none;transition:border-color .2s,background .2s;-webkit-appearance:none;appearance:none}
+.fhint{font-size:12.5px;color:var(--muted2);margin-bottom:8px;line-height:1.5;
+  border-left:2px solid rgba(200,169,110,.3);padding:5px 10px;
+  background:rgba(255,255,255,.02);border-radius:0 6px 6px 0}
+input[type=text],input[type=email],input[type=tel],input[type=date],
+input[type=number],select,textarea{
+  width:100%;background:var(--input);border:1px solid var(--border);
+  border-radius:var(--radius-sm);color:var(--text);font-family:'Lato',sans-serif;
+  font-size:16px;padding:15px 16px;outline:none;
+  transition:border-color .2s,background .2s;-webkit-appearance:none;appearance:none}
 input:focus,select:focus,textarea:focus{border-color:var(--gold);background:rgba(0,0,0,.5)}
 input::placeholder,textarea::placeholder{color:var(--muted)}
 select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='7' viewBox='0 0 12 7'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237a7670' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-  background-repeat:no-repeat;background-position:right 14px center;padding-right:40px;cursor:pointer}
+  background-repeat:no-repeat;background-position:right 14px center;
+  padding-right:40px;cursor:pointer}
 select option{background:#1c2026;color:var(--text)}
 textarea{resize:vertical;min-height:90px;line-height:1.5}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
 @media(max-width:460px){.row2,.row3,.opt-list.grid2{grid-template-columns:1fr}}
 
-/* VALIDATION STATES */
+/* VALIDATION */
 input.valid,select.valid{border-color:rgba(109,184,138,.5)!important}
 input.err,select.err,textarea.err{border-color:var(--danger)!important}
-.field-err{font-size:12px;color:var(--danger);margin-top:5px;display:flex;align-items:center;gap:4px}
-.field-ok{font-size:12px;color:var(--success);margin-top:5px;display:flex;align-items:center;gap:4px}
-.field-loading{font-size:12px;color:var(--muted2);margin-top:5px}
+.ferr{font-size:12px;color:var(--danger);margin-top:5px;display:flex;align-items:center;gap:4px}
+.fok{font-size:12px;color:var(--success);margin-top:5px}
 
-/* INPUT WITH ICON */
-.input-wrap{position:relative}
-.input-wrap input{padding-right:44px}
-.input-icon{position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:16px;pointer-events:none}
-.input-spinner{position:absolute;right:14px;top:50%;transform:translateY(-50%);
+/* INPUT WRAP FOR SPINNER */
+.iwrap{position:relative}
+.iwrap input{padding-right:44px}
+.ispinner{position:absolute;right:14px;top:50%;transform:translateY(-50%);
   width:16px;height:16px;border:2px solid var(--border);border-top-color:var(--gold);
   border-radius:50%;animation:spin .8s linear infinite;display:none}
 @keyframes spin{to{transform:translateY(-50%) rotate(360deg)}}
 
 /* DIVIDERS */
 .sdiv{border:none;border-top:1px solid var(--border);margin:24px 0 20px}
-.slabel{font-family:'Montserrat',sans-serif;font-weight:700;font-size:11px;letter-spacing:2px;
-  text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.slabel{font-family:'Montserrat',sans-serif;font-weight:700;font-size:11px;
+  letter-spacing:2px;text-transform:uppercase;color:var(--gold);
+  display:flex;align-items:center;gap:10px;margin-bottom:16px}
 .slabel::after{content:'';flex:1;height:1px;background:var(--border)}
-.ibox{background:rgba(200,169,110,.07);border:1px solid rgba(200,169,110,.2);border-radius:10px;
-  padding:13px 15px;font-size:13px;color:var(--gold-light);line-height:1.5;margin-bottom:18px}
+.ibox{background:rgba(200,169,110,.07);border:1px solid rgba(200,169,110,.2);
+  border-radius:10px;padding:13px 15px;font-size:13px;color:var(--gold-light);
+  line-height:1.5;margin-bottom:18px}
 .ibox strong{color:var(--gold)}
-.warn-box{background:rgba(224,184,87,.07);border:1px solid rgba(224,184,87,.2);border-radius:10px;
-  padding:12px 15px;font-size:13px;color:var(--warn);line-height:1.5;margin-bottom:16px}
+.wbox{background:rgba(224,184,87,.07);border:1px solid rgba(224,184,87,.2);
+  border-radius:10px;padding:12px 15px;font-size:13px;color:var(--warn);
+  line-height:1.5;margin-bottom:16px}
 
 /* NAV FOOTER */
 #nav-footer{position:fixed;bottom:0;left:0;right:0;z-index:180;
   background:rgba(13,15,17,.96);backdrop-filter:blur(14px);
-  border-top:1px solid var(--border);padding:10px 16px 12px}
+  border-top:1px solid var(--border);padding:10px 16px 14px}
 .nav-inner{max-width:580px;margin:0 auto;display:flex;gap:10px;align-items:center}
 .btn-next{flex:1;background:var(--gold);color:#111;border:none;border-radius:var(--radius-sm);
   font-family:'Montserrat',sans-serif;font-weight:800;font-size:15px;padding:15px;
-  cursor:pointer;transition:all .2s;letter-spacing:.3px}
+  cursor:pointer;transition:all .2s}
 .btn-next:hover{background:var(--gold-light)}
 .btn-next:disabled{opacity:.4;cursor:not-allowed}
 .btn-prev{background:var(--surface);color:var(--text);border:1px solid var(--border);
-  border-radius:var(--radius-sm);font-family:'Lato',sans-serif;font-weight:700;font-size:15px;
-  padding:15px 18px;cursor:pointer;transition:all .2s;white-space:nowrap}
+  border-radius:var(--radius-sm);font-family:'Lato',sans-serif;font-weight:700;
+  font-size:15px;padding:15px 18px;cursor:pointer;transition:all .2s;white-space:nowrap}
 .btn-prev:hover{border-color:var(--gold);color:var(--gold)}
-.btn-save{background:none;border:none;color:var(--muted2);font-size:11px;letter-spacing:.5px;
-  cursor:pointer;padding:6px;white-space:nowrap;flex-shrink:0;font-family:'Lato',sans-serif}
+.btn-save{background:none;border:none;color:var(--muted2);font-size:11px;
+  letter-spacing:.5px;cursor:pointer;padding:6px;white-space:nowrap;flex-shrink:0;
+  font-family:'Lato',sans-serif}
 .btn-save:hover{color:var(--gold)}
 
-/* REVIEW SCREEN */
-#review-screen{display:none;position:relative;z-index:1;padding-bottom:110px}
-#review-screen.active{display:block}
+/* REVIEW */
+#review-screen{display:none;padding-bottom:110px;position:relative;z-index:1}
 .review-wrap{max-width:580px;margin:0 auto;padding:24px 20px}
-.review-header{text-align:center;margin-bottom:32px}
+.review-header{text-align:center;margin-bottom:28px}
 .review-header h2{font-family:'Montserrat',sans-serif;font-weight:800;font-size:22px;margin-bottom:8px}
 .review-header p{color:var(--muted2);font-size:14px;line-height:1.5}
-.review-section{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
-  padding:20px;margin-bottom:16px}
-.review-section-title{font-family:'Montserrat',sans-serif;font-weight:700;font-size:11px;
+.rsection{background:var(--card);border:1px solid var(--border);
+  border-radius:var(--radius);padding:20px;margin-bottom:14px}
+.rsection-title{font-family:'Montserrat',sans-serif;font-weight:700;font-size:11px;
   letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:14px}
-.review-row{display:flex;gap:12px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04)}
-.review-row:last-child{border-bottom:none}
-.review-key{font-size:12px;color:var(--muted2);flex-shrink:0;width:140px;line-height:1.4}
-.review-val{font-size:13px;color:var(--text);flex:1;word-break:break-word;line-height:1.4}
-.review-edit{font-size:11px;color:var(--gold);background:none;border:none;cursor:pointer;
-  padding:2px 6px;border-radius:4px;flex-shrink:0;font-family:'Lato',sans-serif}
-.review-edit:hover{background:var(--gold-dim)}
-.review-empty{font-size:13px;color:var(--muted);font-style:italic;text-align:center;padding:8px 0}
+.rrow{display:flex;gap:12px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.rrow:last-child{border-bottom:none}
+.rkey{font-size:12px;color:var(--muted2);flex-shrink:0;width:130px;line-height:1.4}
+.rval{font-size:13px;color:var(--text);flex:1;word-break:break-word;line-height:1.4}
 
 /* SUCCESS */
 #success-screen{display:none;min-height:100vh;align-items:center;justify-content:center;
-  flex-direction:column;text-align:center;padding:60px 24px}
+  flex-direction:column;text-align:center;padding:60px 24px;position:relative;z-index:1}
 #success-screen.active{display:flex}
-.success-badge{width:76px;height:76px;border-radius:50%;background:rgba(109,184,138,.12);
-  border:2px solid var(--success);display:flex;align-items:center;justify-content:center;
-  font-size:32px;margin:0 auto 24px}
-.success-title{font-family:'Montserrat',sans-serif;font-size:22px;font-weight:700;margin-bottom:12px}
-.success-msg{color:var(--muted2);font-size:15px;max-width:340px;line-height:1.7;margin:0 auto 10px}
-.success-name{color:var(--gold);font-weight:700}
-.success-divider{width:40px;height:1px;background:var(--border);margin:24px auto}
-.success-footer{font-size:13px;color:var(--muted);max-width:300px;margin:0 auto}
-.success-logo{margin-top:36px;display:flex;align-items:center;justify-content:center;gap:10px;opacity:.5}
-.success-logo-ring{width:30px;height:30px;border-radius:50%;border:1.5px solid var(--gold);
+.success-ring{width:90px;height:90px;border-radius:50%;
+  background:rgba(109,184,138,.1);border:2px solid var(--success);
+  display:flex;align-items:center;justify-content:center;
+  font-size:38px;margin:0 auto 28px;
+  animation:popIn .5s cubic-bezier(.34,1.56,.64,1) forwards}
+@keyframes popIn{from{opacity:0;transform:scale(.5)}to{opacity:1;transform:scale(1)}}
+.success-title{font-family:'Montserrat',sans-serif;font-size:26px;font-weight:800;
+  margin-bottom:10px;color:var(--text)}
+.success-client{font-family:'Montserrat',sans-serif;font-size:18px;font-weight:600;
+  color:var(--gold);margin-bottom:20px}
+.success-msg{color:var(--muted2);font-size:15px;max-width:360px;line-height:1.8;
+  margin:0 auto 28px}
+.success-divider{width:48px;height:2px;
+  background:linear-gradient(90deg,var(--gold),var(--gold-light));
+  margin:0 auto 24px;border-radius:2px}
+.success-footer{font-size:13px;color:var(--muted);max-width:320px;
+  margin:0 auto 36px;line-height:1.6}
+.success-logo{display:flex;align-items:center;justify-content:center;gap:10px;opacity:.4}
+.success-logo-ring{width:28px;height:28px;border-radius:50%;border:1.5px solid var(--gold);
   display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;
-  font-weight:800;font-size:10px;color:var(--gold)}
+  font-weight:800;font-size:9px;color:var(--gold)}
+.success-logo-text{font-family:'Montserrat',sans-serif;font-size:10px;letter-spacing:1.5px;
+  text-transform:uppercase;color:var(--muted)}
 
 /* TOAST */
-#toast{position:fixed;bottom:110px;left:50%;transform:translateX(-50%) translateY(20px);z-index:300;
-  background:var(--card);border:1px solid var(--border);border-radius:10px;
-  padding:10px 18px;font-size:13px;opacity:0;transition:all .3s;pointer-events:none;white-space:nowrap}
+#toast{position:fixed;bottom:112px;left:50%;transform:translateX(-50%) translateY(16px);
+  z-index:300;background:var(--card);border:1px solid var(--border);border-radius:10px;
+  padding:10px 18px;font-size:13px;opacity:0;transition:all .3s;
+  pointer-events:none;white-space:nowrap;max-width:90vw;text-align:center}
 #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-#toast.success{border-color:rgba(109,184,138,.4);color:var(--success)}
-#toast.error{border-color:rgba(224,117,117,.4);color:var(--danger)}
+#toast.ok{border-color:rgba(109,184,138,.4);color:var(--success)}
+#toast.err{border-color:rgba(224,117,117,.4);color:var(--danger)}
 #toast.info{border-color:rgba(200,169,110,.3);color:var(--gold)}
 </style>
 </head>
@@ -259,52 +282,51 @@ input.err,select.err,textarea.err{border-color:var(--danger)!important}
       <div class="logo-text-sub">Contabilidade · Paulistana</div>
     </div>
   </div>
-  <div class="header-right">
-    <div class="header-tag" id="header-tag">Legalização</div>
-  </div>
+  <div class="header-tag" id="header-tag">Legalização</div>
 </header>
 
 <!-- PROGRESS -->
 <div id="progress-wrap" style="display:none">
-  <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+  <div class="progress-track"><div class="progress-fill" id="pfill"></div></div>
   <div class="progress-label">
-    <div class="progress-step-name" id="progress-step-name"></div>
-    <div class="progress-pct" id="progress-pct"></div>
+    <div class="progress-step-name" id="pname"></div>
+    <div class="progress-pct" id="ppct"></div>
   </div>
 </div>
 
 <!-- FIELDS COUNTER -->
 <div id="fields-counter" style="display:none">
-  <span id="counter-icon">✓</span>
-  <span id="counter-text">Tudo preenchido</span>
+  <span id="cnt-icon">✓</span><span id="cnt-text">Tudo preenchido</span>
 </div>
 
 <!-- TOAST -->
 <div id="toast"></div>
 
-<!-- ========== ADMIN ========== -->
+<!-- ===== ADMIN ===== -->
 <div id="admin-screen" class="screen active">
   <div class="admin-wrap">
     <div class="admin-hero">
       <h1>Painel <span>Administrativo</span></h1>
-      <p>Escolha o processo, informe o nome do cliente e gere o link personalizado para enviar pelo WhatsApp.</p>
+      <p>Informe o nome do cliente, escolha o processo e gere o link para enviar pelo WhatsApp.</p>
     </div>
-    <div class="section-title">Nome do Cliente</div>
-    <div class="client-input-wrap">
+
+    <div class="stitle">Nome do Cliente</div>
+    <div class="admin-field">
       <label>Nome completo do cliente *</label>
-      <input type="text" id="admin-client-name" placeholder="Ex: João Carlos da Silva" oninput="updateGenBtn()">
+      <input type="text" id="admin-name" placeholder="Ex: João Carlos da Silva" oninput="updateGen()">
     </div>
-    <div class="section-title">Tipo de Processo</div>
+
+    <div class="stitle">Tipo de Processo</div>
     <div class="process-grid">
-      <button class="process-card" data-proc="abertura" onclick="selectProcess(this)">
+      <button class="pcard" data-proc="abertura" onclick="selProc(this)">
         <div class="pcard-icon">🏢</div>
         <div class="pcard-info">
           <div class="pcard-title">Abertura de Empresa</div>
-          <div class="pcard-desc">MEI, EI, SLU, LTDA, S/A — dados completos para o contrato social</div>
+          <div class="pcard-desc">SLU, LTDA, S/A — dados completos para o contrato social</div>
         </div>
         <div class="pcard-check">✓</div>
       </button>
-      <button class="process-card" data-proc="alteracao" onclick="selectProcess(this)">
+      <button class="pcard" data-proc="alteracao" onclick="selProc(this)">
         <div class="pcard-icon">✏️</div>
         <div class="pcard-info">
           <div class="pcard-title">Alteração Contratual</div>
@@ -312,7 +334,7 @@ input.err,select.err,textarea.err{border-color:var(--danger)!important}
         </div>
         <div class="pcard-check">✓</div>
       </button>
-      <button class="process-card" data-proc="transformacao" onclick="selectProcess(this)">
+      <button class="pcard" data-proc="transformacao" onclick="selProc(this)">
         <div class="pcard-icon">🔄</div>
         <div class="pcard-info">
           <div class="pcard-title">Transformação Societária</div>
@@ -320,7 +342,7 @@ input.err,select.err,textarea.err{border-color:var(--danger)!important}
         </div>
         <div class="pcard-check">✓</div>
       </button>
-      <button class="process-card" data-proc="baixa" onclick="selectProcess(this)">
+      <button class="pcard" data-proc="baixa" onclick="selProc(this)">
         <div class="pcard-icon">📋</div>
         <div class="pcard-info">
           <div class="pcard-title">Baixa / Encerramento</div>
@@ -329,46 +351,49 @@ input.err,select.err,textarea.err{border-color:var(--danger)!important}
         <div class="pcard-check">✓</div>
       </button>
     </div>
-    <button class="gen-btn" id="gen-btn" disabled onclick="generateLink()">Gerar Link do Formulário</button>
+
+    <button class="gen-btn" id="gen-btn" disabled onclick="genLink()">Gerar Link do Formulário</button>
+
     <div id="link-result">
-      <div class="link-result-label">Link gerado — copie e envie pelo WhatsApp</div>
+      <div class="link-lbl">Link gerado — copie e envie pelo WhatsApp</div>
       <div class="link-box" id="link-box"></div>
-      <div class="link-actions">
-        <button class="link-btn link-btn-copy" onclick="copyLink()">📋 Copiar Link</button>
-        <button class="link-btn link-btn-preview" onclick="previewForm()">👁 Visualizar</button>
+      <div class="link-btns">
+        <button class="lbtn lbtn-copy" onclick="copyLink()">📋 Copiar Link</button>
+        <button class="lbtn lbtn-prev" onclick="previewLink()">👁 Visualizar</button>
       </div>
-      <div class="copy-confirm" id="copy-confirm"></div>
+      <div class="copy-ok" id="copy-ok"></div>
     </div>
   </div>
 </div>
 
-<!-- ========== FORM ========== -->
+<!-- ===== FORM ===== -->
 <div id="form-screen" class="screen">
-  <div class="client-greeting" id="client-greeting"></div>
+  <div class="client-greeting" id="greeting"></div>
   <div id="step-container"></div>
 </div>
 
-<!-- ========== REVIEW ========== -->
+<!-- ===== REVIEW ===== -->
 <div id="review-screen">
   <div class="review-wrap">
     <div class="review-header">
-      <h2>📋 Revise suas informações</h2>
-      <p>Confira os dados antes de enviar. Clique em <strong style="color:var(--gold)">Editar</strong> para corrigir qualquer campo.</p>
+      <h2>📋 Revise seus dados</h2>
+      <p>Confira tudo antes de enviar. Se precisar corrigir algo, use o botão Voltar.</p>
     </div>
     <div id="review-content"></div>
   </div>
 </div>
 
-<!-- ========== SUCCESS ========== -->
+<!-- ===== SUCCESS ===== -->
 <div id="success-screen">
-  <div class="success-badge">✓</div>
-  <div class="success-title">Formulário enviado!</div>
-  <div class="success-msg">Obrigado, <span class="success-name" id="success-name"></span>!<br>Suas informações foram recebidas com sucesso.</div>
+  <div class="success-ring">✓</div>
+  <div class="success-title">Tudo certo!</div>
+  <div class="success-client" id="success-client"></div>
+  <div class="success-msg" id="success-msg"></div>
   <div class="success-divider"></div>
-  <div class="success-footer">Nossa equipe analisará as informações e entrará em contato em breve para dar andamento ao seu processo.</div>
+  <div class="success-footer">Nossa equipe analisará suas informações e entrará em contato em breve para dar andamento ao processo.</div>
   <div class="success-logo">
     <div class="success-logo-ring">SC</div>
-    <div style="font-family:'Montserrat',sans-serif;font-size:11px;letter-spacing:1px">SOUZA CARDOSO CONTABILIDADE</div>
+    <div class="success-logo-text">Souza Cardoso Contabilidade</div>
   </div>
 </div>
 
@@ -376,783 +401,622 @@ input.err,select.err,textarea.err{border-color:var(--danger)!important}
 <div id="nav-footer" style="display:none">
   <div class="nav-inner">
     <button class="btn-prev" id="btn-prev" onclick="prevStep()">← Voltar</button>
-    <button class="btn-save" onclick="saveProgress()" title="Salvar e continuar depois">💾 Salvar</button>
+    <button class="btn-save" onclick="saveProgress()">💾 Salvar</button>
     <button class="btn-next" id="btn-next" onclick="nextStep()">Continuar →</button>
   </div>
 </div>
 
 <script>
-/* ==========================================================
+/* ============================================================
    STATE
-========================================================== */
+============================================================ */
 const S = {
-  mode:'admin', process:null, clientName:'',
-  steps:[], stepIndex:0, data:{},
-  generatedLink:'', isReview:false
+  process:null, clientName:'',
+  steps:[], idx:0, data:{},
+  isReview:false, slideDir:'right',
+  generatedLink:''
 };
 
-const WEB3FORMS_KEY = '5430a19f-6fad-412a-abb8-7fbff727c833';
-const EMAIL_DEST    = 'adilson.oliveira@oscpaulistana.com.br';
+const W3F_KEY = '5430a19f-6fad-412a-abb8-7fbff727c833';
+const EMAIL   = 'adilson.oliveira@oscpaulistana.com.br';
 
-/* ==========================================================
+/* ============================================================
    BOOT
-========================================================== */
+============================================================ */
 window.addEventListener('DOMContentLoaded', () => {
-  const p = new URLSearchParams(window.location.search);
+  const p = new URLSearchParams(location.search);
   const proc = p.get('f'), name = p.get('n') ? decodeURIComponent(p.get('n')) : '';
   if (proc && ['abertura','alteracao','transformacao','baixa'].includes(proc)) {
-    S.process = proc; S.clientName = name; S.mode = 'form';
-    // Try to restore saved progress
+    S.process = proc; S.clientName = name;
     const saved = loadProgress();
-    if (saved) {
-      S.data = saved.data; S.stepIndex = saved.stepIndex;
-      toast('Progresso restaurado do seu último acesso ✓','info');
-    }
+    if (saved) { S.data = saved.data; S.idx = saved.idx; toast('Progresso restaurado ✓','info'); }
     launchForm();
-  } else {
-    showEl('admin-screen');
   }
 });
 
-/* ==========================================================
+/* ============================================================
    ADMIN
-========================================================== */
-let selectedProcess = null;
-function selectProcess(card) {
-  document.querySelectorAll('.process-card').forEach(c=>c.classList.remove('selected'));
-  card.classList.add('selected'); selectedProcess = card.dataset.proc; updateGenBtn();
+============================================================ */
+let _proc = null;
+function selProc(card) {
+  document.querySelectorAll('.pcard').forEach(c=>c.classList.remove('sel'));
+  card.classList.add('sel'); _proc = card.dataset.proc; updateGen();
 }
-function updateGenBtn() {
-  const n = document.getElementById('admin-client-name').value.trim();
-  document.getElementById('gen-btn').disabled = !(n && selectedProcess);
+function updateGen() {
+  const n = document.getElementById('admin-name').value.trim();
+  document.getElementById('gen-btn').disabled = !(n && _proc);
 }
-function generateLink() {
-  const n = document.getElementById('admin-client-name').value.trim();
-  if (!n || !selectedProcess) return;
-  const base = window.location.href.split('?')[0];
-  const link = `${base}?f=${selectedProcess}&n=${encodeURIComponent(n)}`;
+function genLink() {
+  const n = document.getElementById('admin-name').value.trim();
+  if (!n || !_proc) return;
+  const base = location.href.split('?')[0];
+  const link = `${base}?f=${_proc}&n=${encodeURIComponent(n)}`;
   S.generatedLink = link;
   document.getElementById('link-box').textContent = link;
   document.getElementById('link-result').style.display = 'block';
-  document.getElementById('copy-confirm').textContent = '';
+  document.getElementById('copy-ok').textContent = '';
   document.getElementById('link-result').scrollIntoView({behavior:'smooth',block:'nearest'});
 }
 function copyLink() {
   navigator.clipboard.writeText(S.generatedLink).then(()=>{
-    document.getElementById('copy-confirm').textContent = '✓ Link copiado com sucesso!';
-    setTimeout(()=>document.getElementById('copy-confirm').textContent='',2500);
+    document.getElementById('copy-ok').textContent = '✓ Copiado!';
+    setTimeout(()=>document.getElementById('copy-ok').textContent='',2500);
   });
 }
-function previewForm() { window.open(S.generatedLink,'_blank'); }
+function previewLink() { window.open(S.generatedLink,'_blank'); }
 
-/* ==========================================================
-   FORM LAUNCH
-========================================================== */
+/* ============================================================
+   LAUNCH FORM
+============================================================ */
 function launchForm() {
-  S.steps = buildAllSteps();
-  showEl('form-screen');
+  S.steps = buildSteps();
+  document.getElementById('admin-screen').classList.remove('active');
+  document.getElementById('form-screen').classList.add('active');
   document.getElementById('progress-wrap').style.display = 'block';
   document.getElementById('nav-footer').style.display = 'block';
   document.getElementById('fields-counter').style.display = 'flex';
-  renderGreeting(); renderStep();
-}
 
-function renderGreeting() {
-  const labels = {abertura:'Abertura de Empresa',alteracao:'Alteração Contratual',
+  const lmap = {abertura:'Abertura',alteracao:'Alteração',transformacao:'Transformação',baixa:'Baixa'};
+  document.getElementById('header-tag').textContent = lmap[S.process]||'';
+
+  const pmap = {abertura:'Abertura de Empresa',alteracao:'Alteração Contratual',
     transformacao:'Transformação Societária',baixa:'Baixa / Encerramento'};
-  document.getElementById('client-greeting').innerHTML = S.clientName
-    ? `<div class="greeting-name">Olá, ${S.clientName}! 👋</div><div class="process-tag">${labels[S.process]}</div>`
-    : `<div class="process-tag">${labels[S.process]}</div>`;
-  const map = {abertura:'Abertura',alteracao:'Alteração',transformacao:'Transformação',baixa:'Baixa'};
-  document.getElementById('header-tag').textContent = map[S.process]||'Formulário';
+  document.getElementById('greeting').innerHTML = S.clientName
+    ? `<div class="greeting-name">Olá, ${esc(S.clientName)}! 👋</div><div class="process-tag">${pmap[S.process]}</div>`
+    : `<div class="process-tag">${pmap[S.process]}</div>`;
+
+  renderStep();
 }
 
-/* ==========================================================
+/* ============================================================
    NAVIGATION
-========================================================== */
+============================================================ */
 function prevStep() {
-  if (S.isReview) { showReview(); return; }
-  if (S.stepIndex === 0) return;
-  S.stepIndex--; renderStep(); scrollTop();
+  if (S.isReview) { closeReview(); return; }
+  if (S.idx === 0) return;
+  S.slideDir = 'left'; S.idx--; renderStep(); scrollTop();
 }
-
 function nextStep() {
-  if (S.isReview) { sendForm(); return; }
-  if (!validateCurrent()) return;
-  collectData();
-  S.steps = buildAllSteps();
-  if (S.stepIndex >= S.steps.length - 1) {
-    showReview();
-  } else {
-    S.stepIndex++; renderStep(); scrollTop();
-  }
+  if (S.isReview) { doSend(); return; }
+  if (!validate()) return;
+  collect();
+  S.steps = buildSteps();
+  S.slideDir = 'right';
+  if (S.idx >= S.steps.length - 1) { showReview(); }
+  else { S.idx++; renderStep(); scrollTop(); }
 }
-
 function scrollTop() { window.scrollTo({top:0,behavior:'smooth'}); }
 
-/* ==========================================================
-   RENDER STEP
-========================================================== */
+/* ============================================================
+   RENDER
+============================================================ */
 function renderStep() {
   S.isReview = false;
-  S.steps = buildAllSteps();
-  const step = S.steps[S.stepIndex];
+  S.steps = buildSteps();
+  const step = S.steps[S.idx];
   if (!step) return;
 
   const total = S.steps.length;
-  const pct   = total > 1 ? Math.round((S.stepIndex / (total - 1)) * 100) : 0;
-  document.getElementById('progress-fill').style.width = pct + '%';
-  document.getElementById('progress-pct').textContent  = pct + '%';
-  document.getElementById('progress-step-name').textContent = step.name || `Etapa ${S.stepIndex+1} de ${total}`;
+  const pct = total > 1 ? Math.round((S.idx / (total-1)) * 100) : 0;
+  document.getElementById('pfill').style.width = pct+'%';
+  document.getElementById('ppct').textContent = pct+'%';
+  document.getElementById('pname').textContent = step.name||`Etapa ${S.idx+1}`;
+  document.getElementById('review-screen').style.display = 'none';
+  document.getElementById('form-screen').style.display = 'block';
+  document.getElementById('fields-counter').style.display = 'flex';
 
+  const cls = S.slideDir === 'right' ? 'slide-enter-right' : 'slide-enter-left';
   document.getElementById('step-container').innerHTML = `
-    <div class="step-wrap">
+    <div class="step-wrap ${cls}">
       <div class="step-header">
-        <div class="step-counter">Etapa ${S.stepIndex+1} de ${total}</div>
+        <div class="step-counter">Etapa ${S.idx+1} de ${total}</div>
         <div class="step-q">${step.question}</div>
-        ${step.hint ? `<div class="step-hint">${step.hint}</div>` : ''}
+        ${step.hint?`<div class="step-hint">${step.hint}</div>`:''}
       </div>
       <div id="step-body">${step.body}</div>
     </div>`;
 
-  restoreData();
-  attachAutoFills();
-  updateCounter();
-
-  document.getElementById('btn-next').textContent = S.stepIndex >= total - 1 ? 'Revisar e Enviar →' : 'Continuar →';
-  document.getElementById('btn-prev').style.display = S.stepIndex === 0 ? 'none' : 'flex';
-  document.getElementById('review-screen').style.display = 'none';
-  document.getElementById('form-screen').style.display = 'block';
+  restore(); attachHooks(); updateCounter();
+  document.getElementById('btn-next').textContent = S.idx >= total-1 ? 'Revisar e Enviar →' : 'Continuar →';
+  document.getElementById('btn-prev').style.display = S.idx === 0 ? 'none' : 'flex';
 }
 
-/* ==========================================================
-   REVIEW SCREEN
-========================================================== */
+/* ============================================================
+   REVIEW
+============================================================ */
 function showReview() {
-  collectData();
-  S.isReview = true;
+  collect(); S.isReview = true;
   document.getElementById('form-screen').style.display = 'none';
-  const rs = document.getElementById('review-screen');
-  rs.style.display = 'block'; rs.classList.add('active');
-
-  // Progress to 100%
-  document.getElementById('progress-fill').style.width = '100%';
-  document.getElementById('progress-pct').textContent = '100%';
-  document.getElementById('progress-step-name').textContent = 'Revisão final';
   document.getElementById('fields-counter').style.display = 'none';
+  document.getElementById('pfill').style.width = '100%';
+  document.getElementById('ppct').textContent = '100%';
+  document.getElementById('pname').textContent = 'Revisão final';
 
-  const labels = {abertura:'ABERTURA DE EMPRESA',alteracao:'ALTERAÇÃO CONTRATUAL',
-    transformacao:'TRANSFORMAÇÃO SOCIETÁRIA',baixa:'BAIXA / ENCERRAMENTO'};
-
-  // Group data for display
-  const groups = groupDataForReview();
+  const groups = buildReviewGroups();
   let html = '';
-  for (const [title, entries] of Object.entries(groups)) {
-    if (!entries.length) continue;
-    html += `<div class="review-section">
-      <div class="review-section-title">${title}</div>`;
-    entries.forEach(([k,v,step]) => {
-      // Format dates for display
-      let displayVal = v;
-      if (v && v.match && v.match(/^\d{4}-\d{2}-\d{2}$/)) {
-        const [yr,mo,dy] = v.split('-');
-        displayVal = `${dy}/${mo}/${yr}`;
-      }
-      html += `<div class="review-row">
-        <div class="review-key">${k}</div>
-        <div class="review-val">${displayVal||'<em style="color:var(--muted)">Não informado</em>'}</div>
-        ${step!==undefined?`<button class="review-edit" onclick="editStep(${step})">Editar</button>`:''}
-      </div>`;
+  for (const [title, rows] of Object.entries(groups)) {
+    if (!rows.length) continue;
+    html += `<div class="rsection"><div class="rsection-title">${title}</div>`;
+    rows.forEach(([k,v])=>{
+      const dv = fmtDate(v);
+      html += `<div class="rrow"><div class="rkey">${k}</div><div class="rval">${dv||'<em style="color:var(--muted)">—</em>'}</div></div>`;
     });
     html += `</div>`;
   }
-  if (!html) html = `<div class="review-section"><div class="review-empty">Nenhum dado coletado ainda.</div></div>`;
-  document.getElementById('review-content').innerHTML = html;
-
+  document.getElementById('review-content').innerHTML = html || '<div class="rsection"><p style="color:var(--muted);text-align:center">Nenhum dado coletado.</p></div>';
+  document.getElementById('review-screen').style.display = 'block';
   document.getElementById('btn-next').textContent = '✓ Confirmar e Enviar';
   document.getElementById('btn-prev').style.display = 'flex';
   scrollTop();
 }
 
-function editStep(idx) {
-  S.isReview = false; S.stepIndex = idx;
+function closeReview() {
+  S.isReview = false;
   document.getElementById('review-screen').style.display = 'none';
-  document.getElementById('review-screen').classList.remove('active');
   document.getElementById('fields-counter').style.display = 'flex';
   renderStep(); scrollTop();
 }
 
-function groupDataForReview() {
-  const d = S.data;
-
-  const fieldLabels = {
-    tipo:'Tipo de empresa', nome_1:'Nome (1ª opção)', nome_2:'Nome (2ª opção)',
-    nome_fantasia:'Nome fantasia', qtd_socios:'Nº de sócios',
-    capital_social:'Capital social', integralizacao:'Integralização',
-    regime:'Regime tributário', certificado:'Certificado Digital e-CPF',
-    faturamento:'Faturamento estimado', atividade_principal:'Atividade principal',
-    atividades_secundarias:'Atividades secundárias', cnae:'CNAE principal',
-    op_comercio:'Comércio', op_servico:'Serviços', op_industria:'Indústria', op_misto:'Misto',
-    nome:'Nome completo', cpf:'CPF', rg:'RG/CNH', orgao_emissor:'Órgão emissor',
-    data_emissao:'Data emissão RG', nascimento:'Data de nascimento',
-    naturalidade:'Naturalidade', nacionalidade:'Nacionalidade', cor:'Cor/Raça',
-    profissao:'Profissão', telefone:'Telefone/WhatsApp', email:'E-mail',
-    nome_mae:'Nome da mãe', nome_pai:'Nome do pai',
-    estado_civil:'Estado civil', regime:'Regime de bens',
-    conjuge_nome:'Nome do cônjuge', conjuge_cpf:'CPF do cônjuge',
-    cep:'CEP', uf:'UF', logradouro:'Logradouro', numero:'Número',
-    complemento:'Complemento', bairro:'Bairro', municipio:'Município', iptu:'Nº IPTU',
-    quotas_pct:'Participação %', quotas_valor:'Valor em R$', cargo:'Cargo/Função',
+function buildReviewGroups() {
+  const FL = {
+    tipo:'Tipo de empresa',nome_1:'Nome (1ª opção)',nome_2:'Nome (2ª opção)',
+    nome_fantasia:'Nome fantasia',qtd_socios:'Nº de sócios',
+    capital_social:'Capital social',integralizacao:'Integralização',
+    regime:'Regime tributário',certificado:'Certificado Digital',
+    faturamento:'Faturamento estimado',atividade_principal:'Atividade principal',
+    atividades_secundarias:'Atividades secundárias',cnae:'CNAE',
+    op_comercio:'Comércio',op_servico:'Serviços',op_industria:'Indústria',op_misto:'Misto',
+    nome:'Nome completo',cpf:'CPF',rg:'RG/CNH',orgao_emissor:'Órgão emissor',
+    data_emissao:'Data emissão RG',nascimento:'Data de nascimento',
+    naturalidade:'Naturalidade',nacionalidade:'Nacionalidade',cor:'Cor/Raça',
+    profissao:'Profissão',telefone:'Telefone',email:'E-mail',
+    nome_mae:'Nome da mãe',nome_pai:'Nome do pai',
+    estado_civil:'Estado civil',regime_bens:'Regime de bens',
+    conjuge_nome:'Nome do cônjuge',conjuge_cpf:'CPF do cônjuge',
+    cep:'CEP',uf:'UF',logradouro:'Logradouro',numero:'Número',
+    complemento:'Complemento',bairro:'Bairro',municipio:'Município',iptu:'Nº IPTU',
+    quotas_pct:'Participação %',quotas_valor:'Valor em R$',cargo:'Cargo/Função',
     tipo_imovel:'Tipo de imóvel',
-    cnpj:'CNPJ', razao_social:'Razão social', tipo_atual:'Tipo societário atual',
-    nire:'NIRE', data_abertura:'Data de abertura',
-    alt_endereco:'Alterar endereço', alt_socios:'Alterar sócios',
-    alt_capital:'Alterar capital', alt_atividades:'Alterar atividades',
-    alt_razao:'Alterar razão social', alt_admin:'Alterar administrador',
-    tipo_mudanca:'Tipo de mudança', mov_socios:'Movimento de sócios',
-    tipo_capital:'Tipo de alt. capital', capital_atual:'Capital atual',
-    capital_novo:'Novo capital', capital_motivo:'Motivo/origem',
-    ativ_incluir:'Atividades a incluir', ativ_excluir:'Atividades a excluir',
-    nova_ativ_principal:'Nova atividade principal',
-    nova_razao_1:'Nova razão social (1ª)', nova_razao_2:'Nova razão social (2ª)',
-    novo_nome_fantasia:'Novo nome fantasia', motivo_razao:'Motivo da mudança',
-    transf_para:'Transformação para', motivo_transf:'Motivo',
-    tipo_baixa:'Tipo societário', motivo_baixa:'Motivo do encerramento',
-    tem_func:'Tem funcionários', tem_debitos:'Tem débitos fiscais',
-    tem_bens:'Tem bens registrados', ultima_declaracao:'Última declaração',
-    observacoes:'Observações', horario:'Horário para contato',
+    cnpj:'CNPJ',razao_social:'Razão social',tipo_atual:'Tipo societário atual',
+    nire:'NIRE',data_abertura:'Data de abertura',
+    alt_endereco:'Alterar endereço',alt_socios:'Alterar sócios',alt_capital:'Alterar capital',
+    alt_atividades:'Alterar atividades',alt_razao:'Alterar razão social',alt_admin:'Alterar administrador',
+    tipo_mudanca:'Tipo de mudança',mov_socios:'Movimento',
+    tipo_capital:'Tipo de alteração',capital_atual:'Capital atual',capital_novo:'Novo capital',
+    capital_motivo:'Origem/motivo',ativ_incluir:'Incluir atividades',ativ_excluir:'Excluir atividades',
+    nova_ativ_principal:'Nova atividade principal',nova_razao_1:'Nova razão (1ª)',
+    nova_razao_2:'Nova razão (2ª)',novo_nome_fantasia:'Novo nome fantasia',
+    transf_para:'Transformar para',motivo_transf:'Motivo',
+    tipo_baixa:'Tipo societário',motivo_baixa:'Motivo do encerramento',
+    tem_func:'Funcionários registrados',tem_debitos:'Débitos fiscais',
+    tem_bens:'Bens registrados',ultima_declaracao:'Última declaração',
+    observacoes:'Observações',horario:'Horário para contato',
+  };
+  const GM = {
+    s0:'👤 Sócio / Titular 1',s1:'👤 Sócio 2',s2:'👤 Sócio 3',s3:'👤 Sócio 4',
+    sede:'📍 Endereço da Sede',novo:'📍 Novo Endereço',adm:'👤 Novo Administrador',
+    alt_s0:'👥 Sócio na Alteração',b_s0:'👤 Sócio — Distrato',
   };
 
-  const groupMap = {
-    s0:'👤 Sócio / Titular 1', s1:'👤 Sócio 2', s2:'👤 Sócio 3', s3:'👤 Sócio 4',
-    sede:'📍 Endereço da Sede', novo:'📍 Novo Endereço',
-    adm:'👤 Novo Administrador', alt:'✏️ Dados da Alteração',
-    b:'📋 Dados para Distrato', transf:'🔄 Transformação',
-  };
-
-  const processLabel = {abertura:'Abertura de Empresa',alteracao:'Alteração Contratual',
+  const pname = {abertura:'Abertura de Empresa',alteracao:'Alteração Contratual',
     transformacao:'Transformação Societária',baixa:'Baixa / Encerramento'}[S.process];
 
-  const groups = {
-    '📋 Identificação do Processo': [
-      ['Processo', processLabel, undefined],
-      ['Cliente', S.clientName, undefined],
-    ]
-  };
-
+  const groups = {'📋 Processo':[['Processo',pname],['Cliente',S.clientName]]};
   const buckets = {};
-  for (const [k, v] of Object.entries(d)) {
-    if (!v || v==='') continue;
-    const match = k.match(/^(s\d+|sede|novo|alt|adm|b|transf)_(.+)$/);
-    let grp, fieldKey;
-    if (match) { grp = match[1]; fieldKey = match[2]; }
-    else { grp = 'geral'; fieldKey = k; }
-    if (!buckets[grp]) buckets[grp] = [];
-    buckets[grp].push([fieldLabels[fieldKey] || fieldKey.replace(/_/g,' '), v]);
-  }
 
-  if (buckets['geral']?.length) {
-    groups['🏢 Dados da Empresa / Processo'] = buckets['geral'].map(([k,v])=>[k,v,undefined]);
-    delete buckets['geral'];
-  }
-
-  ['s0','s1','s2','s3','sede','novo','adm','alt','b','transf'].forEach(pfx => {
-    if (buckets[pfx]?.length) {
-      groups[groupMap[pfx]||pfx.toUpperCase()] = buckets[pfx].map(([k,v])=>[k,v,undefined]);
+  for (const [k,v] of Object.entries(S.data)) {
+    if (!v||v==='') continue;
+    const m = k.match(/^(s\d+|sede|novo|adm|alt_s0|b_s0)_(.+)$/);
+    if (m) {
+      if (!buckets[m[1]]) buckets[m[1]]=[];
+      buckets[m[1]].push([FL[m[2]]||m[2].replace(/_/g,' '),v]);
+    } else {
+      if (!buckets['__geral']) buckets['__geral']=[];
+      buckets['__geral'].push([FL[k]||k.replace(/_/g,' '),v]);
     }
-  });
+  }
 
+  if (buckets['__geral']?.length) {
+    groups['🏢 Dados Gerais'] = buckets['__geral'];
+    delete buckets['__geral'];
+  }
+  ['s0','s1','s2','s3','adm','alt_s0','b_s0','sede','novo'].forEach(p=>{
+    if (buckets[p]?.length) groups[GM[p]||p] = buckets[p];
+  });
   return groups;
 }
 
-/* ==========================================================
-   DATA COLLECT & RESTORE
-========================================================== */
-function collectData() {
+/* ============================================================
+   COLLECT & RESTORE
+============================================================ */
+function collect() {
   document.querySelectorAll('#step-body input,#step-body select,#step-body textarea').forEach(el=>{
     if (el.name) S.data[el.name] = el.value;
   });
   document.querySelectorAll('#step-body [data-field]').forEach(btn=>{
-    if (btn.classList.contains('sel')) S.data[btn.dataset.field] = btn.dataset.val||'sim';
-    else if (!btn.dataset.val && S.data[btn.dataset.field]==='sim') {/* keep */}
+    if (btn.classList.contains('sel'))
+      S.data[btn.dataset.field] = btn.dataset.val||'sim';
   });
 }
-
-function restoreData() {
+function restore() {
   document.querySelectorAll('#step-body input,#step-body select,#step-body textarea').forEach(el=>{
-    if (el.name && S.data[el.name] !== undefined) { el.value = S.data[el.name]; }
+    if (el.name && S.data[el.name]!==undefined) el.value = S.data[el.name];
   });
   document.querySelectorAll('#step-body [data-field]').forEach(btn=>{
-    const f = btn.dataset.field, v = btn.dataset.val;
-    if (v && S.data[f] === v) btn.classList.add('sel');
-    else if (!v && S.data[f] === 'sim') btn.classList.add('sel');
+    const f=btn.dataset.field, v=btn.dataset.val;
+    if ((v && S.data[f]===v)||(!v && S.data[f]==='sim')) btn.classList.add('sel');
   });
 }
 
-/* ==========================================================
-   SAVE / LOAD PROGRESS
-========================================================== */
+/* ============================================================
+   SAVE / LOAD
+============================================================ */
 function saveProgress() {
-  collectData();
-  const key = `sc_form_${S.process}_${S.clientName}`;
+  collect();
+  const key = `sc_${S.process}_${S.clientName}`;
   try {
-    localStorage.setItem(key, JSON.stringify({data:S.data, stepIndex:S.stepIndex, ts:Date.now()}));
-    toast('Progresso salvo! Você pode fechar e continuar depois.','info');
-  } catch(e) { toast('Erro ao salvar progresso','error'); }
+    localStorage.setItem(key, JSON.stringify({data:S.data,idx:S.idx,ts:Date.now()}));
+    toast('Progresso salvo! Pode fechar e continuar depois.','info');
+  } catch(e) { toast('Erro ao salvar','err'); }
 }
-
 function loadProgress() {
-  const key = `sc_form_${S.process}_${S.clientName}`;
+  const key = `sc_${S.process}_${S.clientName}`;
   try {
     const s = localStorage.getItem(key);
     if (!s) return null;
-    const obj = JSON.parse(s);
-    // Only restore if saved in last 7 days
-    if (Date.now() - obj.ts > 7 * 24 * 3600 * 1000) { localStorage.removeItem(key); return null; }
-    return obj;
+    const o = JSON.parse(s);
+    if (Date.now()-o.ts > 7*86400000) { localStorage.removeItem(key); return null; }
+    return o;
   } catch(e) { return null; }
 }
-
 function clearProgress() {
-  const key = `sc_form_${S.process}_${S.clientName}`;
-  try { localStorage.removeItem(key); } catch(e){}
+  try { localStorage.removeItem(`sc_${S.process}_${S.clientName}`); } catch(e){}
 }
 
-/* ==========================================================
-   MISSING FIELDS COUNTER
-========================================================== */
+/* ============================================================
+   COUNTER
+============================================================ */
 function updateCounter() {
-  const required = document.querySelectorAll('#step-body [required]');
-  const missing  = [...required].filter(el => !el.value.trim()).length;
-  const el = document.getElementById('fields-counter');
-  const icon = document.getElementById('counter-icon');
-  const text = document.getElementById('counter-text');
-  if (missing === 0) {
-    el.className = 'all-ok'; icon.textContent = '✓'; text.textContent = 'Tudo preenchido';
-  } else {
-    el.className = 'has-missing'; icon.textContent = missing;
-    text.textContent = missing === 1 ? 'campo obrigatório' : 'campos obrigatórios';
-  }
-  document.querySelectorAll('#step-body input,#step-body select,#step-body textarea').forEach(el=>{
-    el.addEventListener('input', updateCounter, {once:true});
-    el.addEventListener('change', updateCounter, {once:true});
-  });
+  const req = [...document.querySelectorAll('#step-body [required]')];
+  const missing = req.filter(el=>!el.value.trim()).length;
+  const el=document.getElementById('fields-counter');
+  const ic=document.getElementById('cnt-icon');
+  const tx=document.getElementById('cnt-text');
+  if (missing===0) { el.className='all-ok'; ic.textContent='✓'; tx.textContent='Tudo preenchido'; }
+  else { el.className='has-missing'; ic.textContent=missing; tx.textContent=missing===1?'campo obrigatório':'campos obrigatórios'; }
 }
 
-/* ==========================================================
+/* ============================================================
    VALIDATION
-========================================================== */
-function validateCurrent() {
-  collectData();
+============================================================ */
+function validate() {
+  collect();
+  document.querySelectorAll('#step-body .ferr').forEach(e=>e.remove());
   let ok = true;
-  document.querySelectorAll('#step-body .field-err').forEach(e=>e.remove());
   document.querySelectorAll('#step-body [required]').forEach(el=>{
     el.classList.remove('err','valid');
     if (!el.value.trim()) {
       el.classList.add('err');
-      const d = document.createElement('div');
-      d.className = 'field-err'; d.textContent = '⚠ Campo obrigatório';
-      el.parentNode.appendChild(d); ok = false;
+      const d=document.createElement('div');
+      d.className='ferr'; d.textContent='⚠ Campo obrigatório';
+      el.parentNode.appendChild(d); ok=false;
     }
   });
   if (!ok) {
-    const f = document.querySelector('#step-body .err');
+    const f=document.querySelector('#step-body .err');
     if (f) f.scrollIntoView({behavior:'smooth',block:'center'});
-    toast('Preencha os campos obrigatórios para continuar','error');
+    toast('Preencha os campos obrigatórios','err');
   }
   return ok;
 }
 
-// CPF validation
-function validateCPF(cpf) {
-  cpf = cpf.replace(/\D/g,'');
-  if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) return false;
-  let s=0; for(let i=0;i<9;i++) s+=parseInt(cpf[i])*(10-i);
-  let r=11-(s%11); if(r>=10) r=0; if(r!==parseInt(cpf[9])) return false;
-  s=0; for(let i=0;i<10;i++) s+=parseInt(cpf[i])*(11-i);
-  r=11-(s%11); if(r>=10) r=0; return r===parseInt(cpf[10]);
+/* ============================================================
+   CPF / CNPJ / MASKS / APIs
+============================================================ */
+function valCPF(cpf) {
+  cpf=cpf.replace(/\D/g,'');
+  if (cpf.length!==11||/^(\d)\1+$/.test(cpf)) return false;
+  let s=0; for(let i=0;i<9;i++) s+=+cpf[i]*(10-i);
+  let r=11-s%11; if(r>=10) r=0; if(r!==+cpf[9]) return false;
+  s=0; for(let i=0;i<10;i++) s+=+cpf[i]*(11-i);
+  r=11-s%11; if(r>=10) r=0; return r===+cpf[10];
+}
+function valCNPJ(c) {
+  c=c.replace(/\D/g,'');
+  if(c.length!==14||/^(\d)\1+$/.test(c)) return false;
+  const w=(n,ws)=>{ let s=0; for(let i=0;i<ws.length;i++) s+=+c[i]*ws[i]; const r=s%11; return r<2?0:11-r; };
+  return w(12,[5,4,3,2,9,8,7,6,5,4,3,2])===+c[12] && w(13,[6,5,4,3,2,9,8,7,6,5,4,3,2])===+c[13];
 }
 
-// CNPJ validation
-function validateCNPJ(cnpj) {
-  cnpj = cnpj.replace(/\D/g,'');
-  if (cnpj.length !== 14 || /^(\d)\1+$/.test(cnpj)) return false;
-  const calc = (c,w) => { let s=0; for(let i=0;i<c.length;i++) s+=parseInt(c[i])*w[i]; let r=s%11; return r<2?0:11-r; };
-  const w1=[5,4,3,2,9,8,7,6,5,4,3,2], w2=[6,5,4,3,2,9,8,7,6,5,4,3,2];
-  return calc(cnpj,w1)===parseInt(cnpj[12]) && calc(cnpj,w2)===parseInt(cnpj[13]);
+function mCPF(el) {
+  let v=el.value.replace(/\D/g,'');
+  v=v.replace(/(\d{3})(\d)/,'$1.$2').replace(/(\d{3})\.(\d{3})(\d)/,'$1.$2.$3').replace(/(\d{3})\.(\d{3})\.(\d{3})(\d)/,'$1.$2.$3-$4');
+  el.value=v.slice(0,14);
+  clearFB(el);
+  if (el.value.replace(/\D/g,'').length===11) {
+    if (!valCPF(el.value)) showErr(el,'CPF inválido — verifique os dígitos');
+    else showOk(el,'✓ CPF válido');
+  }
 }
-
-// CEP mask & API
-function maskCEP(el) {
-  let v = el.value.replace(/\D/g,'');
-  if (v.length > 5) v = v.slice(0,5)+'-'+v.slice(5,8);
-  el.value = v;
-  if (v.replace(/\D/g,'').length === 8) fetchCEP(el);
+function mCNPJ(el) {
+  let v=el.value.replace(/\D/g,'');
+  v=v.replace(/^(\d{2})(\d)/,'$1.$2').replace(/^(\d{2})\.(\d{3})(\d)/,'$1.$2.$3')
+     .replace(/\.(\d{3})(\d)/,'.$1/$2').replace(/(\d{4})(\d)/,'$1-$2');
+  el.value=v.slice(0,18);
+  clearFB(el);
+  const raw=v.replace(/\D/g,'');
+  if (raw.length===14) {
+    if (!valCNPJ(raw)) showErr(el,'CNPJ inválido');
+    else fetchCNPJ(el,raw);
+  }
+}
+function mPhone(el) {
+  let v=el.value.replace(/\D/g,'');
+  if(v.length>2) v='('+v.slice(0,2)+') '+v.slice(2);
+  if(v.length>10) v=v.slice(0,10)+'-'+v.slice(10,15);
+  el.value=v;
+}
+function mCEP(el) {
+  let v=el.value.replace(/\D/g,'');
+  if(v.length>5) v=v.slice(0,5)+'-'+v.slice(5,8);
+  el.value=v;
+  if(v.replace(/\D/g,'').length===8) fetchCEP(el);
 }
 
 async function fetchCEP(el) {
-  const cep = el.value.replace(/\D/g,'');
-  const prefix = el.dataset.prefix || '';
-  const spinner = el.closest('.input-wrap')?.querySelector('.input-spinner');
-  if (spinner) spinner.style.display = 'block';
+  const cep=el.value.replace(/\D/g,'');
+  const prefix=el.dataset.prefix||'';
+  const sp=el.closest('.iwrap')?.querySelector('.ispinner');
+  if(sp) sp.style.display='block';
+  clearFB(el);
   try {
-    const r = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
-    const d = await r.json();
-    if (d.erro) { showFieldErr(el,'CEP não encontrado'); return; }
-    fillField(`${prefix}logradouro`, d.logradouro || '');
-    fillField(`${prefix}bairro`,     d.bairro || '');
-    fillField(`${prefix}municipio`,  d.localidade || '');
-    fillField(`${prefix}uf`,         d.uf || '');
-    showFieldOk(el, '✓ CEP encontrado');
-    collectData(); updateCounter();
-    toast(`CEP ${el.value} preenchido automaticamente ✓`,'info');
-  } catch(e) { showFieldErr(el,'Erro ao buscar CEP'); }
-  finally {
-    const spinner2 = el.closest('.input-wrap')?.querySelector('.input-spinner');
-    if (spinner2) spinner2.style.display = 'none';
-  }
-}
-
-// CNPJ mask & API
-function maskCNPJ(el) {
-  let v = el.value.replace(/\D/g,'');
-  v = v.replace(/^(\d{2})(\d)/,'$1.$2');
-  v = v.replace(/^(\d{2})\.(\d{3})(\d)/,'$1.$2.$3');
-  v = v.replace(/\.(\d{3})(\d)/,'.$1/$2');
-  v = v.replace(/(\d{4})(\d)/,'$1-$2');
-  el.value = v.slice(0,18);
-  const raw = v.replace(/\D/g,'');
-  if (raw.length === 14) {
-    if (!validateCNPJ(raw)) showFieldErr(el,'CNPJ inválido'); else fetchCNPJ(el, raw);
-  }
+    const r=await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+    const d=await r.json();
+    if(d.erro){ showErr(el,'CEP não encontrado'); return; }
+    fill(`${prefix}logradouro`,d.logradouro||'');
+    fill(`${prefix}bairro`,d.bairro||'');
+    fill(`${prefix}municipio`,d.localidade||'');
+    fill(`${prefix}uf`,d.uf||'');
+    showOk(el,'✓ CEP encontrado');
+    collect(); updateCounter();
+    toast('Endereço preenchido automaticamente ✓','info');
+  } catch(e){ showErr(el,'Erro ao buscar CEP'); }
+  finally { const sp2=el.closest('.iwrap')?.querySelector('.ispinner'); if(sp2) sp2.style.display='none'; }
 }
 
 async function fetchCNPJ(el, cnpj) {
-  const spinner = el.closest('.input-wrap')?.querySelector('.input-spinner');
-  if (spinner) spinner.style.display = 'block';
+  const sp=el.closest('.iwrap')?.querySelector('.ispinner');
+  if(sp) sp.style.display='block';
+  clearFB(el);
   try {
-    const r = await fetch(`https://publica.cnpj.ws/cnpj/${cnpj}`);
-    if (!r.ok) throw new Error();
-    const d = await r.json();
-    const nome = d.razao_social || '';
-    fillField('razao_social', nome);
-    if (d.estabelecimento) {
-      const e = d.estabelecimento;
-      fillField('tipo_atual', 'LTDA');
-      const cep = (e.cep||'').replace(/\D/g,'');
-      if (cep.length===8) {
-        fillField('sede_cep', cep.slice(0,5)+'-'+cep.slice(5));
-        fillField('sede_logradouro', e.logradouro||'');
-        fillField('sede_numero', e.numero||'');
-        fillField('sede_bairro', e.bairro||'');
-        fillField('sede_municipio', e.cidade?.nome||'');
-        fillField('sede_uf', e.estado?.sigla||'');
-      }
+    // BrasilAPI — CNPJ
+    const r=await fetch(`https://brasilapi.com.br/api/cnpj/v1/${cnpj}`);
+    if(!r.ok) throw new Error('not found');
+    const d=await r.json();
+    fill('razao_social', d.razao_social||'');
+    // Endereço da sede
+    if(d.cep) {
+      const cepF=String(d.cep).replace(/\D/g,'').padStart(8,'0');
+      fill('sede_cep', cepF.slice(0,5)+'-'+cepF.slice(5));
+      fill('sede_logradouro', d.logradouro||d.descricao_tipo_de_logradouro+' '+d.logradouro||'');
+      fill('sede_numero', d.numero||'');
+      fill('sede_complemento', d.complemento||'');
+      fill('sede_bairro', d.bairro||'');
+      fill('sede_municipio', d.municipio||'');
+      fill('sede_uf', d.uf||'');
     }
-    showFieldOk(el,'✓ CNPJ válido — dados preenchidos');
-    collectData(); updateCounter();
-    toast(`Dados do CNPJ carregados automaticamente ✓`,'info');
-  } catch(e) { showFieldOk(el,'✓ CNPJ válido'); }
-  finally {
-    const spinner2 = el.closest('.input-wrap')?.querySelector('.input-spinner');
-    if (spinner2) spinner2.style.display = 'none';
-  }
+    showOk(el,'✓ CNPJ válido — dados preenchidos');
+    collect(); updateCounter();
+    toast('Dados do CNPJ carregados ✓','info');
+  } catch(e){ showOk(el,'✓ CNPJ válido'); }
+  finally { const sp2=el.closest('.iwrap')?.querySelector('.ispinner'); if(sp2) sp2.style.display='none'; }
 }
 
-// CPF mask & validation
-function maskCPF(el) {
-  let v = el.value.replace(/\D/g,'');
-  v = v.replace(/(\d{3})(\d)/,'$1.$2');
-  v = v.replace(/(\d{3})\.(\d{3})(\d)/,'$1.$2.$3');
-  v = v.replace(/(\d{3})\.(\d{3})\.(\d{3})(\d)/,'$1.$2.$3-$4');
-  el.value = v.slice(0,14);
-  const raw = el.value.replace(/\D/g,'');
-  if (raw.length === 11) {
-    if (!validateCPF(raw)) showFieldErr(el,'CPF inválido — verifique os dígitos');
-    else showFieldOk(el,'✓ CPF válido');
-  }
+function fill(name,val) {
+  const el=document.querySelector(`[name="${name}"]`);
+  if(el){ el.value=val; S.data[name]=val; }
+}
+function showErr(el,msg){ el.classList.add('err'); el.classList.remove('valid'); clearFB(el); const d=document.createElement('div'); d.className='ferr'; d.textContent=msg; el.parentNode.appendChild(d); }
+function showOk(el,msg){ el.classList.remove('err'); el.classList.add('valid'); clearFB(el); const d=document.createElement('div'); d.className='fok'; d.textContent=msg; el.parentNode.appendChild(d); }
+function clearFB(el){ el.parentNode.querySelectorAll('.ferr,.fok').forEach(e=>e.remove()); }
+
+function attachHooks() {
+  document.querySelectorAll('[data-mask=cpf]').forEach(el=>{ el.addEventListener('input',()=>mCPF(el)); el.addEventListener('blur',()=>mCPF(el)); if(el.value) mCPF(el); });
+  document.querySelectorAll('[data-mask=cnpj]').forEach(el=>{ el.addEventListener('input',()=>mCNPJ(el)); el.addEventListener('blur',()=>mCNPJ(el)); if(el.value) mCNPJ(el); });
+  document.querySelectorAll('[data-mask=phone]').forEach(el=>{ el.addEventListener('input',()=>mPhone(el)); if(el.value) mPhone(el); });
+  document.querySelectorAll('[data-mask=cep]').forEach(el=>{ el.addEventListener('input',()=>mCEP(el)); if(el.value&&el.value.replace(/\D/g,'').length===8) mCEP(el); });
+  document.querySelectorAll('#step-body input,#step-body select,#step-body textarea').forEach(el=>{ el.addEventListener('input',updateCounter); el.addEventListener('change',updateCounter); });
 }
 
-// Phone mask
-function maskPhone(el) {
-  let v = el.value.replace(/\D/g,'');
-  if (v.length>2) v = '('+v.slice(0,2)+') '+v.slice(2);
-  if (v.length>10) v = v.slice(0,10)+'-'+v.slice(10,15);
-  el.value = v;
-}
-
-// RG validation
-function checkRG(el) {
-  const v = el.value.replace(/\D/g,'');
-  if (v.length < 7) showFieldErr(el,'RG parece incompleto');
-  else showFieldOk(el,'✓ RG informado');
-}
-
-function fillField(name, value) {
-  const el = document.querySelector(`[name="${name}"]`);
-  if (el) { el.value = value; S.data[name] = value; }
-}
-
-function showFieldErr(el, msg) {
-  el.classList.add('err'); el.classList.remove('valid');
-  clearFeedback(el);
-  const d=document.createElement('div'); d.className='field-err'; d.textContent=msg;
-  el.parentNode.appendChild(d);
-}
-function showFieldOk(el, msg) {
-  el.classList.remove('err'); el.classList.add('valid');
-  clearFeedback(el);
-  const d=document.createElement('div'); d.className='field-ok'; d.textContent=msg;
-  el.parentNode.appendChild(d);
-}
-function clearFeedback(el) {
-  el.parentNode.querySelectorAll('.field-err,.field-ok').forEach(e=>e.remove());
-}
-
-// Attach auto-fill hooks after render
-function attachAutoFills() {
-  document.querySelectorAll('[data-mask=cep]').forEach(el=>{
-    el.addEventListener('input',()=>maskCEP(el));
-    if (el.value) maskCEP(el);
-  });
-  document.querySelectorAll('[data-mask=cpf]').forEach(el=>{
-    el.addEventListener('input',()=>maskCPF(el));
-    el.addEventListener('blur',()=>maskCPF(el));
-  });
-  document.querySelectorAll('[data-mask=cnpj]').forEach(el=>{
-    el.addEventListener('input',()=>maskCNPJ(el));
-    el.addEventListener('blur',()=>maskCNPJ(el));
-  });
-  document.querySelectorAll('[data-mask=phone]').forEach(el=>{
-    el.addEventListener('input',()=>maskPhone(el));
-  });
-  document.querySelectorAll('[data-mask=rg]').forEach(el=>{
-    el.addEventListener('blur',()=>checkRG(el));
-  });
-  // Live counter update
-  document.querySelectorAll('#step-body input,#step-body select,#step-body textarea').forEach(el=>{
-    el.addEventListener('input',updateCounter);
-    el.addEventListener('change',updateCounter);
-  });
-}
-
-/* ==========================================================
+/* ============================================================
    OPT HANDLERS
-========================================================== */
-function pick(btn, field) {
+============================================================ */
+function pick(btn,field) {
   document.querySelectorAll(`[data-field="${field}"]`).forEach(b=>b.classList.remove('sel'));
-  btn.classList.add('sel'); S.data[field] = btn.dataset.val;
-  S.steps = buildAllSteps(); updateCounter();
+  btn.classList.add('sel'); S.data[field]=btn.dataset.val;
+  S.steps=buildSteps(); updateCounter();
 }
-function toggle(btn, field) {
+function tog(btn,field) {
   btn.classList.toggle('sel');
-  S.data[field] = btn.classList.contains('sel') ? 'sim' : '';
-  S.steps = buildAllSteps(); updateCounter();
+  S.data[field]=btn.classList.contains('sel')?'sim':'';
+  S.steps=buildSteps(); updateCounter();
 }
 
-/* ==========================================================
+/* ============================================================
    TOAST
-========================================================== */
-let toastTimer;
-function toast(msg, type='info') {
-  const el = document.getElementById('toast');
-  el.textContent = msg; el.className = `show ${type}`;
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(()=>el.className='', 3000);
+============================================================ */
+let _tt;
+function toast(msg,type='info') {
+  const el=document.getElementById('toast');
+  el.textContent=msg; el.className=`show ${type}`;
+  clearTimeout(_tt); _tt=setTimeout(()=>el.className='',3200);
 }
 
-/* ==========================================================
-   SUBMIT
-========================================================== */
-async function sendForm() {
-  const labels = {abertura:'ABERTURA DE EMPRESA',alteracao:'ALTERAÇÃO CONTRATUAL',
-    transformacao:'TRANSFORMAÇÃO SOCIETÁRIA',baixa:'BAIXA / ENCERRAMENTO'};
-  const processo = labels[S.process];
+/* ============================================================
+   HELPERS
+============================================================ */
+function esc(s){ const d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
+function fmtDate(v){ if(v&&v.match&&v.match(/^\d{4}-\d{2}-\d{2}$/)){ const[y,m,d]=v.split('-'); return`${d}/${m}/${y}`; } return v; }
+function ufOpts(sel='SP'){ return ['AC','AL','AP','AM','BA','CE','DF','ES','GO','MA','MT','MS','MG','PA','PB','PR','PE','PI','RJ','RN','RS','RO','RR','SC','SP','SE','TO'].map(u=>`<option${u===sel?' selected':''}>${u}</option>`).join(''); }
 
-  // Human-readable labels for email body
-  const ptLabels = {
-    tipo:'Tipo de empresa', nome_1:'Nome (1ª opção)', nome_2:'Nome (2ª opção)',
-    nome_fantasia:'Nome fantasia', qtd_socios:'Nº de sócios', capital_social:'Capital social',
-    integralizacao:'Integralização', regime:'Regime tributário', certificado:'Certificado Digital',
-    faturamento:'Faturamento estimado', atividade_principal:'Atividade principal',
-    atividades_secundarias:'Atividades secundárias', cnae:'CNAE',
-    observacoes:'Observações', horario:'Horário de contato',
-    cnpj:'CNPJ', razao_social:'Razão social', nire:'NIRE', data_abertura:'Data de abertura',
-    tipo_atual:'Tipo societário atual', tipo_baixa:'Tipo societário',
-    motivo_baixa:'Motivo do encerramento', tem_func:'Funcionários registrados',
-    tem_debitos:'Débitos fiscais', tem_bens:'Bens registrados',
-    ultima_declaracao:'Última declaração', transf_para:'Transformação para',
-    motivo_transf:'Motivo da transformação', tipo_mudanca:'Tipo de mudança',
-    mov_socios:'Movimento de sócios', capital_atual:'Capital atual',
-    capital_novo:'Novo capital', capital_motivo:'Motivo/origem',
-    ativ_incluir:'Incluir atividades', ativ_excluir:'Excluir atividades',
-    nova_razao_1:'Nova razão social (1ª)', nova_razao_2:'Nova razão social (2ª)',
-    novo_nome_fantasia:'Novo nome fantasia',
+/* ============================================================
+   SEND
+============================================================ */
+async function doSend() {
+  const PNAME = {abertura:'ABERTURA DE EMPRESA',alteracao:'ALTERAÇÃO CONTRATUAL',
+    transformacao:'TRANSFORMAÇÃO SOCIETÁRIA',baixa:'BAIXA / ENCERRAMENTO'}[S.process];
+
+  const FL2 = {
+    tipo:'Tipo de empresa',nome_1:'Nome (1ª opção)',nome_2:'Nome (2ª opção)',nome_fantasia:'Nome fantasia',
+    qtd_socios:'Nº de sócios',capital_social:'Capital social',integralizacao:'Integralização',
+    regime:'Regime tributário',certificado:'Certificado Digital',faturamento:'Faturamento estimado',
+    atividade_principal:'Atividade principal',atividades_secundarias:'Atividades secundárias',
+    cnae:'CNAE',observacoes:'Observações',horario:'Horário para contato',
+    cnpj:'CNPJ',razao_social:'Razão social',tipo_atual:'Tipo societário atual',nire:'NIRE',
+    data_abertura:'Data de abertura',tipo_baixa:'Tipo societário',motivo_baixa:'Motivo do encerramento',
+    tem_func:'Funcionários',tem_debitos:'Débitos fiscais',tem_bens:'Bens registrados',
+    ultima_declaracao:'Última declaração',transf_para:'Transformar para',motivo_transf:'Motivo',
+    tipo_mudanca:'Tipo de mudança',mov_socios:'Movimento de sócios',
+    tipo_capital:'Tipo de alteração',capital_atual:'Capital atual',capital_novo:'Novo capital',
+    capital_motivo:'Motivo/origem',ativ_incluir:'Incluir atividades',ativ_excluir:'Excluir atividades',
   };
-
-  const socioLabel = (pfx) => {
-    const map = {s0:'Sócio/Titular 1',s1:'Sócio 2',s2:'Sócio 3',s3:'Sócio 4',
-      adm:'Administrador',alt_s0:'Sócio na Alteração',b_s0:'Sócio — Distrato'};
-    return map[pfx]||pfx;
+  const SF = {nome:'Nome',cpf:'CPF',rg:'RG/CNH',orgao_emissor:'Órgão emissor',
+    data_emissao:'Data emissão',nascimento:'Nascimento',naturalidade:'Naturalidade',
+    nacionalidade:'Nacionalidade',cor:'Cor/Raça',profissao:'Profissão',
+    telefone:'Telefone',email:'E-mail',nome_mae:'Nome da mãe',nome_pai:'Nome do pai',
+    estado_civil:'Estado civil',regime_bens:'Regime de bens',conjuge_nome:'Cônjuge — nome',
+    conjuge_cpf:'Cônjuge — CPF',cep:'CEP',uf:'UF',logradouro:'Logradouro',numero:'Número',
+    complemento:'Complemento',bairro:'Bairro',municipio:'Município',iptu:'Nº IPTU',
+    quotas_pct:'Participação %',quotas_valor:'Valor quotas',cargo:'Cargo',tipo_imovel:'Tipo imóvel',
   };
-  const fieldLabel = (k) => {
-    const socioFields = {
-      nome:'Nome completo',cpf:'CPF',rg:'RG/CNH',orgao_emissor:'Órgão emissor',
-      data_emissao:'Data emissão',nascimento:'Nascimento',naturalidade:'Naturalidade',
-      nacionalidade:'Nacionalidade',cor:'Cor/Raça',profissao:'Profissão',
-      telefone:'Telefone',email:'E-mail',nome_mae:'Nome da mãe',nome_pai:'Nome do pai',
-      estado_civil:'Estado civil',regime:'Regime de bens',
-      conjuge_nome:'Cônjuge — nome',conjuge_cpf:'Cônjuge — CPF',
-      cep:'CEP',uf:'UF',logradouro:'Logradouro',numero:'Número',
-      complemento:'Complemento',bairro:'Bairro',municipio:'Município',iptu:'Nº IPTU',
-      quotas_pct:'Participação %',quotas_valor:'Valor quotas',cargo:'Cargo',
-      tipo_imovel:'Tipo de imóvel',
-    };
-    return socioFields[k]||k.replace(/_/g,' ');
-  };
+  const GN = {s0:'SÓCIO/TITULAR 1',s1:'SÓCIO 2',s2:'SÓCIO 3',s3:'SÓCIO 4',
+    sede:'ENDEREÇO DA SEDE',novo:'NOVO ENDEREÇO',adm:'ADMINISTRADOR',
+    alt_s0:'SÓCIO — ALTERAÇÃO',b_s0:'SÓCIO — DISTRATO'};
 
-  // Format date fields
-  const formatVal = (k, v) => {
-    if ((k.includes('nascimento')||k.includes('emissao')||k.includes('abertura')) && v.match(/^\d{4}-\d{2}-\d{2}$/)) {
-      const [y,m,d] = v.split('-'); return `${d}/${m}/${y}`;
-    }
-    return v;
-  };
+  let corpo = `${'═'.repeat(52)}\n  FORMULÁRIO: ${PNAME}\n  Cliente: ${S.clientName}\n  Data: ${new Date().toLocaleString('pt-BR')}\n${'═'.repeat(52)}\n\n`;
 
-  // Build body grouped
-  let corpo = `╔${'═'.repeat(50)}╗\n`;
-  corpo += `  FORMULÁRIO: ${processo}\n`;
-  corpo += `  Cliente: ${S.clientName}\n`;
-  corpo += `  Data: ${new Date().toLocaleString('pt-BR')}\n`;
-  corpo += `╚${'═'.repeat(50)}╝\n\n`;
-
-  // Geral fields
-  const geralLines = [];
-  const socioData = {};
-  for (const [k, v] of Object.entries(S.data)) {
-    if (!v||v==='') continue;
-    const match = k.match(/^(s\d+|sede|novo|alt_s0|adm|b_s0|alt|b|transf)_(.+)$/);
-    if (match) {
-      const pfx = match[1], fk = match[2];
-      if (!socioData[pfx]) socioData[pfx] = [];
-      socioData[pfx].push([fieldLabel(fk), formatVal(fk, v)]);
-    } else {
-      geralLines.push([ptLabels[k]||k.replace(/_/g,' '), formatVal(k,v)]);
-    }
+  const buckets={}; const geral=[];
+  for(const[k,v] of Object.entries(S.data)){
+    if(!v||v==='') continue;
+    const m=k.match(/^(s\d+|sede|novo|adm|alt_s0|b_s0)_(.+)$/);
+    if(m){ if(!buckets[m[1]]) buckets[m[1]]=[]; buckets[m[1]].push([SF[m[2]]||m[2].replace(/_/g,' '),fmtDate(v)]); }
+    else geral.push([FL2[k]||k.replace(/_/g,' '),fmtDate(v)]);
   }
-
-  if (geralLines.length) {
-    corpo += `── DADOS GERAIS ${'─'.repeat(36)}\n`;
-    geralLines.forEach(([k,v]) => corpo += `  ${k}: ${v}\n`);
-    corpo += '\n';
-  }
-
-  const order = ['s0','s1','s2','s3','adm','sede','novo','alt_s0','alt','b_s0','b','transf'];
-  order.forEach(pfx => {
-    if (!socioData[pfx]?.length) return;
-    corpo += `── ${socioLabel(pfx).toUpperCase()} ${'─'.repeat(Math.max(0,36-socioLabel(pfx).length))}\n`;
-    socioData[pfx].forEach(([k,v]) => corpo += `  ${k}: ${v}\n`);
-    corpo += '\n';
+  if(geral.length){ corpo+=`── DADOS GERAIS ${'─'.repeat(38)}\n`; geral.forEach(([k,v])=>corpo+=`  ${k}: ${v}\n`); corpo+='\n'; }
+  ['s0','s1','s2','s3','adm','alt_s0','b_s0','sede','novo'].forEach(p=>{
+    if(!buckets[p]?.length) return;
+    const t=GN[p]||p.toUpperCase();
+    corpo+=`── ${t} ${'─'.repeat(Math.max(2,50-t.length))}\n`;
+    buckets[p].forEach(([k,v])=>corpo+=`  ${k}: ${v}\n`); corpo+='\n';
   });
 
-  const btn = document.getElementById('btn-next');
-  btn.disabled = true; btn.textContent = 'Enviando...';
+  const btn=document.getElementById('btn-next');
+  btn.disabled=true; btn.textContent='Enviando...';
 
   try {
-    const res = await fetch('https://api.web3forms.com/submit',{
+    const res=await fetch('https://api.web3forms.com/submit',{
       method:'POST',
       headers:{'Content-Type':'application/json','Accept':'application/json'},
-      body: JSON.stringify({
-        access_key: WEB3FORMS_KEY,
-        subject: `[${processo}] ${S.clientName} — ${new Date().toLocaleDateString('pt-BR')}`,
-        from_name: S.clientName || 'Formulário SC',
-        message: corpo,
+      body:JSON.stringify({
+        access_key:W3F_KEY,
+        subject:`[${PNAME}] ${S.clientName} — ${new Date().toLocaleDateString('pt-BR')}`,
+        from_name:S.clientName||'Formulário SC',
+        message:corpo
       })
     });
-    const json = await res.json();
-    if (json.success) {
-      clearProgress();
-      document.getElementById('success-name').textContent = S.clientName||'';
-      document.getElementById('review-screen').style.display = 'none';
-      document.getElementById('review-screen').classList.remove('active');
-      document.getElementById('success-screen').style.display = 'flex';
-      document.getElementById('success-screen').classList.add('active');
-      document.getElementById('nav-footer').style.display = 'none';
-      document.getElementById('progress-wrap').style.display = 'none';
-      document.getElementById('fields-counter').style.display = 'none';
-      scrollTop();
-    } else throw new Error(json.message||'Erro no envio');
-  } catch(err) {
-    btn.disabled = false; btn.textContent = '✓ Confirmar e Enviar';
-    toast('Erro ao enviar. Verifique sua conexão e tente novamente.','error');
+    const json=await res.json();
+    if(json.success){ clearProgress(); showSuccess(); }
+    else throw new Error(json.message||'Erro');
+  } catch(e){
+    btn.disabled=false; btn.textContent='✓ Confirmar e Enviar';
+    toast('Erro ao enviar. Verifique sua conexão.','err');
   }
 }
 
-function showEl(id) {
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  const el = document.getElementById(id);
-  if (el) el.classList.add('active');
+function showSuccess() {
+  const PMSG = {
+    abertura:'Seus dados foram recebidos com sucesso.\nNossa equipe iniciará o processo de abertura da sua empresa em breve.',
+    alteracao:'Suas informações de alteração contratual foram recebidas.\nEntraremos em contato para dar continuidade ao processo.',
+    transformacao:'Os dados para transformação societária foram recebidos.\nBreve retornaremos com as próximas etapas.',
+    baixa:'Os dados para encerramento da empresa foram recebidos.\nNossa equipe cuidará de todo o processo de baixa.'
+  };
+  document.getElementById('success-client').textContent = S.clientName ? `Obrigado, ${S.clientName}!` : 'Formulário enviado!';
+  document.getElementById('success-msg').textContent = PMSG[S.process] || 'Informações recebidas com sucesso.';
+  document.getElementById('review-screen').style.display = 'none';
+  document.getElementById('success-screen').style.display = 'flex';
+  document.getElementById('success-screen').classList.add('active');
+  document.getElementById('nav-footer').style.display = 'none';
+  document.getElementById('progress-wrap').style.display = 'none';
+  document.getElementById('fields-counter').style.display = 'none';
+  scrollTop();
 }
 
-/* ==========================================================
+/* ============================================================
    STEP BUILDER
-========================================================== */
-function buildAllSteps() {
-  const p = S.process;
-  if (p==='abertura')     return buildAbertura();
-  if (p==='alteracao')    return buildAlteracao();
-  if (p==='transformacao')return buildTransformacao();
-  if (p==='baixa')        return buildBaixa();
+============================================================ */
+function buildSteps() {
+  const p=S.process;
+  if(p==='abertura')     return stepsAbertura();
+  if(p==='alteracao')    return stepsAlteracao();
+  if(p==='transformacao')return stepsTransformacao();
+  if(p==='baixa')        return stepsBaixa();
   return [];
 }
 
 /* ==================== ABERTURA ==================== */
-function buildAbertura() {
-  const d = S.data;
-  const steps = [];
+function stepsAbertura(){
+  const d=S.data, steps=[];
 
-  steps.push({name:'Tipo de Empresa', question:'Qual tipo de empresa deseja abrir?',
-    hint:'Esta escolha define documentos, responsabilidades e o processo de registro. Caso tenha dúvidas, nossa equipe pode orientar.',
+  steps.push({name:'Tipo de Empresa',question:'Qual tipo de empresa deseja abrir?',
+    hint:'Escolha o modelo que melhor se adapta à sua situação. Se tiver dúvidas, nossa equipe pode orientar.',
     body:`<div class="opt-list">
-      <button class="opt" data-field="tipo" data-val="MEI" onclick="pick(this,'tipo')">
-        <span class="opt-t">MEI — Microempreendedor Individual</span>
-        <span class="opt-s">Para faturamento até R$ 81.000/ano · 1 titular · Processo gratuito e online · Não permite sócios</span></button>
-      <button class="opt" data-field="tipo" data-val="EI" onclick="pick(this,'tipo')">
-        <span class="opt-t">EI — Empresário Individual</span>
-        <span class="opt-s">1 titular sem sócios · O patrimônio pessoal responde pelas dívidas · Registro na Junta Comercial</span></button>
       <button class="opt" data-field="tipo" data-val="SLU" onclick="pick(this,'tipo')">
         <span class="opt-t">SLU — Sociedade Limitada Unipessoal</span>
-        <span class="opt-s">1 sócio · Patrimônio pessoal protegido · Substitui a extinta EIRELI · Registro na Junta</span></button>
+        <span class="opt-s">Apenas 1 sócio · Patrimônio pessoal protegido · Substitui a extinta EIRELI · Registro na Junta Comercial</span></button>
       <button class="opt" data-field="tipo" data-val="LTDA" onclick="pick(this,'tipo')">
         <span class="opt-t">LTDA — Sociedade Limitada</span>
-        <span class="opt-s">2 ou mais sócios · Tipo mais comum no Brasil · Responsabilidade limitada ao capital</span></button>
+        <span class="opt-s">2 ou mais sócios · Modelo mais comum no Brasil · Responsabilidade limitada ao capital social</span></button>
       <button class="opt" data-field="tipo" data-val="SA" onclick="pick(this,'tipo')">
         <span class="opt-t">S/A — Sociedade Anônima</span>
-        <span class="opt-s">Estrutura mais complexa · Emissão de ações · Para grandes empresas ou captação de investimento</span></button>
+        <span class="opt-s">Estrutura mais complexa · Emissão de ações · Indicada para grandes empresas ou captação de investimento</span></button>
     </div>`});
 
-  steps.push({name:'Nome da Empresa', question:'Qual será o nome da empresa?',
-    hint:'Sugerimos ter pelo menos 2 opções, pois o nome precisará ser aprovado na Junta Comercial. Caso um esteja indisponível, o segundo será usado.',
+  steps.push({name:'Nome da Empresa',question:'Qual será o nome da empresa?',
+    hint:'Recomendamos informar até 2 opções. O nome precisará ser aprovado na Junta Comercial — se o primeiro estiver indisponível, usaremos o segundo.',
     body:`
-      <div class="field-wrap">
-        <label class="field-label">1ª Opção de Nome *</label>
-        <div class="field-hint">Para LTDA e SLU inclua o tipo ao final. Exemplo: <em>Silva Comércio de Alimentos Ltda</em></div>
-        <input type="text" name="nome_1" placeholder="Nome empresarial principal" required>
-      </div>
-      <div class="field-wrap">
-        <label class="field-label">2ª Opção de Nome</label>
-        <div class="field-hint">Alternativa caso o primeiro nome já esteja registrado por outra empresa</div>
-        <input type="text" name="nome_2" placeholder="Nome empresarial alternativo (opcional)">
-      </div>
-      <div class="field-wrap">
-        <label class="field-label">Nome Fantasia</label>
-        <div class="field-hint">Nome comercial usado em fachada, site e divulgação — pode ser diferente da razão social</div>
-        <input type="text" name="nome_fantasia" placeholder="Ex: Padaria do João (opcional)">
-      </div>`});
+      <div class="fw"><label class="flabel">1ª Opção de Nome *</label>
+        <div class="fhint">Para LTDA e SLU inclua o tipo ao final. Ex: <em>Silva Comércio de Alimentos Ltda</em></div>
+        <input type="text" name="nome_1" placeholder="Nome empresarial principal" required></div>
+      <div class="fw"><label class="flabel">2ª Opção de Nome</label>
+        <div class="fhint">Alternativa caso o primeiro já esteja registrado por outra empresa</div>
+        <input type="text" name="nome_2" placeholder="Nome alternativo (opcional)"></div>
+      <div class="fw"><label class="flabel">Nome Fantasia</label>
+        <div class="fhint">Nome comercial de divulgação — pode ser diferente da razão social. Ex: <em>Padaria do João</em></div>
+        <input type="text" name="nome_fantasia" placeholder="Nome fantasia (opcional)"></div>`});
 
-  if (d.tipo === 'LTDA' || d.tipo === 'SA') {
-    steps.push({name:'Número de Sócios', question:'Quantos sócios terá a empresa?',
-      hint:'Coletaremos os dados completos de cada sócio separadamente para o contrato social.',
+  if(d.tipo==='LTDA'||d.tipo==='SA'){
+    steps.push({name:'Número de Sócios',question:'Quantos sócios terá a empresa?',
+      hint:'Coletaremos os dados completos de cada sócio para o contrato social.',
       body:`<div class="opt-list grid2">
         <button class="opt" data-field="qtd_socios" data-val="2" onclick="pick(this,'qtd_socios')"><span class="opt-t">2 sócios</span></button>
         <button class="opt" data-field="qtd_socios" data-val="3" onclick="pick(this,'qtd_socios')"><span class="opt-t">3 sócios</span></button>
@@ -1161,614 +1025,414 @@ function buildAbertura() {
       </div>`});
   }
 
-  const numSocios = (d.tipo==='SLU'||d.tipo==='EI'||d.tipo==='MEI') ? 1 : (parseInt(d.qtd_socios)||0);
-  const needParents = (d.tipo==='LTDA'||d.tipo==='SLU'||d.tipo==='SA');
-  const lbl = d.tipo==='MEI'?'Titular MEI':d.tipo==='EI'?'Empresário':d.tipo==='SLU'?'Sócio Único':'Sócio';
+  const numS = d.tipo==='SLU' ? 1 : (parseInt(d.qtd_socios)||0);
+  const lbl  = d.tipo==='SLU' ? 'Sócio Único' : 'Sócio';
+  const needParents = true;
 
-  for (let i=0; i<numSocios; i++) {
-    const p=`s${i}_`, n=numSocios>1?` ${i+1}`:'';
-    steps.push({name:`Identidade — ${lbl}${n}`, question:`Documentos de identificação${n?` — ${lbl}${n}`:''}`,
-      hint:'Informe os dados exatamente como constam no RG ou CNH. Essas informações irão para o preâmbulo do contrato social.',
-      body: buildIdBlock(p, needParents)});
-    steps.push({name:`Estado Civil — ${lbl}${n}`, question:`Estado civil e filiação${n?` — ${lbl}${n}`:''}`,
-      hint:'O estado civil e o regime de bens são cláusulas obrigatórias do contrato social conforme o Código Civil.',
-      body: buildCivilBlock(p)});
-    steps.push({name:`Endereço — ${lbl}${n}`, question:`Endereço residencial${n?` — ${lbl}${n}`:''}`,
-      hint:'Informe o endereço completo de residência. O CEP preencherá os campos automaticamente.',
-      body: buildEndBlock(p)});
-    if (d.tipo==='LTDA'||d.tipo==='SA'||d.tipo==='SLU') {
-      steps.push({name:`Participação — ${lbl}${n}`, question:`Participação societária${n?` — ${lbl}${n}`:''}`,
-        hint:'Defina quanto do capital social pertence a este sócio e qual será sua função na empresa.',
-        body: buildQuotasBlock(p)});
+  for(let i=0;i<numS;i++){
+    const p=`s${i}_`, n=numS>1?` ${i+1}`:'';
+    steps.push({name:`Identificação — ${lbl}${n}`,question:`Documentos de identificação${n?` — ${lbl}${n}`:''}`,
+      hint:'Preencha exatamente como consta no RG ou CNH. Estes dados vão para o preâmbulo do contrato social.',
+      body:blkId(p,needParents)});
+    steps.push({name:`Estado Civil — ${lbl}${n}`,question:`Estado civil${n?` — ${lbl}${n}`:''}`,
+      hint:'O estado civil e o regime de bens são exigências legais do contrato social conforme o Código Civil.',
+      body:blkCivil(p)});
+    if(d[p+'estado_civil']==='casado(a)'||d[p+'estado_civil']==='união estável'){
+      steps.push({name:`Regime de Bens — ${lbl}${n}`,question:`Qual o regime de bens${n?` — ${lbl}${n}`:''}?`,
+        hint:'O regime de bens define como o patrimônio é dividido entre o casal. Esta informação é obrigatória no contrato social.',
+        body:blkRegime(p)});
     }
+    steps.push({name:`Endereço — ${lbl}${n}`,question:`Endereço residencial${n?` — ${lbl}${n}`:''}`,
+      hint:'Digite o CEP para preencher o endereço automaticamente.',
+      body:blkEnd(p)});
+    steps.push({name:`Participação — ${lbl}${n}`,question:`Participação societária${n?` — ${lbl}${n}`:''}`,
+      hint:'Defina a parcela do capital social que pertence a este sócio e qual será seu papel na empresa.',
+      body:blkQuotas(p)});
   }
 
-  steps.push({name:'Endereço da Sede', question:'Qual será o endereço da sede da empresa?',
-    hint:'Este endereço será registrado na Junta Comercial e nos órgãos fiscais. Deve ser compatível com as atividades da empresa conforme o zoneamento da prefeitura.',
-    body: buildSedeBlock('sede_')});
+  steps.push({name:'Endereço da Sede',question:'Qual será o endereço da sede da empresa?',
+    hint:'Este endereço será registrado na Junta Comercial e nos órgãos fiscais. Deve ser compatível com as atividades conforme o zoneamento da prefeitura.',
+    body:blkSede('sede_')});
 
-  steps.push({name:'Atividades', question:'Quais serão as atividades da empresa?',
-    hint:'Descreva o que a empresa vai fazer com o máximo de detalhes. Usaremos isso para definir o objeto social e os códigos CNAE corretos.',
+  steps.push({name:'Atividades',question:'Quais serão as atividades da empresa?',
+    hint:'Descreva com detalhes. Usaremos isso para definir o objeto social e os códigos CNAE corretos.',
     body:`
-      <div class="field-wrap">
-        <label class="field-label">Atividade Principal *</label>
-        <div class="field-hint">Descreva a atividade principal com detalhes. Exemplos: <em>"Comércio varejista de calçados e acessórios"</em>, <em>"Prestação de serviços de desenvolvimento de software"</em>, <em>"Consultoria em gestão empresarial"</em></div>
-        <textarea name="atividade_principal" placeholder="Descreva a atividade principal da empresa..." required></textarea>
-      </div>
-      <div class="field-wrap">
-        <label class="field-label">Atividades Secundárias</label>
-        <div class="field-hint">Outras atividades que a empresa também exercerá, mesmo que secundariamente</div>
-        <textarea name="atividades_secundarias" placeholder="Liste outras atividades (opcional)"></textarea>
-      </div>
-      <div class="field-wrap">
-        <label class="field-label">CNAE Principal (se já souber)</label>
-        <div class="field-hint">Código de 7 dígitos que classifica a atividade. Se não souber, deixe em branco — nossa equipe identificará.</div>
-        <input type="text" name="cnae" placeholder="Ex: 47.81-4-00">
-      </div>
-      <div class="field-wrap">
-        <label class="field-label">Natureza da operação *</label>
-        <div class="field-hint">Marque todas que se aplicam</div>
+      <div class="fw"><label class="flabel">Atividade Principal *</label>
+        <div class="fhint">Seja específico. Ex: <em>"Comércio varejista de calçados e acessórios"</em> ou <em>"Prestação de serviços de desenvolvimento de software"</em></div>
+        <textarea name="atividade_principal" placeholder="Descreva a atividade principal com detalhes..." required></textarea></div>
+      <div class="fw"><label class="flabel">Atividades Secundárias</label>
+        <div class="fhint">Outras atividades que a empresa também exercerá, mesmo que de forma secundária</div>
+        <textarea name="atividades_secundarias" placeholder="Liste outras atividades (opcional)"></textarea></div>
+      <div class="fw"><label class="flabel">CNAE Principal (se já souber)</label>
+        <div class="fhint">Código de 7 dígitos que classifica a atividade. Se não souber, deixe em branco — nossa equipe identificará.</div>
+        <input type="text" name="cnae" placeholder="Ex: 47.81-4-00"></div>
+      <div class="fw"><label class="flabel">Natureza da operação</label>
+        <div class="fhint">Marque todas que se aplicam à empresa</div>
         <div class="opt-list grid2">
-          <button class="opt" data-field="op_comercio" onclick="toggle(this,'op_comercio')"><span class="opt-t">🛒 Comércio</span><span class="opt-s">Compra e venda de produtos</span></button>
-          <button class="opt" data-field="op_servico" onclick="toggle(this,'op_servico')"><span class="opt-t">🔧 Serviços</span><span class="opt-s">Prestação de serviços</span></button>
-          <button class="opt" data-field="op_industria" onclick="toggle(this,'op_industria')"><span class="opt-t">🏭 Indústria</span><span class="opt-s">Fabricação / transformação</span></button>
-          <button class="opt" data-field="op_misto" onclick="toggle(this,'op_misto')"><span class="opt-t">⚡ Misto</span><span class="opt-s">Mais de um tipo</span></button>
-        </div>
-      </div>`});
+          <button class="opt" data-field="op_comercio" onclick="tog(this,'op_comercio')"><span class="opt-t">🛒 Comércio</span><span class="opt-s">Compra e venda de produtos</span></button>
+          <button class="opt" data-field="op_servico" onclick="tog(this,'op_servico')"><span class="opt-t">🔧 Serviços</span><span class="opt-s">Prestação de serviços</span></button>
+          <button class="opt" data-field="op_industria" onclick="tog(this,'op_industria')"><span class="opt-t">🏭 Indústria</span><span class="opt-s">Fabricação / transformação</span></button>
+          <button class="opt" data-field="op_misto" onclick="tog(this,'op_misto')"><span class="opt-t">⚡ Misto</span><span class="opt-s">Mais de um tipo</span></button>
+        </div></div>`});
 
-  steps.push({name:'Capital Social', question:'Qual será o capital social da empresa?',
-    hint:'O capital social representa o valor que os sócios investem para iniciar as atividades. Não há valor mínimo obrigatório para LTDA.',
+  steps.push({name:'Capital Social',question:'Qual será o capital social da empresa?',
+    hint:'O capital social é o valor investido pelos sócios para iniciar as atividades. Para LTDA não há valor mínimo obrigatório.',
     body:`
-      <div class="field-wrap">
-        <label class="field-label">Valor do Capital Social (R$) *</label>
-        <div class="field-hint">Informe o valor total. Exemplo: <em>R$ 10.000,00</em> — pode ser integralizado em dinheiro ou bens</div>
-        <input type="text" name="capital_social" placeholder="Ex: 10.000,00" required>
-      </div>
-      <div class="field-wrap">
-        <label class="field-label">Como será integralizado? *</label>
-        <div class="field-hint">Integralizar significa entregar o capital para a empresa. Pode ser feito de várias formas:</div>
+      <div class="fw"><label class="flabel">Valor do Capital Social (R$) *</label>
+        <div class="fhint">Informe o valor total que os sócios aportarão. Ex: <em>R$ 10.000,00</em></div>
+        <input type="text" name="capital_social" placeholder="Ex: 10.000,00" required></div>
+      <div class="fw"><label class="flabel">Como será integralizado? *</label>
+        <div class="fhint">Integralizar = entregar o capital à empresa. Pode ser feito de formas diferentes:</div>
         <div class="opt-list">
-          <button class="opt" data-field="integralizacao" data-val="Dinheiro à vista" onclick="pick(this,'integralizacao')">
-            <span class="opt-t">Dinheiro — à vista na abertura</span><span class="opt-s">Valor depositado no ato de abertura da empresa</span></button>
-          <button class="opt" data-field="integralizacao" data-val="Dinheiro a prazo" onclick="pick(this,'integralizacao')">
-            <span class="opt-t">Dinheiro — a prazo</span><span class="opt-s">Valor será depositado em parcelas após a abertura</span></button>
-          <button class="opt" data-field="integralizacao" data-val="Bens" onclick="pick(this,'integralizacao')">
-            <span class="opt-t">Bens (móveis ou imóveis)</span><span class="opt-s">Equipamentos, veículos, imóveis transferidos à empresa</span></button>
-          <button class="opt" data-field="integralizacao" data-val="Misto" onclick="pick(this,'integralizacao')">
-            <span class="opt-t">Misto — dinheiro + bens</span></button>
-        </div>
-      </div>`});
+          <button class="opt" data-field="integralizacao" data-val="Dinheiro à vista" onclick="pick(this,'integralizacao')"><span class="opt-t">Dinheiro — à vista na abertura</span><span class="opt-s">Valor depositado no momento da abertura</span></button>
+          <button class="opt" data-field="integralizacao" data-val="Dinheiro a prazo" onclick="pick(this,'integralizacao')"><span class="opt-t">Dinheiro — a prazo</span><span class="opt-s">Valor será depositado em parcelas após a abertura</span></button>
+          <button class="opt" data-field="integralizacao" data-val="Bens" onclick="pick(this,'integralizacao')"><span class="opt-t">Bens (móveis ou imóveis)</span><span class="opt-s">Equipamentos, veículos ou imóveis transferidos à empresa</span></button>
+          <button class="opt" data-field="integralizacao" data-val="Misto" onclick="pick(this,'integralizacao')"><span class="opt-t">Misto — dinheiro + bens</span></button>
+        </div></div>`});
 
-  steps.push({name:'Regime Tributário', question:'Qual regime tributário pretende adotar?',
-    hint:'O regime define como a empresa pagará impostos. Nossa equipe pode ajudar a escolher o mais vantajoso para o seu caso.',
+  steps.push({name:'Regime Tributário',question:'Qual regime tributário pretende adotar?',
+    hint:'Define como a empresa pagará impostos. Podemos ajudar a escolher o mais vantajoso para o seu caso.',
     body:`<div class="opt-list">
       <button class="opt" data-field="regime" data-val="Simples Nacional" onclick="pick(this,'regime')">
-        <span class="opt-t">Simples Nacional</span>
-        <span class="opt-s">Pagamento unificado (DAS) · Indicado para faturamento até R$ 4,8 mi/ano · Alíquotas reduzidas</span></button>
+        <span class="opt-t">Simples Nacional</span><span class="opt-s">Pagamento unificado (DAS) · Faturamento até R$ 4,8 mi/ano · Alíquotas reduzidas</span></button>
       <button class="opt" data-field="regime" data-val="Lucro Presumido" onclick="pick(this,'regime')">
-        <span class="opt-t">Lucro Presumido</span>
-        <span class="opt-s">Base de cálculo presumida conforme atividade · Até R$ 78 mi/ano · Pode ser vantajoso para serviços</span></button>
+        <span class="opt-t">Lucro Presumido</span><span class="opt-s">Base de cálculo presumida conforme atividade · Até R$ 78 mi/ano</span></button>
       <button class="opt" data-field="regime" data-val="Lucro Real" onclick="pick(this,'regime')">
-        <span class="opt-t">Lucro Real</span>
-        <span class="opt-s">Imposto sobre lucro efetivo · Obrigatório acima de R$ 78 mi/ano ou para atividades específicas</span></button>
-      <button class="opt" data-field="regime" data-val="A definir com contador" onclick="pick(this,'regime')">
-        <span class="opt-t">Quero orientação da contabilidade</span>
-        <span class="opt-s">Nossa equipe analisará e indicará o regime mais adequado</span></button>
+        <span class="opt-t">Lucro Real</span><span class="opt-s">Imposto sobre o lucro efetivo · Obrigatório acima de R$ 78 mi/ano</span></button>
+      <button class="opt" data-field="regime" data-val="A definir com o contador" onclick="pick(this,'regime')">
+        <span class="opt-t">Quero orientação da contabilidade</span><span class="opt-s">Nossa equipe analisará e indicará o mais adequado</span></button>
     </div>`});
 
-  steps.push({name:'Certificado Digital', question:'Você possui Certificado Digital e-CPF?',
-    hint:'O e-CPF é obrigatório para assinar os documentos digitalmente na Junta Comercial. Se não tiver, nossa equipe poderá orientar sobre como obter.',
-    body:`<div class="opt-list grid2">
-      <button class="opt" data-field="certificado" data-val="Sim, tenho" onclick="pick(this,'certificado')"><span class="opt-t">✅ Sim, tenho</span></button>
-      <button class="opt" data-field="certificado" data-val="Não tenho" onclick="pick(this,'certificado')"><span class="opt-t">❌ Não tenho ainda</span></button>
-    </div>
-    <div class="warn-box" style="margin-top:16px">⚠ Sem o e-CPF não é possível assinar documentos eletronicamente. Caso não possua, informe e orientaremos como obter antes de iniciar o processo.</div>`});
+  steps.push({name:'Certificado Digital',question:'Você possui Certificado Digital e-CPF?',
+    hint:'O e-CPF é obrigatório para assinar documentos eletronicamente na Junta Comercial. Se não tiver, orientamos como obter.',
+    body:`
+      <div class="opt-list grid2">
+        <button class="opt" data-field="certificado" data-val="Sim, tenho" onclick="pick(this,'certificado')"><span class="opt-t">✅ Sim, tenho</span></button>
+        <button class="opt" data-field="certificado" data-val="Não tenho ainda" onclick="pick(this,'certificado')"><span class="opt-t">❌ Não tenho ainda</span></button>
+      </div>
+      <div class="wbox" style="margin-top:16px">⚠ Sem o e-CPF não é possível assinar os documentos digitalmente. Caso não possua, informe nossa equipe — orientaremos antes de iniciar o processo.</div>`});
 
-  steps.push(stepFinal());
-  return steps;
+  steps.push(stepFinal()); return steps;
 }
 
 /* ==================== ALTERAÇÃO ==================== */
-function buildAlteracao() {
-  const d = S.data; const steps = [];
+function stepsAlteracao(){
+  const d=S.data, steps=[];
 
-  steps.push({name:'Empresa', question:'Dados da empresa que será alterada',
+  steps.push({name:'Dados da Empresa',question:'Dados da empresa que será alterada',
     hint:'Informe o CNPJ para buscarmos os dados automaticamente.',
     body:`
-      <div class="field-wrap">
-        <label class="field-label">CNPJ da Empresa *</label>
-        <div class="field-hint">Digite o CNPJ com 14 dígitos — os dados serão buscados automaticamente</div>
-        <div class="input-wrap">
-          <input type="text" name="cnpj" data-mask="cnpj" placeholder="00.000.000/0001-00" maxlength="18" required>
-          <div class="input-spinner" id="cnpj-spinner"></div>
-        </div>
-      </div>
-      <div class="field-wrap">
-        <label class="field-label">Razão Social *</label>
-        <div class="field-hint">Nome empresarial registrado — preenchido automaticamente ao digitar o CNPJ</div>
-        <input type="text" name="razao_social" placeholder="Nome empresarial registrado" required>
-      </div>
+      <div class="fw"><label class="flabel">CNPJ *</label>
+        <div class="fhint">Os dados serão buscados automaticamente ao digitar</div>
+        <div class="iwrap"><input type="text" name="cnpj" data-mask="cnpj" inputmode="numeric" placeholder="00.000.000/0001-00" maxlength="18" required><div class="ispinner"></div></div></div>
+      <div class="fw"><label class="flabel">Razão Social *</label>
+        <div class="fhint">Preenchido automaticamente ao digitar o CNPJ</div>
+        <input type="text" name="razao_social" placeholder="Nome empresarial registrado" required></div>
       <div class="row2">
-        <div class="field-wrap">
-          <label class="field-label">Tipo Societário Atual *</label>
-          <select name="tipo_atual" required>
-            <option value="">Selecione</option>
+        <div class="fw"><label class="flabel">Tipo Societário Atual *</label>
+          <select name="tipo_atual" required><option value="">Selecione</option>
             <option>MEI</option><option>EI</option><option>SLU</option>
-            <option>LTDA</option><option>S/A</option><option>Sociedade Simples</option>
-          </select>
-        </div>
-        <div class="field-wrap">
-          <label class="field-label">NIRE</label>
-          <div class="field-hint">Número de Identificação do Registro de Empresa na Junta — consta na certidão</div>
-          <input type="text" name="nire" placeholder="Número NIRE (opcional)">
-        </div>
-      </div>`});
+            <option>LTDA</option><option>S/A</option><option>Sociedade Simples</option></select></div>
+        <div class="fw"><label class="flabel">NIRE</label>
+          <div class="fhint">Consta na certidão da empresa</div>
+          <input type="text" name="nire" placeholder="Número NIRE (opcional)"></div></div>`});
 
-  steps.push({name:'O que alterar', question:'O que precisa ser alterado?',
+  steps.push({name:'O que alterar',question:'O que precisa ser alterado?',
     hint:'Selecione todos os itens que serão modificados. Você pode marcar mais de um.',
     body:`<div class="opt-list">
-      <button class="opt" data-field="alt_endereco" onclick="toggle(this,'alt_endereco')">
-        <span class="opt-t">📍 Endereço da Sede</span>
-        <span class="opt-s">Mudança de endereço no mesmo município, outro município ou outro estado</span></button>
-      <button class="opt" data-field="alt_socios" onclick="toggle(this,'alt_socios')">
-        <span class="opt-t">👥 Quadro Societário</span>
-        <span class="opt-s">Entrada, saída ou substituição de sócio — transferência de quotas entre sócios</span></button>
-      <button class="opt" data-field="alt_capital" onclick="toggle(this,'alt_capital')">
-        <span class="opt-t">💰 Capital Social</span>
-        <span class="opt-s">Aumento (novo aporte dos sócios) ou redução do capital social</span></button>
-      <button class="opt" data-field="alt_atividades" onclick="toggle(this,'alt_atividades')">
-        <span class="opt-t">🔧 Atividades / CNAEs</span>
-        <span class="opt-s">Inclusão de novas atividades, exclusão de atividades existentes ou troca da atividade principal</span></button>
-      <button class="opt" data-field="alt_razao" onclick="toggle(this,'alt_razao')">
-        <span class="opt-t">📝 Razão Social / Nome Fantasia</span>
-        <span class="opt-s">Mudança do nome empresarial registrado ou do nome comercial</span></button>
-      <button class="opt" data-field="alt_admin" onclick="toggle(this,'alt_admin')">
-        <span class="opt-t">👤 Administrador / Responsável Legal</span>
-        <span class="opt-s">Designação de novo administrador ou troca do responsável perante a Receita Federal</span></button>
+      <button class="opt" data-field="alt_endereco" onclick="tog(this,'alt_endereco')"><span class="opt-t">📍 Endereço da Sede</span><span class="opt-s">Mudança de endereço no mesmo município, outro município ou estado</span></button>
+      <button class="opt" data-field="alt_socios" onclick="tog(this,'alt_socios')"><span class="opt-t">👥 Quadro Societário</span><span class="opt-s">Entrada, saída ou substituição de sócio — transferência de quotas</span></button>
+      <button class="opt" data-field="alt_capital" onclick="tog(this,'alt_capital')"><span class="opt-t">💰 Capital Social</span><span class="opt-s">Aumento por novo aporte ou redução do capital social</span></button>
+      <button class="opt" data-field="alt_atividades" onclick="tog(this,'alt_atividades')"><span class="opt-t">🔧 Atividades / CNAEs</span><span class="opt-s">Inclusão, exclusão ou troca da atividade principal</span></button>
+      <button class="opt" data-field="alt_razao" onclick="tog(this,'alt_razao')"><span class="opt-t">📝 Razão Social / Nome Fantasia</span><span class="opt-s">Mudança do nome empresarial registrado ou comercial</span></button>
+      <button class="opt" data-field="alt_admin" onclick="tog(this,'alt_admin')"><span class="opt-t">👤 Administrador / Responsável Legal</span><span class="opt-s">Designação ou troca do administrador da empresa</span></button>
     </div>`});
 
-  if (d.alt_endereco==='sim') {
-    steps.push({name:'Novo Endereço', question:'Qual será o novo endereço da sede?',
-      hint:'O CEP preencherá os campos automaticamente. Informe também o tipo de mudança para definirmos os procedimentos corretos.',
+  if(d.alt_endereco==='sim'){
+    steps.push({name:'Novo Endereço',question:'Qual será o novo endereço da sede?',
+      hint:'O CEP preencherá os campos automaticamente.',
       body:`
-        <div class="field-wrap">
-          <label class="field-label">Tipo de mudança *</label>
+        <div class="fw"><label class="flabel">Tipo de mudança *</label>
           <div class="opt-list">
-            <button class="opt" data-field="tipo_mudanca" data-val="Mesmo município" onclick="pick(this,'tipo_mudanca')">
-              <span class="opt-t">Mesmo município</span><span class="opt-s">Apenas troca de endereço dentro da mesma cidade</span></button>
-            <button class="opt" data-field="tipo_mudanca" data-val="Outro município — mesmo estado" onclick="pick(this,'tipo_mudanca')">
-              <span class="opt-t">Outro município — mesmo estado</span><span class="opt-s">Muda a inscrição municipal — precisa de novo alvará na nova cidade</span></button>
-            <button class="opt" data-field="tipo_mudanca" data-val="Outro estado" onclick="pick(this,'tipo_mudanca')">
-              <span class="opt-t">Outro estado</span><span class="opt-s">Processo mais complexo — envolve transferência entre Juntas Comerciais</span></button>
-          </div>
-        </div>
-        <hr class="sdiv">
-        ${buildSedeBlock('novo_')}`});
+            <button class="opt" data-field="tipo_mudanca" data-val="Mesmo município" onclick="pick(this,'tipo_mudanca')"><span class="opt-t">Mesmo município</span><span class="opt-s">Troca de endereço dentro da mesma cidade</span></button>
+            <button class="opt" data-field="tipo_mudanca" data-val="Outro município — mesmo estado" onclick="pick(this,'tipo_mudanca')"><span class="opt-t">Outro município — mesmo estado</span><span class="opt-s">Muda a inscrição municipal — novo alvará na nova cidade</span></button>
+            <button class="opt" data-field="tipo_mudanca" data-val="Outro estado" onclick="pick(this,'tipo_mudanca')"><span class="opt-t">Outro estado</span><span class="opt-s">Processo mais complexo — envolve transferência entre Juntas</span></button>
+          </div></div>
+        <hr class="sdiv">${blkSede('novo_')}`});
   }
 
-  if (d.alt_socios==='sim') {
-    steps.push({name:'Movimento de Sócios', question:'Qual é a movimentação no quadro societário?',
+  if(d.alt_socios==='sim'){
+    steps.push({name:'Movimento de Sócios',question:'Qual é a movimentação no quadro societário?',
       body:`<div class="opt-list">
-        <button class="opt" data-field="mov_socios" data-val="Entrada de novo sócio" onclick="pick(this,'mov_socios')">
-          <span class="opt-t">➕ Entrada de novo sócio</span><span class="opt-s">Um novo sócio ingressa na sociedade com aporte de capital ou por cessão</span></button>
-        <button class="opt" data-field="mov_socios" data-val="Saída de sócio" onclick="pick(this,'mov_socios')">
-          <span class="opt-t">➖ Saída de sócio</span><span class="opt-s">Um sócio cede todas as suas quotas e se retira da sociedade</span></button>
-        <button class="opt" data-field="mov_socios" data-val="Transferência de quotas entre sócios" onclick="pick(this,'mov_socios')">
-          <span class="opt-t">🔄 Transferência de quotas entre sócios</span><span class="opt-s">Redistribuição de participação entre os sócios atuais</span></button>
-        <button class="opt" data-field="mov_socios" data-val="Substituição — saída e entrada simultânea" onclick="pick(this,'mov_socios')">
-          <span class="opt-t">🔁 Substituição — saída e entrada simultânea</span><span class="opt-s">Um sócio sai e outro entra na mesma alteração</span></button>
+        <button class="opt" data-field="mov_socios" data-val="Entrada de novo sócio" onclick="pick(this,'mov_socios')"><span class="opt-t">➕ Entrada de novo sócio</span><span class="opt-s">Um novo sócio ingressa com aporte de capital ou por cessão</span></button>
+        <button class="opt" data-field="mov_socios" data-val="Saída de sócio" onclick="pick(this,'mov_socios')"><span class="opt-t">➖ Saída de sócio</span><span class="opt-s">Um sócio cede todas as suas quotas e se retira da sociedade</span></button>
+        <button class="opt" data-field="mov_socios" data-val="Transferência entre sócios" onclick="pick(this,'mov_socios')"><span class="opt-t">🔄 Transferência entre sócios</span><span class="opt-s">Redistribuição de participação entre os sócios atuais</span></button>
+        <button class="opt" data-field="mov_socios" data-val="Substituição" onclick="pick(this,'mov_socios')"><span class="opt-t">🔁 Substituição — saída e entrada simultânea</span></button>
       </div>`});
-    steps.push({name:'Dados do Sócio', question:'Dados do sócio envolvido na alteração',
-      hint:'Informe os dados completos do sócio que está entrando ou saindo. Necessário para o documento de alteração.',
-      body: buildIdBlock('alt_s0_', true)});
-    steps.push({name:'Civil — Sócio Alt.', question:'Estado civil e endereço do sócio',
-      body: buildCivilBlock('alt_s0_')});
-    steps.push({name:'Endereço — Sócio Alt.', question:'Endereço residencial do sócio',
-      body: buildEndBlock('alt_s0_')});
-    steps.push({name:'Participação Alt.', question:'Participação societária após a alteração',
+    steps.push({name:'Dados do Sócio',question:'Dados do sócio envolvido na alteração',
+      hint:'Preencha os dados completos do sócio que está entrando ou saindo.',
+      body:blkId('alt_s0_',true)});
+    steps.push({name:'Civil — Sócio',question:'Estado civil do sócio envolvido',body:blkCivil('alt_s0_')});
+    if(d['alt_s0_estado_civil']==='casado(a)'||d['alt_s0_estado_civil']==='união estável'){
+      steps.push({name:'Regime — Sócio',question:'Regime de bens do sócio',body:blkRegime('alt_s0_')});
+    }
+    steps.push({name:'Endereço — Sócio',question:'Endereço residencial do sócio',body:blkEnd('alt_s0_')});
+    steps.push({name:'Participação Pós-Alt.',question:'Participação societária após a alteração',
       body:`
         <div class="row2">
-          <div class="field-wrap">
-            <label class="field-label">Quotas / % do sócio</label>
-            <div class="field-hint">Participação após a alteração. Ex: <em>50%</em> ou <em>5.000 quotas</em></div>
-            <input type="text" name="alt_s0_quotas_pct" placeholder="Ex: 50%">
-          </div>
-          <div class="field-wrap">
-            <label class="field-label">Valor em R$</label>
-            <input type="text" name="alt_s0_quotas_valor" placeholder="Ex: 5.000,00">
-          </div>
-        </div>
-        <div class="field-wrap">
-          <label class="field-label">Cargo / Função</label>
-          <select name="alt_s0_cargo">
-            <option value="">Selecione</option>
-            <option>Sócio Administrador</option><option>Sócio Não Administrador</option><option>Diretor</option>
-          </select>
-        </div>
-        <div class="field-wrap">
-          <label class="field-label">Detalhes da operação</label>
-          <div class="field-hint">Descreva condições, valor da cessão, forma de pagamento, quitações entre as partes</div>
-          <textarea name="alt_socios_obs" placeholder="Ex: O sócio João cede suas 5.000 quotas ao sócio Pedro pelo valor de R$ 5.000,00, quitados neste ato..."></textarea>
-        </div>`});
+          <div class="fw"><label class="flabel">Quotas / %</label>
+            <div class="fhint">Participação após a alteração. Ex: <em>50%</em></div>
+            <input type="text" name="alt_s0_quotas_pct" placeholder="Ex: 50%"></div>
+          <div class="fw"><label class="flabel">Valor em R$</label>
+            <input type="text" name="alt_s0_quotas_valor" placeholder="Ex: 5.000,00"></div></div>
+        <div class="fw"><label class="flabel">Cargo / Função</label>
+          <select name="alt_s0_cargo"><option value="">Selecione</option>
+            <option>Sócio Administrador</option><option>Sócio Não Administrador</option><option>Diretor</option></select></div>
+        <div class="fw"><label class="flabel">Detalhes da operação</label>
+          <div class="fhint">Descreva condições, valor da cessão, forma de pagamento, quitações entre as partes</div>
+          <textarea name="alt_s0_obs" placeholder="Ex: O sócio João cede suas 5.000 quotas ao sócio Pedro pelo valor de R$ 5.000,00..."></textarea></div>`});
   }
 
-  if (d.alt_capital==='sim') {
-    steps.push({name:'Alteração de Capital', question:'Alteração do capital social',
+  if(d.alt_capital==='sim'){
+    steps.push({name:'Alteração de Capital',question:'Alteração do capital social',
       body:`
-        <div class="field-wrap">
-          <label class="field-label">Tipo de alteração *</label>
+        <div class="fw"><label class="flabel">Tipo *</label>
           <div class="opt-list grid2">
-            <button class="opt" data-field="tipo_capital" data-val="Aumento" onclick="pick(this,'tipo_capital')">
-              <span class="opt-t">📈 Aumento de Capital</span><span class="opt-s">Novo aporte pelos sócios</span></button>
-            <button class="opt" data-field="tipo_capital" data-val="Redução" onclick="pick(this,'tipo_capital')">
-              <span class="opt-t">📉 Redução de Capital</span><span class="opt-s">Retirada de capital por excesso ou perdas</span></button>
-          </div>
-        </div>
+            <button class="opt" data-field="tipo_capital" data-val="Aumento" onclick="pick(this,'tipo_capital')"><span class="opt-t">📈 Aumento</span><span class="opt-s">Novo aporte pelos sócios</span></button>
+            <button class="opt" data-field="tipo_capital" data-val="Redução" onclick="pick(this,'tipo_capital')"><span class="opt-t">📉 Redução</span><span class="opt-s">Retirada de capital excessivo</span></button>
+          </div></div>
         <div class="row2">
-          <div class="field-wrap">
-            <label class="field-label">Capital Atual (R$) *</label>
-            <input type="text" name="capital_atual" placeholder="Ex: 10.000,00" required>
-          </div>
-          <div class="field-wrap">
-            <label class="field-label">Novo Capital (R$) *</label>
-            <input type="text" name="capital_novo" placeholder="Ex: 50.000,00" required>
-          </div>
-        </div>
-        <div class="field-wrap">
-          <label class="field-label">Origem / Motivo</label>
-          <div class="field-hint">Descreva como será feito. Ex: <em>"Aporte em dinheiro pelo sócio João, no valor de R$ 40.000,00"</em></div>
-          <textarea name="capital_motivo" placeholder="Descreva a origem do aumento ou o motivo da redução..."></textarea>
-        </div>`});
+          <div class="fw"><label class="flabel">Capital Atual (R$) *</label><input type="text" name="capital_atual" placeholder="Ex: 10.000,00" required></div>
+          <div class="fw"><label class="flabel">Novo Capital (R$) *</label><input type="text" name="capital_novo" placeholder="Ex: 50.000,00" required></div></div>
+        <div class="fw"><label class="flabel">Origem / Motivo</label>
+          <div class="fhint">Ex: <em>"Aporte em dinheiro pelos sócios no valor de R$ 40.000,00"</em></div>
+          <textarea name="capital_motivo" placeholder="Descreva a origem do aumento ou motivo da redução..."></textarea></div>`});
   }
 
-  if (d.alt_atividades==='sim') {
-    steps.push({name:'Alteração de Atividades', question:'Quais atividades serão alteradas?',
-      hint:'Detalhe as mudanças nas atividades. Se incluir comércio (ICMS) será necessária Inscrição Estadual; se incluir serviços (ISS), atualizar inscrição municipal.',
+  if(d.alt_atividades==='sim'){
+    steps.push({name:'Alteração de Atividades',question:'Quais atividades serão alteradas?',
       body:`
-        <div class="field-wrap">
-          <label class="field-label">Atividades a INCLUIR</label>
-          <div class="field-hint">Descreva as novas atividades e informe o CNAE se souber</div>
-          <textarea name="ativ_incluir" placeholder="Ex: Comércio varejista de móveis e decoração (CNAE 47.54-7-01)"></textarea>
-        </div>
-        <div class="field-wrap">
-          <label class="field-label">Atividades a EXCLUIR</label>
-          <textarea name="ativ_excluir" placeholder="Liste as atividades que serão removidas do contrato social"></textarea>
-        </div>
-        <div class="field-wrap">
-          <label class="field-label">Nova atividade principal (se mudar)</label>
-          <input type="text" name="nova_ativ_principal" placeholder="Descreva a nova atividade principal">
-        </div>`});
+        <div class="fw"><label class="flabel">Atividades a INCLUIR</label>
+          <div class="fhint">Descreva as novas atividades e o CNAE se souber</div>
+          <textarea name="ativ_incluir" placeholder="Ex: Comércio varejista de móveis (CNAE 47.54-7-01)"></textarea></div>
+        <div class="fw"><label class="flabel">Atividades a EXCLUIR</label>
+          <textarea name="ativ_excluir" placeholder="Liste as atividades a remover do contrato social"></textarea></div>
+        <div class="fw"><label class="flabel">Nova atividade principal (se mudar)</label>
+          <input type="text" name="nova_ativ_principal" placeholder="Descreva a nova atividade principal"></div>`});
   }
 
-  if (d.alt_razao==='sim') {
-    steps.push({name:'Novo Nome', question:'Qual o novo nome da empresa?',
-      hint:'O novo nome será pesquisado na Junta Comercial para verificar disponibilidade. Tenha sempre uma alternativa.',
+  if(d.alt_razao==='sim'){
+    steps.push({name:'Novo Nome',question:'Qual o novo nome da empresa?',
+      hint:'O novo nome será verificado na Junta Comercial. Tenha sempre uma alternativa.',
       body:`
-        <div class="field-wrap">
-          <label class="field-label">Nova Razão Social — 1ª opção *</label>
-          <input type="text" name="nova_razao_1" placeholder="Nome empresarial pretendido" required>
-        </div>
-        <div class="field-wrap">
-          <label class="field-label">Nova Razão Social — 2ª opção</label>
-          <input type="text" name="nova_razao_2" placeholder="Alternativa (caso o 1º esteja indisponível)">
-        </div>
-        <div class="field-wrap">
-          <label class="field-label">Novo Nome Fantasia</label>
-          <input type="text" name="novo_nome_fantasia" placeholder="Nome comercial (se alterar)">
-        </div>
-        <div class="field-wrap">
-          <label class="field-label">Motivo da mudança</label>
-          <textarea name="motivo_razao" placeholder="Ex: Reposicionamento de marca, entrada de novo sócio, mudança de segmento..."></textarea>
-        </div>`});
+        <div class="fw"><label class="flabel">Nova Razão Social — 1ª opção *</label>
+          <input type="text" name="nova_razao_1" placeholder="Nome pretendido" required></div>
+        <div class="fw"><label class="flabel">Nova Razão Social — 2ª opção</label>
+          <input type="text" name="nova_razao_2" placeholder="Alternativa (caso o 1º esteja indisponível)"></div>
+        <div class="fw"><label class="flabel">Novo Nome Fantasia</label>
+          <input type="text" name="novo_nome_fantasia" placeholder="Nome comercial (se alterar)"></div>`});
   }
 
-  if (d.alt_admin==='sim') {
-    steps.push({name:'Novo Administrador', question:'Dados do novo Administrador',
+  if(d.alt_admin==='sim'){
+    steps.push({name:'Novo Administrador',question:'Dados do novo Administrador',
       hint:'Preencha os dados completos do novo responsável legal da empresa.',
-      body: buildIdBlock('adm_', true)});
-    steps.push({name:'Civil — Administrador', question:'Estado civil do novo Administrador',
-      body: buildCivilBlock('adm_')});
-    steps.push({name:'Endereço — Administrador', question:'Endereço residencial do Administrador',
-      body: buildEndBlock('adm_')});
+      body:blkId('adm_',true)});
+    steps.push({name:'Civil — Adm.',question:'Estado civil do Administrador',body:blkCivil('adm_')});
+    if(d['adm_estado_civil']==='casado(a)'||d['adm_estado_civil']==='união estável'){
+      steps.push({name:'Regime — Adm.',question:'Regime de bens do Administrador',body:blkRegime('adm_')});
+    }
+    steps.push({name:'Endereço — Adm.',question:'Endereço residencial do Administrador',body:blkEnd('adm_')});
   }
 
-  steps.push(stepFinal());
-  return steps;
+  steps.push(stepFinal()); return steps;
 }
 
 /* ==================== TRANSFORMAÇÃO ==================== */
-function buildTransformacao() {
-  const d = S.data; const steps = [];
+function stepsTransformacao(){
+  const d=S.data, steps=[];
 
-  steps.push({name:'Empresa Atual', question:'Dados da empresa atual',
+  steps.push({name:'Empresa Atual',question:'Dados da empresa atual',
+    hint:'O CNPJ será mantido após a transformação — apenas o tipo societário será alterado.',
     body:`
-      <div class="field-wrap">
-        <label class="field-label">CNPJ da Empresa *</label>
-        <div class="field-hint">Os dados da empresa serão buscados automaticamente</div>
-        <div class="input-wrap">
-          <input type="text" name="cnpj" data-mask="cnpj" placeholder="00.000.000/0001-00" maxlength="18" required>
-          <div class="input-spinner"></div>
-        </div>
-      </div>
-      <div class="field-wrap">
-        <label class="field-label">Razão Social *</label>
-        <input type="text" name="razao_social" placeholder="Preenchido automaticamente pelo CNPJ" required>
-      </div>
+      <div class="fw"><label class="flabel">CNPJ *</label>
+        <div class="iwrap"><input type="text" name="cnpj" data-mask="cnpj" inputmode="numeric" placeholder="00.000.000/0001-00" maxlength="18" required><div class="ispinner"></div></div></div>
+      <div class="fw"><label class="flabel">Razão Social *</label>
+        <input type="text" name="razao_social" placeholder="Preenchido automaticamente pelo CNPJ" required></div>
       <div class="row2">
-        <div class="field-wrap">
-          <label class="field-label">Tipo Societário Atual *</label>
-          <select name="tipo_atual" required>
-            <option value="">Selecione</option>
-            <option>MEI</option><option>EI</option><option>SLU</option><option>LTDA</option><option>S/A</option>
-          </select>
-        </div>
-        <div class="field-wrap">
-          <label class="field-label">Data de Abertura</label>
-          <input type="date" name="data_abertura">
-        </div>
-      </div>`});
+        <div class="fw"><label class="flabel">Tipo Atual *</label>
+          <select name="tipo_atual" required><option value="">Selecione</option>
+            <option>MEI</option><option>EI</option><option>SLU</option><option>LTDA</option><option>S/A</option></select></div>
+        <div class="fw"><label class="flabel">Data de Abertura</label>
+          <input type="date" name="data_abertura"></div></div>`});
 
-  steps.push({name:'Tipo de Transformação', question:'Para qual tipo deseja transformar a empresa?',
-    hint:'A transformação mantém o CNPJ atual — apenas o tipo societário e o ato constitutivo serão alterados.',
+  steps.push({name:'Tipo de Transformação',question:'Para qual tipo deseja transformar?',
+    hint:'O CNPJ permanece o mesmo — apenas o ato constitutivo e o tipo societário serão alterados.',
     body:`<div class="opt-list">
-      <button class="opt" data-field="transf_para" data-val="MEI → EI/ME" onclick="pick(this,'transf_para')">
-        <span class="opt-t">MEI → EI / Microempresa</span>
-        <span class="opt-s">Por excesso de faturamento (acima de R$ 81.000/ano) ou opção voluntária</span></button>
-      <button class="opt" data-field="transf_para" data-val="EI → SLU" onclick="pick(this,'transf_para')">
-        <span class="opt-t">EI → SLU — Sociedade Ltda Unipessoal</span>
-        <span class="opt-s">Para proteger o patrimônio pessoal — responsabilidade limitada ao capital</span></button>
-      <button class="opt" data-field="transf_para" data-val="EI/SLU → LTDA" onclick="pick(this,'transf_para')">
-        <span class="opt-t">EI / SLU → LTDA</span>
-        <span class="opt-s">Para incluir sócio(s) e transformar em sociedade com mais de uma pessoa</span></button>
-      <button class="opt" data-field="transf_para" data-val="LTDA → S/A" onclick="pick(this,'transf_para')">
-        <span class="opt-t">LTDA → S/A — Sociedade Anônima</span>
-        <span class="opt-s">Para captação de investimento, emissão de ações ou reestruturação societária</span></button>
-      <button class="opt" data-field="transf_para" data-val="Outro" onclick="pick(this,'transf_para')">
-        <span class="opt-t">Outro tipo — especificar</span></button>
+      <button class="opt" data-field="transf_para" data-val="MEI → EI/ME" onclick="pick(this,'transf_para')"><span class="opt-t">MEI → EI / Microempresa</span><span class="opt-s">Por excesso de faturamento (acima de R$ 81.000/ano) ou opção voluntária</span></button>
+      <button class="opt" data-field="transf_para" data-val="EI → SLU" onclick="pick(this,'transf_para')"><span class="opt-t">EI → SLU</span><span class="opt-s">Para proteger o patrimônio pessoal — responsabilidade limitada ao capital</span></button>
+      <button class="opt" data-field="transf_para" data-val="EI/SLU → LTDA" onclick="pick(this,'transf_para')"><span class="opt-t">EI / SLU → LTDA</span><span class="opt-s">Para incluir sócio(s) e transformar em sociedade</span></button>
+      <button class="opt" data-field="transf_para" data-val="LTDA → S/A" onclick="pick(this,'transf_para')"><span class="opt-t">LTDA → S/A</span><span class="opt-s">Para captação de investimento, emissão de ações ou reestruturação</span></button>
     </div>
-    <div class="field-wrap" style="margin-top:18px">
-      <label class="field-label">Motivo / Contexto</label>
-      <textarea name="motivo_transf" placeholder="Descreva o contexto da transformação..."></textarea>
-    </div>`});
+    <div class="fw" style="margin-top:18px"><label class="flabel">Motivo / Contexto</label>
+      <textarea name="motivo_transf" placeholder="Descreva o contexto..."></textarea></div>`});
 
-  steps.push({name:'Titular — Identidade', question:'Dados do titular / sócio principal',
-    hint:'Preencha os dados para o novo ato constitutivo.',
-    body: buildIdBlock('s0_', true)});
-  steps.push({name:'Titular — Civil', question:'Estado civil do titular',
-    body: buildCivilBlock('s0_')});
-  steps.push({name:'Titular — Endereço', question:'Endereço residencial do titular',
-    body: buildEndBlock('s0_')});
+  steps.push({name:'Titular — Identificação',question:'Dados do titular / sócio principal',
+    hint:'Preencha os dados para o novo ato constitutivo.',body:blkId('s0_',true)});
+  steps.push({name:'Titular — Civil',question:'Estado civil do titular',body:blkCivil('s0_')});
+  if(d['s0_estado_civil']==='casado(a)'||d['s0_estado_civil']==='união estável'){
+    steps.push({name:'Titular — Regime',question:'Regime de bens do titular',body:blkRegime('s0_')});
+  }
+  steps.push({name:'Titular — Endereço',question:'Endereço residencial do titular',body:blkEnd('s0_')});
 
-  if (d.transf_para==='EI/SLU → LTDA'||d.transf_para==='LTDA → S/A') {
-    steps.push({name:'Novo Sócio — Identidade', question:'Dados do novo sócio',
-      hint:'Informe os dados do sócio que está ingressando na transformação.',
-      body: buildIdBlock('s1_', true)});
-    steps.push({name:'Novo Sócio — Civil', question:'Estado civil do novo sócio',
-      body: buildCivilBlock('s1_')});
-    steps.push({name:'Novo Sócio — Endereço', question:'Endereço residencial do novo sócio',
-      body: buildEndBlock('s1_')});
+  if(d.transf_para==='EI/SLU → LTDA'||d.transf_para==='LTDA → S/A'){
+    steps.push({name:'Novo Sócio — Identificação',question:'Dados do novo sócio',
+      hint:'Informe os dados do sócio que está ingressando.',body:blkId('s1_',true)});
+    steps.push({name:'Novo Sócio — Civil',question:'Estado civil do novo sócio',body:blkCivil('s1_')});
+    if(d['s1_estado_civil']==='casado(a)'||d['s1_estado_civil']==='união estável'){
+      steps.push({name:'Novo Sócio — Regime',question:'Regime de bens do novo sócio',body:blkRegime('s1_')});
+    }
+    steps.push({name:'Novo Sócio — Endereço',question:'Endereço residencial do novo sócio',body:blkEnd('s1_')});
   }
 
-  steps.push({name:'Capital Pós-Transformação', question:'Capital social após a transformação',
+  steps.push({name:'Capital Pós-Transformação',question:'Capital social após a transformação',
     body:`
-      <div class="field-wrap">
-        <label class="field-label">Valor do Capital Social (R$) *</label>
-        <div class="field-hint">Informe o capital que ficará registrado no novo tipo societário</div>
-        <input type="text" name="capital_social" placeholder="Ex: 10.000,00" required>
-      </div>
-      <div class="field-wrap">
-        <label class="field-label">Forma de integralização</label>
+      <div class="fw"><label class="flabel">Valor do Capital Social (R$) *</label>
+        <div class="fhint">Capital que ficará registrado no novo ato constitutivo</div>
+        <input type="text" name="capital_social" placeholder="Ex: 10.000,00" required></div>
+      <div class="fw"><label class="flabel">Forma de integralização</label>
         <div class="opt-list">
           <button class="opt" data-field="integralizacao" data-val="Dinheiro à vista" onclick="pick(this,'integralizacao')">Dinheiro — à vista</button>
           <button class="opt" data-field="integralizacao" data-val="Dinheiro a prazo" onclick="pick(this,'integralizacao')">Dinheiro — a prazo</button>
           <button class="opt" data-field="integralizacao" data-val="Bens" onclick="pick(this,'integralizacao')">Bens (móveis ou imóveis)</button>
-        </div>
-      </div>`});
+        </div></div>`});
 
-  steps.push(stepFinal());
-  return steps;
+  steps.push(stepFinal()); return steps;
 }
 
 /* ==================== BAIXA ==================== */
-function buildBaixa() {
-  const d = S.data; const steps = [];
+function stepsBaixa(){
+  const d=S.data, steps=[];
 
-  steps.push({name:'Empresa', question:'Dados da empresa a ser encerrada',
+  steps.push({name:'Empresa',question:'Dados da empresa a ser encerrada',
     body:`
-      <div class="field-wrap">
-        <label class="field-label">CNPJ da Empresa *</label>
-        <div class="field-hint">Os dados da empresa serão buscados automaticamente ao digitar o CNPJ</div>
-        <div class="input-wrap">
-          <input type="text" name="cnpj" data-mask="cnpj" placeholder="00.000.000/0001-00" maxlength="18" required>
-          <div class="input-spinner"></div>
-        </div>
-      </div>
-      <div class="field-wrap">
-        <label class="field-label">Razão Social *</label>
-        <input type="text" name="razao_social" placeholder="Preenchido automaticamente pelo CNPJ" required>
-      </div>
+      <div class="fw"><label class="flabel">CNPJ *</label>
+        <div class="fhint">Os dados serão buscados automaticamente</div>
+        <div class="iwrap"><input type="text" name="cnpj" data-mask="cnpj" inputmode="numeric" placeholder="00.000.000/0001-00" maxlength="18" required><div class="ispinner"></div></div></div>
+      <div class="fw"><label class="flabel">Razão Social *</label>
+        <input type="text" name="razao_social" placeholder="Preenchido automaticamente" required></div>
       <div class="row2">
-        <div class="field-wrap">
-          <label class="field-label">Tipo Societário *</label>
-          <select name="tipo_baixa" required>
-            <option value="">Selecione</option>
-            <option>MEI</option><option>EI</option><option>SLU</option><option>LTDA</option><option>S/A</option>
-          </select>
-        </div>
-        <div class="field-wrap">
-          <label class="field-label">Data de Abertura</label>
-          <input type="date" name="data_abertura">
-        </div>
-      </div>`});
+        <div class="fw"><label class="flabel">Tipo Societário *</label>
+          <select name="tipo_baixa" required><option value="">Selecione</option>
+            <option>MEI</option><option>EI</option><option>SLU</option><option>LTDA</option><option>S/A</option></select></div>
+        <div class="fw"><label class="flabel">Data de Abertura</label>
+          <input type="date" name="data_abertura"></div></div>`});
 
-  steps.push({name:'Motivo do Encerramento', question:'Qual o motivo do encerramento?',
+  steps.push({name:'Motivo do Encerramento',question:'Qual o motivo do encerramento?',
     body:`<div class="opt-list">
-      <button class="opt" data-field="motivo_baixa" data-val="Por vontade dos sócios" onclick="pick(this,'motivo_baixa')">
-        <span class="opt-t">Por vontade dos sócios</span><span class="opt-s">Decisão voluntária de encerrar as atividades</span></button>
-      <button class="opt" data-field="motivo_baixa" data-val="Inatividade / sem movimento" onclick="pick(this,'motivo_baixa')">
-        <span class="opt-t">Inatividade — empresa sem movimento</span><span class="opt-s">Empresa parada há algum tempo sem exercer atividades</span></button>
-      <button class="opt" data-field="motivo_baixa" data-val="Dificuldades financeiras" onclick="pick(this,'motivo_baixa')">
-        <span class="opt-t">Dificuldades financeiras</span></button>
-      <button class="opt" data-field="motivo_baixa" data-val="Transformação — abertura de nova empresa" onclick="pick(this,'motivo_baixa')">
-        <span class="opt-t">Transformação — abertura de nova empresa</span><span class="opt-s">Esta empresa será encerrada e uma nova será aberta</span></button>
-      <button class="opt" data-field="motivo_baixa" data-val="Conclusão do objeto social" onclick="pick(this,'motivo_baixa')">
-        <span class="opt-t">Conclusão do objeto social</span><span class="opt-s">A finalidade para a qual a empresa foi criada foi concluída</span></button>
+      <button class="opt" data-field="motivo_baixa" data-val="Por vontade dos sócios" onclick="pick(this,'motivo_baixa')"><span class="opt-t">Por vontade dos sócios</span><span class="opt-s">Decisão voluntária de encerrar as atividades</span></button>
+      <button class="opt" data-field="motivo_baixa" data-val="Inatividade" onclick="pick(this,'motivo_baixa')"><span class="opt-t">Inatividade — empresa sem movimento</span><span class="opt-s">Empresa parada há algum tempo sem exercer atividades</span></button>
+      <button class="opt" data-field="motivo_baixa" data-val="Dificuldades financeiras" onclick="pick(this,'motivo_baixa')"><span class="opt-t">Dificuldades financeiras</span></button>
+      <button class="opt" data-field="motivo_baixa" data-val="Transformação societária" onclick="pick(this,'motivo_baixa')"><span class="opt-t">Transformação — abertura de nova empresa</span></button>
+      <button class="opt" data-field="motivo_baixa" data-val="Conclusão do objeto social" onclick="pick(this,'motivo_baixa')"><span class="opt-t">Conclusão do objeto social</span><span class="opt-s">A finalidade para a qual a empresa foi criada foi concluída</span></button>
     </div>`});
 
-  steps.push({name:'Situação da Empresa', question:'Situação atual da empresa',
-    hint:'Estas informações são necessárias para preparar o distrato social e identificar as obrigações a cumprir antes do encerramento.',
+  steps.push({name:'Situação da Empresa',question:'Situação atual da empresa',
+    hint:'Estas informações são necessárias para o distrato social e obrigações finais.',
     body:`
-      <div class="field-wrap">
-        <label class="field-label">Possui funcionários com carteira assinada? *</label>
-        <div class="field-hint">Todos os funcionários devem ser dispensados e ter os direitos quitados antes da baixa</div>
+      <div class="fw"><label class="flabel">Possui funcionários com carteira assinada? *</label>
+        <div class="fhint">Todos devem ser dispensados e com direitos quitados antes da baixa</div>
         <div class="opt-list grid2">
           <button class="opt" data-field="tem_func" data-val="Não" onclick="pick(this,'tem_func')"><span class="opt-t">Não</span></button>
           <button class="opt" data-field="tem_func" data-val="Sim" onclick="pick(this,'tem_func')"><span class="opt-t">Sim</span></button>
-        </div>
-      </div>
-      <div class="field-wrap">
-        <label class="field-label">Possui débitos fiscais pendentes?</label>
-        <div class="field-hint">Desde 2014, débitos não impedem a baixa do CNPJ — os valores são transferidos para os sócios. Mas é importante saber.</div>
+        </div></div>
+      <div class="fw"><label class="flabel">Possui débitos fiscais pendentes?</label>
+        <div class="fhint">Desde 2014, débitos não impedem a baixa — são transferidos para os sócios. Mas é importante saber.</div>
         <div class="opt-list grid2">
           <button class="opt" data-field="tem_debitos" data-val="Não" onclick="pick(this,'tem_debitos')"><span class="opt-t">Não</span></button>
           <button class="opt" data-field="tem_debitos" data-val="Sim" onclick="pick(this,'tem_debitos')"><span class="opt-t">Sim — há débitos</span></button>
-        </div>
-      </div>
-      <div class="field-wrap">
-        <label class="field-label">Última declaração entregue à Receita Federal</label>
-        <select name="ultima_declaracao">
-          <option value="">Selecione</option>
-          <option>2024</option><option>2023</option><option>2022</option>
-          <option>2021 ou antes</option><option>Nunca entregou</option><option>Não sabe</option>
-        </select>
-      </div>
-      <div class="field-wrap">
-        <label class="field-label">Possui bens registrados em nome da empresa?</label>
-        <div class="field-hint">Veículos, imóveis, equipamentos — precisarão ser transferidos ou alienados antes do encerramento</div>
+        </div></div>
+      <div class="fw"><label class="flabel">Possui bens registrados em nome da empresa?</label>
+        <div class="fhint">Veículos, imóveis, equipamentos — precisarão ser transferidos antes do encerramento</div>
         <div class="opt-list grid2">
           <button class="opt" data-field="tem_bens" data-val="Não" onclick="pick(this,'tem_bens')"><span class="opt-t">Não</span></button>
           <button class="opt" data-field="tem_bens" data-val="Sim" onclick="pick(this,'tem_bens')"><span class="opt-t">Sim</span></button>
-        </div>
-      </div>`});
+        </div></div>
+      <div class="fw"><label class="flabel">Última declaração entregue à Receita Federal</label>
+        <select name="ultima_declaracao"><option value="">Selecione</option>
+          <option>2024</option><option>2023</option><option>2022</option>
+          <option>2021 ou antes</option><option>Nunca entregou</option><option>Não sabe</option>
+        </select></div>`});
 
-  if (d.tipo_baixa !== 'MEI') {
-    steps.push({name:'Sócio — Distrato', question:'Dados do sócio / titular para o distrato social',
-      hint:'Dados necessários para elaborar o distrato e dar baixa na Junta Comercial.',
-      body: buildIdBlock('b_s0_', false)});
-    steps.push({name:'Civil — Distrato', question:'Estado civil do sócio',
-      body: buildCivilBlock('b_s0_')});
-    steps.push({name:'Endereço — Distrato', question:'Endereço residencial do sócio',
-      body: buildEndBlock('b_s0_')});
+  if(d.tipo_baixa!=='MEI'){
+    steps.push({name:'Sócio — Distrato',question:'Dados do sócio / titular para o distrato social',
+      hint:'Necessário para elaborar o distrato e dar baixa na Junta Comercial.',
+      body:blkId('b_s0_',false)});
+    steps.push({name:'Civil — Distrato',question:'Estado civil do sócio',body:blkCivil('b_s0_')});
+    if(d['b_s0_estado_civil']==='casado(a)'||d['b_s0_estado_civil']==='união estável'){
+      steps.push({name:'Regime — Distrato',question:'Regime de bens do sócio',body:blkRegime('b_s0_')});
+    }
+    steps.push({name:'Endereço — Distrato',question:'Endereço residencial do sócio',body:blkEnd('b_s0_')});
   }
 
-  steps.push(stepFinal());
-  return steps;
+  steps.push(stepFinal()); return steps;
 }
 
-/* ==========================================================
-   SHARED BLOCKS
-========================================================== */
-function buildIdBlock(p, withParents) {
+/* ==================== BLOCOS COMPARTILHADOS ==================== */
+function blkId(p, withParents) {
   return `
-    <div class="field-wrap">
-      <label class="field-label">Nome Completo *</label>
-      <div class="field-hint">Digite o nome exatamente como aparece no RG ou CNH — sem abreviações</div>
-      <input type="text" name="${p}nome" placeholder="Nome civil completo" required>
-    </div>
+    <div class="fw"><label class="flabel">Nome Completo *</label>
+      <div class="fhint">Digite o nome exatamente como no RG ou CNH — sem abreviações</div>
+      <input type="text" name="${p}nome" placeholder="Nome civil completo" required></div>
     <div class="row2">
-      <div class="field-wrap">
-        <label class="field-label">CPF *</label>
-        <div class="field-hint">11 dígitos — será validado automaticamente</div>
-        <input type="text" name="${p}cpf" data-mask="cpf" placeholder="000.000.000-00" maxlength="14" required>
-      </div>
-      <div class="field-wrap">
-        <label class="field-label">RG ou CNH *</label>
-        <div class="field-hint">Número do documento de identidade</div>
-        <input type="text" name="${p}rg" data-mask="rg" placeholder="Número do RG ou CNH" required>
-      </div>
-    </div>
+      <div class="fw"><label class="flabel">CPF *</label>
+        <div class="fhint">11 dígitos — validado automaticamente</div>
+        <input type="text" name="${p}cpf" data-mask="cpf" inputmode="numeric" placeholder="000.000.000-00" maxlength="14" required></div>
+      <div class="fw"><label class="flabel">RG ou CNH *</label>
+        <input type="text" name="${p}rg" inputmode="numeric" placeholder="Número do documento" required></div></div>
     <div class="row2">
-      <div class="field-wrap">
-        <label class="field-label">Órgão Emissor do RG *</label>
-        <div class="field-hint">Ex: SSP-SP, DETRAN-RJ, CREA-SP</div>
-        <input type="text" name="${p}orgao_emissor" placeholder="Ex: SSP-SP" required>
-      </div>
-      <div class="field-wrap">
-        <label class="field-label">Data de Emissão do RG *</label>
-        <input type="date" name="${p}data_emissao" required>
-      </div>
-    </div>
+      <div class="fw"><label class="flabel">Órgão Emissor *</label>
+        <div class="fhint">Ex: SSP-SP, DETRAN-RJ</div>
+        <input type="text" name="${p}orgao_emissor" placeholder="Ex: SSP-SP" required></div>
+      <div class="fw"><label class="flabel">Data de Emissão *</label>
+        <input type="date" name="${p}data_emissao" required></div></div>
     <div class="row2">
-      <div class="field-wrap">
-        <label class="field-label">Data de Nascimento *</label>
-        <input type="date" name="${p}nascimento" required>
-      </div>
-      <div class="field-wrap">
-        <label class="field-label">Naturalidade *</label>
-        <div class="field-hint">Cidade e estado onde nasceu. Ex: São Paulo/SP</div>
-        <input type="text" name="${p}naturalidade" placeholder="Cidade/UF" required>
-      </div>
-    </div>
+      <div class="fw"><label class="flabel">Data de Nascimento *</label>
+        <input type="date" name="${p}nascimento" required></div>
+      <div class="fw"><label class="flabel">Naturalidade *</label>
+        <div class="fhint">Cidade e estado onde nasceu. Ex: São Paulo/SP</div>
+        <input type="text" name="${p}naturalidade" placeholder="Cidade/UF" required></div></div>
     <div class="row2">
-      <div class="field-wrap">
-        <label class="field-label">Nacionalidade *</label>
-        <select name="${p}nacionalidade" required>
-          <option value="">Selecione</option>
-          <option>brasileiro(a)</option>
-          <option>brasileiro(a) naturalizado(a)</option>
-          <option>estrangeiro(a)</option>
-        </select>
-      </div>
-      <div class="field-wrap">
-        <label class="field-label">Cor / Raça *</label>
-        <div class="field-hint">Declaração usada no preâmbulo do contrato</div>
-        <select name="${p}cor" required>
-          <option value="">Selecione</option>
-          <option>branca</option><option>preta</option><option>parda</option>
-          <option>amarela</option><option>indígena</option>
-        </select>
-      </div>
-    </div>
+      <div class="fw"><label class="flabel">Nacionalidade *</label>
+        <select name="${p}nacionalidade" required><option value="">Selecione</option>
+          <option>brasileiro(a)</option><option>brasileiro(a) naturalizado(a)</option><option>estrangeiro(a)</option></select></div>
+      <div class="fw"><label class="flabel">Cor / Raça *</label>
+        <div class="fhint">Consta no preâmbulo do contrato</div>
+        <select name="${p}cor" required><option value="">Selecione</option>
+          <option>branca</option><option>preta</option><option>parda</option><option>amarela</option><option>indígena</option></select></div></div>
     <div class="row2">
-      <div class="field-wrap">
-        <label class="field-label">Profissão *</label>
-        <div class="field-hint">Profissão declarada no documento de identidade. Ex: Administrador, Comerciante, Engenheiro</div>
-        <input type="text" name="${p}profissao" placeholder="Ex: Administrador" required>
-      </div>
-      <div class="field-wrap">
-        <label class="field-label">WhatsApp / Telefone *</label>
-        <input type="tel" name="${p}telefone" data-mask="phone" placeholder="(11) 99999-9999" required>
-      </div>
-    </div>
-    <div class="field-wrap">
-      <label class="field-label">E-mail *</label>
-      <div class="field-hint">E-mail válido para envio de documentos e comunicações</div>
-      <input type="email" name="${p}email" placeholder="email@exemplo.com" required>
-    </div>
-    ${withParents ? `
+      <div class="fw"><label class="flabel">Profissão *</label>
+        <div class="fhint">Como consta no RG. Ex: Administrador, Comerciante</div>
+        <input type="text" name="${p}profissao" placeholder="Ex: Administrador" required></div>
+      <div class="fw"><label class="flabel">WhatsApp / Telefone *</label>
+        <input type="tel" name="${p}telefone" data-mask="phone" inputmode="numeric" placeholder="(11) 99999-9999" required></div></div>
+    <div class="fw"><label class="flabel">E-mail *</label>
+      <div class="fhint">E-mail válido para envio de documentos</div>
+      <input type="email" name="${p}email" placeholder="email@exemplo.com" required></div>
+    ${withParents?`
     <hr class="sdiv">
-    <div class="slabel">Filiação (para preâmbulo do contrato)</div>
+    <div class="slabel">Filiação</div>
     <div class="row2">
-      <div class="field-wrap">
-        <label class="field-label">Nome da Mãe *</label>
-        <div class="field-hint">Nome completo da mãe conforme certidão de nascimento ou RG</div>
-        <input type="text" name="${p}nome_mae" placeholder="Nome completo da mãe" required>
-      </div>
-      <div class="field-wrap">
-        <label class="field-label">Nome do Pai</label>
-        <div class="field-hint">Deixe em branco se não constar no documento</div>
-        <input type="text" name="${p}nome_pai" placeholder="Nome completo do pai (opcional)">
-      </div>
-    </div>` : ''}`;
+      <div class="fw"><label class="flabel">Nome da Mãe *</label>
+        <div class="fhint">Conforme certidão de nascimento ou RG</div>
+        <input type="text" name="${p}nome_mae" placeholder="Nome completo da mãe" required></div>
+      <div class="fw"><label class="flabel">Nome do Pai</label>
+        <div class="fhint">Deixe em branco se não constar no documento</div>
+        <input type="text" name="${p}nome_pai" placeholder="Nome completo do pai (opcional)"></div></div>`:``}`;
 }
 
-function buildCivilBlock(p) {
-  const d = S.data;
-  const ec = d[p+'estado_civil'];
-  const casado = ec==='casado(a)'||ec==='união estável';
+function blkCivil(p) {
   return `
-    <div class="field-wrap">
-      <label class="field-label">Estado Civil *</label>
+    <div class="fw"><label class="flabel">Estado Civil *</label>
       <div class="opt-list">
         <button class="opt" data-field="${p}estado_civil" data-val="solteiro(a)" onclick="pick(this,'${p}estado_civil')">Solteiro(a)</button>
         <button class="opt" data-field="${p}estado_civil" data-val="casado(a)" onclick="pick(this,'${p}estado_civil')">Casado(a)</button>
@@ -1776,209 +1440,126 @@ function buildCivilBlock(p) {
         <button class="opt" data-field="${p}estado_civil" data-val="viúvo(a)" onclick="pick(this,'${p}estado_civil')">Viúvo(a)</button>
         <button class="opt" data-field="${p}estado_civil" data-val="separado(a) judicialmente" onclick="pick(this,'${p}estado_civil')">Separado(a) Judicialmente</button>
         <button class="opt" data-field="${p}estado_civil" data-val="união estável" onclick="pick(this,'${p}estado_civil')">União Estável</button>
-      </div>
-    </div>
-    ${casado ? `
+      </div></div>`;
+}
+
+function blkRegime(p) {
+  return `
+    <div class="ibox"><strong>Por que precisamos disso?</strong> O regime de bens é cláusula obrigatória do contrato social conforme o Código Civil. Define como o patrimônio do casal se relaciona com as quotas da empresa.</div>
+    <div class="fw"><label class="flabel">Regime de Bens *</label>
+      <div class="opt-list">
+        <button class="opt" data-field="${p}regime_bens" data-val="comunhão parcial de bens" onclick="pick(this,'${p}regime_bens')">
+          <span class="opt-t">Comunhão Parcial de Bens</span>
+          <span class="opt-s">Padrão no Brasil — bens adquiridos durante o casamento são comuns; os anteriores pertencem a cada um</span></button>
+        <button class="opt" data-field="${p}regime_bens" data-val="comunhão universal de bens" onclick="pick(this,'${p}regime_bens')">
+          <span class="opt-t">Comunhão Universal de Bens</span>
+          <span class="opt-s">Todo o patrimônio, anterior e durante o casamento, é compartilhado integralmente</span></button>
+        <button class="opt" data-field="${p}regime_bens" data-val="separação total de bens" onclick="pick(this,'${p}regime_bens')">
+          <span class="opt-t">Separação Total de Bens</span>
+          <span class="opt-s">Cada cônjuge mantém seu patrimônio completamente separado</span></button>
+        <button class="opt" data-field="${p}regime_bens" data-val="participação final nos aquestos" onclick="pick(this,'${p}regime_bens')">
+          <span class="opt-t">Participação Final nos Aquestos</span>
+          <span class="opt-s">Durante o casamento cada um administra o próprio — na separação, divide o que foi adquirido juntos</span></button>
+      </div></div>
     <hr class="sdiv">
     <div class="slabel">Cônjuge / Companheiro(a)</div>
-    <div class="field-wrap">
-      <label class="field-label">Regime de Bens *</label>
-      <div class="field-hint">O regime de bens define como o patrimônio é compartilhado entre o casal — obrigatório no contrato social</div>
-      <div class="opt-list">
-        <button class="opt" data-field="${p}regime" data-val="comunhão parcial de bens" onclick="pick(this,'${p}regime')">
-          <span class="opt-t">Comunhão Parcial de Bens</span>
-          <span class="opt-s">Padrão no Brasil · Bens adquiridos durante o casamento são comuns; anteriores pertencem a cada um</span></button>
-        <button class="opt" data-field="${p}regime" data-val="comunhão universal de bens" onclick="pick(this,'${p}regime')">
-          <span class="opt-t">Comunhão Universal de Bens</span>
-          <span class="opt-s">Todo o patrimônio — anterior e durante o casamento — é compartilhado</span></button>
-        <button class="opt" data-field="${p}regime" data-val="separação total de bens" onclick="pick(this,'${p}regime')">
-          <span class="opt-t">Separação Total de Bens</span>
-          <span class="opt-s">Cada cônjuge mantém seu próprio patrimônio integralmente separado</span></button>
-        <button class="opt" data-field="${p}regime" data-val="participação final nos aquestos" onclick="pick(this,'${p}regime')">
-          <span class="opt-t">Participação Final nos Aquestos</span>
-          <span class="opt-s">Durante o casamento cada um administra seu patrimônio; na separação dividem o que foi adquirido</span></button>
-      </div>
-    </div>
     <div class="row2">
-      <div class="field-wrap">
-        <label class="field-label">Nome do Cônjuge / Companheiro(a)</label>
-        <input type="text" name="${p}conjuge_nome" placeholder="Nome completo">
-      </div>
-      <div class="field-wrap">
-        <label class="field-label">CPF do Cônjuge / Companheiro(a)</label>
-        <input type="text" name="${p}conjuge_cpf" data-mask="cpf" placeholder="000.000.000-00" maxlength="14">
-      </div>
-    </div>` : ''}`;
+      <div class="fw"><label class="flabel">Nome do Cônjuge</label>
+        <input type="text" name="${p}conjuge_nome" placeholder="Nome completo"></div>
+      <div class="fw"><label class="flabel">CPF do Cônjuge</label>
+        <input type="text" name="${p}conjuge_cpf" data-mask="cpf" inputmode="numeric" placeholder="000.000.000-00" maxlength="14"></div></div>`;
 }
 
-function buildEndBlock(p) {
+function blkEnd(p) {
   return `
     <div class="row2">
-      <div class="field-wrap">
-        <label class="field-label">CEP *</label>
-        <div class="field-hint">Digite o CEP — endereço preenchido automaticamente</div>
-        <div class="input-wrap">
-          <input type="text" name="${p}cep" data-mask="cep" data-prefix="${p}" placeholder="00000-000" maxlength="9" required>
-          <div class="input-spinner"></div>
-        </div>
-      </div>
-      <div class="field-wrap">
-        <label class="field-label">Estado (UF) *</label>
-        <select name="${p}uf" required>
-          <option value="">UF</option>
-          <option>AC</option><option>AL</option><option>AP</option><option>AM</option>
-          <option>BA</option><option>CE</option><option>DF</option><option>ES</option>
-          <option>GO</option><option>MA</option><option>MT</option><option>MS</option>
-          <option>MG</option><option>PA</option><option>PB</option><option>PR</option>
-          <option>PE</option><option>PI</option><option>RJ</option><option>RN</option>
-          <option>RS</option><option>RO</option><option>RR</option><option>SC</option>
-          <option>SP</option><option>SE</option><option>TO</option>
-        </select>
-      </div>
-    </div>
-    <div class="field-wrap">
-      <label class="field-label">Logradouro (Rua / Avenida) *</label>
-      <input type="text" name="${p}logradouro" placeholder="Nome da rua, avenida, alameda..." required>
-    </div>
+      <div class="fw"><label class="flabel">CEP *</label>
+        <div class="fhint">Preenche o endereço automaticamente</div>
+        <div class="iwrap"><input type="text" name="${p}cep" data-mask="cep" data-prefix="${p}" inputmode="numeric" placeholder="00000-000" maxlength="9" required><div class="ispinner"></div></div></div>
+      <div class="fw"><label class="flabel">Estado (UF) *</label>
+        <select name="${p}uf" required><option value="">UF</option>${ufOpts()}</select></div></div>
+    <div class="fw"><label class="flabel">Logradouro (Rua / Avenida) *</label>
+      <input type="text" name="${p}logradouro" placeholder="Nome da rua, avenida..." required></div>
     <div class="row3">
-      <div class="field-wrap">
-        <label class="field-label">Número *</label>
-        <input type="text" name="${p}numero" placeholder="Nº" required>
-      </div>
-      <div class="field-wrap">
-        <label class="field-label">Complemento</label>
-        <input type="text" name="${p}complemento" placeholder="Apto, sala, bloco...">
-      </div>
-      <div class="field-wrap">
-        <label class="field-label">Bairro *</label>
-        <input type="text" name="${p}bairro" placeholder="Bairro" required>
-      </div>
-    </div>
-    <div class="field-wrap">
-      <label class="field-label">Município *</label>
-      <input type="text" name="${p}municipio" placeholder="Cidade" required>
-    </div>`;
+      <div class="fw"><label class="flabel">Número *</label>
+        <input type="text" name="${p}numero" inputmode="numeric" placeholder="Nº" required></div>
+      <div class="fw"><label class="flabel">Complemento</label>
+        <input type="text" name="${p}complemento" placeholder="Apto, sala..."></div>
+      <div class="fw"><label class="flabel">Bairro *</label>
+        <input type="text" name="${p}bairro" placeholder="Bairro" required></div></div>
+    <div class="fw"><label class="flabel">Município *</label>
+      <input type="text" name="${p}municipio" placeholder="Cidade" required></div>`;
 }
 
-function buildSedeBlock(p) {
+function blkSede(p) {
   return `
-    <div class="field-wrap">
-      <label class="field-label">Tipo de Imóvel *</label>
-      <div class="field-hint">Isso afeta a documentação necessária para o alvará de funcionamento</div>
+    <div class="fw"><label class="flabel">Tipo de Imóvel *</label>
+      <div class="fhint">Isso afeta a documentação para o alvará de funcionamento</div>
       <div class="opt-list">
-        <button class="opt" data-field="${p}tipo_imovel" data-val="Próprio" onclick="pick(this,'${p}tipo_imovel')">
-          <span class="opt-t">Imóvel próprio</span><span class="opt-s">O imóvel pertence ao sócio ou à empresa</span></button>
-        <button class="opt" data-field="${p}tipo_imovel" data-val="Alugado" onclick="pick(this,'${p}tipo_imovel')">
-          <span class="opt-t">Imóvel alugado</span><span class="opt-s">Contrato de locação em nome da empresa ou do sócio</span></button>
-        <button class="opt" data-field="${p}tipo_imovel" data-val="Coworking / Endereço fiscal" onclick="pick(this,'${p}tipo_imovel')">
-          <span class="opt-t">Coworking / Endereço fiscal</span><span class="opt-s">Endereço contratado apenas para fins de registro</span></button>
-        <button class="opt" data-field="${p}tipo_imovel" data-val="Residencial do sócio" onclick="pick(this,'${p}tipo_imovel')">
-          <span class="opt-t">Residencial do sócio</span><span class="opt-s">A empresa ficará registrada na residência do sócio</span></button>
-      </div>
-    </div>
+        <button class="opt" data-field="${p}tipo_imovel" data-val="Próprio" onclick="pick(this,'${p}tipo_imovel')"><span class="opt-t">Imóvel próprio</span><span class="opt-s">Pertence ao sócio ou à empresa</span></button>
+        <button class="opt" data-field="${p}tipo_imovel" data-val="Alugado" onclick="pick(this,'${p}tipo_imovel')"><span class="opt-t">Imóvel alugado</span><span class="opt-s">Contrato de locação em nome da empresa ou do sócio</span></button>
+        <button class="opt" data-field="${p}tipo_imovel" data-val="Coworking / Endereço fiscal" onclick="pick(this,'${p}tipo_imovel')"><span class="opt-t">Coworking / Endereço fiscal</span><span class="opt-s">Endereço contratado apenas para registro</span></button>
+        <button class="opt" data-field="${p}tipo_imovel" data-val="Residencial do sócio" onclick="pick(this,'${p}tipo_imovel')"><span class="opt-t">Residencial do sócio</span><span class="opt-s">A empresa ficará registrada na residência do sócio</span></button>
+      </div></div>
     <hr class="sdiv">
     <div class="row2">
-      <div class="field-wrap">
-        <label class="field-label">CEP *</label>
-        <div class="field-hint">Os campos abaixo serão preenchidos automaticamente</div>
-        <div class="input-wrap">
-          <input type="text" name="${p}cep" data-mask="cep" data-prefix="${p}" placeholder="00000-000" maxlength="9" required>
-          <div class="input-spinner"></div>
-        </div>
-      </div>
-      <div class="field-wrap">
-        <label class="field-label">Estado (UF) *</label>
-        <select name="${p}uf" required>
-          <option value="">UF</option>
-          <option>AC</option><option>AL</option><option>AP</option><option>AM</option>
-          <option>BA</option><option>CE</option><option>DF</option><option>ES</option>
-          <option>GO</option><option>MA</option><option>MT</option><option>MS</option>
-          <option>MG</option><option>PA</option><option>PB</option><option>PR</option>
-          <option>PE</option><option>PI</option><option>RJ</option><option>RN</option>
-          <option>RS</option><option>RO</option><option>RR</option><option>SC</option>
-          <option>SP</option><option>SE</option><option>TO</option>
-        </select>
-      </div>
-    </div>
-    <div class="field-wrap">
-      <label class="field-label">Logradouro *</label>
-      <input type="text" name="${p}logradouro" placeholder="Rua, Avenida, Alameda..." required>
-    </div>
+      <div class="fw"><label class="flabel">CEP *</label>
+        <div class="fhint">Preenche os campos automaticamente</div>
+        <div class="iwrap"><input type="text" name="${p}cep" data-mask="cep" data-prefix="${p}" inputmode="numeric" placeholder="00000-000" maxlength="9" required><div class="ispinner"></div></div></div>
+      <div class="fw"><label class="flabel">Estado (UF) *</label>
+        <select name="${p}uf" required><option value="">UF</option>${ufOpts()}</select></div></div>
+    <div class="fw"><label class="flabel">Logradouro *</label>
+      <input type="text" name="${p}logradouro" placeholder="Rua, Avenida, Alameda..." required></div>
     <div class="row3">
-      <div class="field-wrap">
-        <label class="field-label">Número *</label>
-        <input type="text" name="${p}numero" placeholder="Nº" required>
-      </div>
-      <div class="field-wrap">
-        <label class="field-label">Complemento</label>
-        <input type="text" name="${p}complemento" placeholder="Sala, andar...">
-      </div>
-      <div class="field-wrap">
-        <label class="field-label">Bairro *</label>
-        <input type="text" name="${p}bairro" placeholder="Bairro" required>
-      </div>
-    </div>
+      <div class="fw"><label class="flabel">Número *</label>
+        <input type="text" name="${p}numero" inputmode="numeric" placeholder="Nº" required></div>
+      <div class="fw"><label class="flabel">Complemento</label>
+        <input type="text" name="${p}complemento" placeholder="Sala, andar..."></div>
+      <div class="fw"><label class="flabel">Bairro *</label>
+        <input type="text" name="${p}bairro" placeholder="Bairro" required></div></div>
     <div class="row2">
-      <div class="field-wrap">
-        <label class="field-label">Município *</label>
-        <input type="text" name="${p}municipio" placeholder="Cidade" required>
-      </div>
-      <div class="field-wrap">
-        <label class="field-label">Nº do IPTU</label>
-        <div class="field-hint">Número de inscrição imobiliária (IPTU) — consta no carnê ou boleto do IPTU</div>
-        <input type="text" name="${p}iptu" placeholder="Ex: 001.025.0042.0000">
-      </div>
-    </div>`;
+      <div class="fw"><label class="flabel">Município *</label>
+        <input type="text" name="${p}municipio" placeholder="Cidade" required></div>
+      <div class="fw"><label class="flabel">Nº do IPTU</label>
+        <div class="fhint">Consta no carnê ou boleto do IPTU do imóvel</div>
+        <input type="text" name="${p}iptu" placeholder="Ex: 001.025.0042.0000"></div></div>`;
 }
 
-function buildQuotasBlock(p) {
+function blkQuotas(p) {
   return `
-    <div class="ibox"><strong>Atenção:</strong> A soma da participação de todos os sócios deve totalizar 100% e o valor em R$ deve equivaler ao capital social total.</div>
+    <div class="ibox"><strong>Atenção:</strong> A soma das participações de todos os sócios deve totalizar 100% e o valor em R$ deve corresponder ao capital social total.</div>
     <div class="row2">
-      <div class="field-wrap">
-        <label class="field-label">Participação % *</label>
-        <div class="field-hint">Percentual do capital social que pertence a este sócio</div>
-        <input type="text" name="${p}quotas_pct" placeholder="Ex: 50%" required>
-      </div>
-      <div class="field-wrap">
-        <label class="field-label">Valor em R$ *</label>
-        <div class="field-hint">Valor em reais correspondente à participação</div>
-        <input type="text" name="${p}quotas_valor" placeholder="Ex: 5.000,00" required>
-      </div>
-    </div>
-    <div class="field-wrap">
-      <label class="field-label">Cargo / Função na Empresa *</label>
+      <div class="fw"><label class="flabel">Participação % *</label>
+        <div class="fhint">Percentual do capital que pertence a este sócio</div>
+        <input type="text" name="${p}quotas_pct" inputmode="decimal" placeholder="Ex: 50%" required></div>
+      <div class="fw"><label class="flabel">Valor em R$ *</label>
+        <div class="fhint">Valor correspondente à participação</div>
+        <input type="text" name="${p}quotas_valor" inputmode="decimal" placeholder="Ex: 5.000,00" required></div></div>
+    <div class="fw"><label class="flabel">Cargo / Função *</label>
       <div class="opt-list">
         <button class="opt" data-field="${p}cargo" data-val="Sócio Administrador" onclick="pick(this,'${p}cargo')">
-          <span class="opt-t">Sócio Administrador</span><span class="opt-s">Tem poderes para representar a empresa — assina contratos e documentos</span></button>
+          <span class="opt-t">Sócio Administrador</span><span class="opt-s">Representa a empresa, assina contratos e documentos perante terceiros</span></button>
         <button class="opt" data-field="${p}cargo" data-val="Sócio Não Administrador" onclick="pick(this,'${p}cargo')">
-          <span class="opt-t">Sócio Não Administrador</span><span class="opt-s">Participa dos lucros mas não representa a empresa perante terceiros</span></button>
+          <span class="opt-t">Sócio Não Administrador</span><span class="opt-s">Participa dos lucros mas não representa a empresa externamente</span></button>
         <button class="opt" data-field="${p}cargo" data-val="Diretor" onclick="pick(this,'${p}cargo')">
           <span class="opt-t">Diretor</span><span class="opt-s">Usado principalmente em S/A</span></button>
-      </div>
-    </div>`;
+      </div></div>`;
 }
 
 function stepFinal() {
-  return {name:'Observações', question:'Alguma informação adicional ou dúvida?',
-    hint:'Este é o espaço para informar qualquer detalhe relevante que não foi coberto nas etapas anteriores.',
+  return {name:'Observações',question:'Alguma informação adicional ou dúvida?',
+    hint:'Espaço para qualquer detalhe relevante que não foi coberto nas etapas anteriores.',
     body:`
-      <div class="field-wrap">
-        <label class="field-label">Observações / Dúvidas</label>
-        <div class="field-hint">Se tiver alguma dúvida sobre o processo, prazo, documentos ou qualquer outra questão, escreva aqui</div>
-        <textarea name="observacoes" placeholder="Ex: Tenho dúvida sobre qual CNAE usar, preciso abrir com urgência, tenho um imóvel para integralizar..."></textarea>
-      </div>
+      <div class="fw"><label class="flabel">Observações / Dúvidas</label>
+        <div class="fhint">Se tiver dúvida sobre prazo, documentos ou qualquer etapa do processo, escreva aqui</div>
+        <textarea name="observacoes" placeholder="Ex: Tenho dúvida sobre qual CNAE usar, preciso abrir com urgência..."></textarea></div>
       <hr class="sdiv">
       <div class="slabel">Melhor horário para contato</div>
       <div class="opt-list grid2">
-        <button class="opt" data-field="horario" data-val="Manhã (8h–12h)" onclick="pick(this,'horario')">
-          <span class="opt-t">☀️ Manhã</span><span class="opt-s">8h – 12h</span></button>
-        <button class="opt" data-field="horario" data-val="Tarde (12h–18h)" onclick="pick(this,'horario')">
-          <span class="opt-t">🌤 Tarde</span><span class="opt-s">12h – 18h</span></button>
-        <button class="opt" data-field="horario" data-val="Noite (18h–20h)" onclick="pick(this,'horario')">
-          <span class="opt-t">🌙 Noite</span><span class="opt-s">18h – 20h</span></button>
-        <button class="opt" data-field="horario" data-val="Qualquer horário" onclick="pick(this,'horario')">
-          <span class="opt-t">🕐 Qualquer</span></button>
+        <button class="opt" data-field="horario" data-val="Manhã (8h–12h)" onclick="pick(this,'horario')"><span class="opt-t">☀️ Manhã</span><span class="opt-s">8h – 12h</span></button>
+        <button class="opt" data-field="horario" data-val="Tarde (12h–18h)" onclick="pick(this,'horario')"><span class="opt-t">🌤 Tarde</span><span class="opt-s">12h – 18h</span></button>
+        <button class="opt" data-field="horario" data-val="Noite (18h–20h)" onclick="pick(this,'horario')"><span class="opt-t">🌙 Noite</span><span class="opt-s">18h – 20h</span></button>
+        <button class="opt" data-field="horario" data-val="Qualquer horário" onclick="pick(this,'horario')"><span class="opt-t">🕐 Qualquer</span></button>
       </div>`};
 }
 </script>

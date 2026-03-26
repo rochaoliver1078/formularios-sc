@@ -760,15 +760,21 @@ function mCPF(el) {
 }
 function mCNPJ(el) {
   let v=el.value.replace(/\D/g,'');
-  v=v.replace(/^(\d{2})(\d)/,'$1.$2').replace(/^(\d{2})\.(\d{3})(\d)/,'$1.$2.$3')
-     .replace(/\.(\d{3})(\d)/,'.$1/$2').replace(/(\d{4})(\d)/,'$1-$2');
+  v=v.replace(/^(\d{2})(\d)/,'$1.$2')
+     .replace(/^(\d{2})\.(\d{3})(\d)/,'$1.$2.$3')
+     .replace(/\.(\d{3})(\d)/,'.$1/$2')
+     .replace(/(\d{4})(\d)/,'$1-$2');
   el.value=v.slice(0,18);
-  clearFB(el);
   const raw=v.replace(/\D/g,'');
-  if (raw.length===14) {
-    if (!valCNPJ(raw)) showErr(el,'CNPJ inválido');
-    else fetchCNPJ(el,raw);
+  // Aguarda 14 digitos antes de validar — sem erro enquanto digita
+  if (raw.length < 14) {
+    clearFB(el);
+    el.classList.remove('err','valid');
+    return;
   }
+  clearFB(el);
+  if (!valCNPJ(raw)) showErr(el,'CNPJ inválido — verifique os dígitos');
+  else fetchCNPJ(el,raw);
 }
 function mPhone(el) {
   let v=el.value.replace(/\D/g,'');
@@ -842,7 +848,7 @@ function clearFB(el){ el.parentNode.querySelectorAll('.ferr,.fok').forEach(e=>e.
 
 function attachHooks() {
   document.querySelectorAll('[data-mask=cpf]').forEach(el=>{ el.addEventListener('input',()=>mCPF(el)); el.addEventListener('blur',()=>mCPF(el)); if(el.value) mCPF(el); });
-  document.querySelectorAll('[data-mask=cnpj]').forEach(el=>{ el.addEventListener('input',()=>mCNPJ(el)); el.addEventListener('blur',()=>mCNPJ(el)); if(el.value) mCNPJ(el); });
+  document.querySelectorAll('[data-mask=cnpj]').forEach(el=>{ el.addEventListener('input',()=>mCNPJ(el)); if(el.value) mCNPJ(el); });
   document.querySelectorAll('[data-mask=phone]').forEach(el=>{ el.addEventListener('input',()=>mPhone(el)); if(el.value) mPhone(el); });
   document.querySelectorAll('[data-mask=cep]').forEach(el=>{ el.addEventListener('input',()=>mCEP(el)); if(el.value&&el.value.replace(/\D/g,'').length===8) mCEP(el); });
   document.querySelectorAll('#step-body input,#step-body select,#step-body textarea').forEach(el=>{ el.addEventListener('input',updateCounter); el.addEventListener('change',updateCounter); });

@@ -876,18 +876,46 @@ async function fetchCNPJ(el, cnpj) {
     }
     if (d.email) fill('s0_email', d.email.toLowerCase());
 
-    // 5. Sócios (QSA)
+    // 5. Sócios (QSA) — preenche campos de abertura, alteração e composição pós-alt
     if (d.qsa && d.qsa.length) {
       d.qsa.slice(0,5).forEach(function(socio, i) {
-        var pref = 's' + i + '_';
-        fill(pref + 'nome', socio.nome_socio || '');
-        var qual = (socio.qualificacao_socio || '').toLowerCase();
-        if (qual.indexOf('administrador') !== -1)    S.data[pref + 'cargo'] = 'Sócio Administrador';
-        else if (qual.indexOf('diretor') !== -1)      S.data[pref + 'cargo'] = 'Diretor';
-        else                                          S.data[pref + 'cargo'] = 'Sócio Não Administrador';
-        if (socio.cpf_representante_legal) fill(pref + 'cpf', socio.cpf_representante_legal);
+        var qual  = (socio.qualificacao_socio || '').toLowerCase();
+        var cargo = qual.indexOf('administrador') !== -1 ? 'Sócio Administrador'
+                  : qual.indexOf('diretor')       !== -1 ? 'Diretor'
+                  : 'Sócio Não Administrador';
+        var cpf   = socio.cpf_representante_legal || '';
+
+        // s0_, s1_... — abertura / transformação
+        var sp = 's' + i + '_';
+        fill(sp + 'nome', socio.nome_socio || '');
+        S.data[sp + 'cargo'] = cargo;
+        if (cpf) fill(sp + 'cpf', cpf);
+
+        // qsa_s0_... — sócios atuais na alteração
+        var qp = 'qsa_s' + i + '_';
+        fill(qp + 'nome',  socio.nome_socio || '');
+        S.data[qp + 'cargo'] = cargo;
+        if (cpf) fill(qp + 'cpf', cpf);
+
+        // pos_s0_... — composição pós-alteração (base = situação atual)
+        var pp = 'pos_s' + i + '_';
+        fill(pp + 'nome', socio.nome_socio || '');
+        S.data[pp + 'cargo'] = cargo;
+        if (cpf) fill(pp + 'cpf', cpf);
       });
     }
+
+    // Capital social atual → campos da alteração
+    if (d.capital_social) {
+      var capFmt = Number(d.capital_social).toLocaleString('pt-BR', {minimumFractionDigits:2});
+      fill('capital_social_atual', capFmt);
+      fill('capital_atual', capFmt);
+      fill('capital_pos_alt', capFmt);
+    }
+
+    // Atividade e razão → campos de confirmação na alteração
+    if (d.cnae_fiscal_descricao) fill('ativ_principal_atual', d.cnae_fiscal_descricao);
+    if (d.razao_social)          fill('razao_atual', d.razao_social);
 
     // 6. Painel de resumo visual
     var oldPanel = document.getElementById('cnpj-summary');
@@ -1241,14 +1269,15 @@ function stepsAbertura(){
 function stepsAlteracao(){
   const d=S.data, steps=[];
 
-  steps.push({name:'Dados da Empresa',question:'Dados da empresa que será alterada',
-    hint:'Informe o CNPJ para buscarmos os dados automaticamente.',
+  // ── ETAPA 1: Dados da empresa (CNPJ + painel automático) ──────
+  steps.push({name:'Empresa',question:'Dados da empresa que será alterada',
+    hint:'Informe o CNPJ — os dados da empresa serão buscados automaticamente na Receita Federal.',
     body:`
       <div class="fw"><label class="flabel">CNPJ *</label>
-        <div class="fhint">Os dados serão buscados automaticamente ao digitar</div>
+        <div class="fhint">Digite os 14 dígitos — razão social, endereço, sócios e capital serão carregados automaticamente</div>
         <div class="iwrap"><input type="text" name="cnpj" data-mask="cnpj" inputmode="numeric" placeholder="00.000.000/0001-00" maxlength="18" required><div class="ispinner"></div></div></div>
       <div class="fw"><label class="flabel">Razão Social *</label>
-        <div class="fhint">Preenchido automaticamente ao digitar o CNPJ</div>
+        <div class="fhint">Preenchida automaticamente ao digitar o CNPJ</div>
         <input type="text" name="razao_social" placeholder="Nome empresarial registrado" required></div>
       <div class="row2">
         <div class="fw"><label class="flabel">Tipo Societário Atual *</label>
@@ -1256,114 +1285,367 @@ function stepsAlteracao(){
             <option>MEI</option><option>EI</option><option>SLU</option>
             <option>LTDA</option><option>S/A</option><option>Sociedade Simples</option></select></div>
         <div class="fw"><label class="flabel">NIRE</label>
-          <div class="fhint">Consta na certidão da empresa</div>
-          <input type="text" name="nire" placeholder="Número NIRE (opcional)"></div></div>`});
+          <div class="fhint">Número de registro na Junta — consta na certidão da empresa</div>
+          <input type="text" name="nire" placeholder="Número NIRE (opcional)"></div></div>
+      <div class="row2">
+        <div class="fw"><label class="flabel">Capital Social Atual (R$)</label>
+          <div class="fhint">Preenchido automaticamente pelo CNPJ</div>
+          <input type="text" name="capital_social_atual" placeholder="Ex: 10.000,00"></div>
+        <div class="fw"><label class="flabel">Data de Abertura</label>
+          <input type="date" name="data_abertura"></div></div>`});
 
+  // ── ETAPA 2: QSA atual (sócios atuais da empresa) ─────────────
+  steps.push({name:'Sócios Atuais',question:'Confirme o quadro societário atual da empresa',
+    hint:'Estes são os sócios carregados automaticamente pelo CNPJ. Verifique e corrija se necessário — serão usados como base para a alteração.',
+    body:`
+      <div class="ibox"><strong>Atenção:</strong> Confirme os dados dos sócios atuais. Eles serão usados para calcular as quotas cedidas e identificar quem sai.</div>
+      <div class="slabel">Sócio Atual 1</div>
+      <div class="row2">
+        <div class="fw"><label class="flabel">Nome do Sócio 1 *</label>
+          <input type="text" name="qsa_s0_nome" placeholder="Nome completo" required></div>
+        <div class="fw"><label class="flabel">CPF do Sócio 1</label>
+          <input type="text" name="qsa_s0_cpf" data-mask="cpf" inputmode="numeric" placeholder="000.000.000-00" maxlength="14"></div></div>
+      <div class="row2">
+        <div class="fw"><label class="flabel">Quotas / % atual</label>
+          <input type="text" name="qsa_s0_quotas" placeholder="Ex: 50% ou 5.000 quotas"></div>
+        <div class="fw"><label class="flabel">Cargo atual</label>
+          <select name="qsa_s0_cargo"><option value="">Selecione</option>
+            <option>Sócio Administrador</option><option>Sócio Não Administrador</option><option>Diretor</option></select></div></div>
+      <hr class="sdiv">
+      <div class="slabel">Sócio Atual 2 (se houver)</div>
+      <div class="row2">
+        <div class="fw"><label class="flabel">Nome do Sócio 2</label>
+          <input type="text" name="qsa_s1_nome" placeholder="Nome completo"></div>
+        <div class="fw"><label class="flabel">CPF do Sócio 2</label>
+          <input type="text" name="qsa_s1_cpf" data-mask="cpf" inputmode="numeric" placeholder="000.000.000-00" maxlength="14"></div></div>
+      <div class="row2">
+        <div class="fw"><label class="flabel">Quotas / % atual</label>
+          <input type="text" name="qsa_s1_quotas" placeholder="Ex: 50% ou 5.000 quotas"></div>
+        <div class="fw"><label class="flabel">Cargo atual</label>
+          <select name="qsa_s1_cargo"><option value="">Selecione</option>
+            <option>Sócio Administrador</option><option>Sócio Não Administrador</option><option>Diretor</option></select></div></div>
+      <hr class="sdiv">
+      <div class="slabel">Sócio Atual 3 (se houver)</div>
+      <div class="row2">
+        <div class="fw"><label class="flabel">Nome do Sócio 3</label>
+          <input type="text" name="qsa_s2_nome" placeholder="Nome completo"></div>
+        <div class="fw"><label class="flabel">Quotas / % atual</label>
+          <input type="text" name="qsa_s2_quotas" placeholder="Ex: 25% ou 2.500 quotas"></div></div>`});
+
+  // ── ETAPA 3: O que será alterado ─────────────────────────────
   steps.push({name:'O que alterar',question:'O que precisa ser alterado?',
-    hint:'Selecione todos os itens que serão modificados. Você pode marcar mais de um.',
-    body:`<div class="opt-list">
-      <button class="opt" data-field="alt_endereco" onclick="tog(this,'alt_endereco')"><span class="opt-t">📍 Endereço da Sede</span><span class="opt-s">Mudança de endereço no mesmo município, outro município ou estado</span></button>
-      <button class="opt" data-field="alt_socios" onclick="tog(this,'alt_socios')"><span class="opt-t">👥 Quadro Societário</span><span class="opt-s">Entrada, saída ou substituição de sócio — transferência de quotas</span></button>
-      <button class="opt" data-field="alt_capital" onclick="tog(this,'alt_capital')"><span class="opt-t">💰 Capital Social</span><span class="opt-s">Aumento por novo aporte ou redução do capital social</span></button>
-      <button class="opt" data-field="alt_atividades" onclick="tog(this,'alt_atividades')"><span class="opt-t">🔧 Atividades / CNAEs</span><span class="opt-s">Inclusão, exclusão ou troca da atividade principal</span></button>
-      <button class="opt" data-field="alt_razao" onclick="tog(this,'alt_razao')"><span class="opt-t">📝 Razão Social / Nome Fantasia</span><span class="opt-s">Mudança do nome empresarial registrado ou comercial</span></button>
-      <button class="opt" data-field="alt_admin" onclick="tog(this,'alt_admin')"><span class="opt-t">👤 Administrador / Responsável Legal</span><span class="opt-s">Designação ou troca do administrador da empresa</span></button>
-    </div>`});
+    hint:'Marque todos os itens que serão modificados neste processo. Você pode combinar várias alterações em um único ato.',
+    body:`
+      <div class="ibox"><strong>Dica:</strong> Você pode combinar múltiplas alterações em um único processo — isso reduz custos e tempo de registro na Junta Comercial.</div>
+      <div class="opt-list">
+        <button class="opt" data-field="alt_endereco" onclick="tog(this,'alt_endereco')"><span class="opt-t">📍 Endereço da Sede</span><span class="opt-s">Mudança de endereço no mesmo município, outro município ou estado</span></button>
+        <button class="opt" data-field="alt_socios" onclick="tog(this,'alt_socios')"><span class="opt-t">👥 Quadro Societário</span><span class="opt-s">Entrada, saída ou substituição de sócio — transferência de quotas</span></button>
+        <button class="opt" data-field="alt_capital" onclick="tog(this,'alt_capital')"><span class="opt-t">💰 Capital Social</span><span class="opt-s">Aumento por novo aporte ou redução do capital social</span></button>
+        <button class="opt" data-field="alt_atividades" onclick="tog(this,'alt_atividades')"><span class="opt-t">🔧 Atividades / CNAEs</span><span class="opt-s">Inclusão, exclusão ou troca da atividade principal</span></button>
+        <button class="opt" data-field="alt_razao" onclick="tog(this,'alt_razao')"><span class="opt-t">📝 Razão Social / Nome Fantasia</span><span class="opt-s">Mudança do nome empresarial registrado ou comercial</span></button>
+        <button class="opt" data-field="alt_admin" onclick="tog(this,'alt_admin')"><span class="opt-t">👤 Administrador / Responsável Legal</span><span class="opt-s">Designação ou troca do administrador da empresa</span></button>
+      </div>`});
 
+  // ── ENDEREÇO ──────────────────────────────────────────────────
   if(d.alt_endereco==='sim'){
     steps.push({name:'Novo Endereço',question:'Qual será o novo endereço da sede?',
       hint:'O CEP preencherá os campos automaticamente.',
       body:`
         <div class="fw"><label class="flabel">Tipo de mudança *</label>
           <div class="opt-list">
-            <button class="opt" data-field="tipo_mudanca" data-val="Mesmo município" onclick="pick(this,'tipo_mudanca')"><span class="opt-t">Mesmo município</span><span class="opt-s">Troca de endereço dentro da mesma cidade</span></button>
-            <button class="opt" data-field="tipo_mudanca" data-val="Outro município — mesmo estado" onclick="pick(this,'tipo_mudanca')"><span class="opt-t">Outro município — mesmo estado</span><span class="opt-s">Muda a inscrição municipal — novo alvará na nova cidade</span></button>
-            <button class="opt" data-field="tipo_mudanca" data-val="Outro estado" onclick="pick(this,'tipo_mudanca')"><span class="opt-t">Outro estado</span><span class="opt-s">Processo mais complexo — envolve transferência entre Juntas</span></button>
+            <button class="opt" data-field="tipo_mudanca" data-val="Mesmo município" onclick="pick(this,'tipo_mudanca')"><span class="opt-t">Mesmo município</span><span class="opt-s">Troca dentro da mesma cidade — mesma inscrição municipal</span></button>
+            <button class="opt" data-field="tipo_mudanca" data-val="Outro município — mesmo estado" onclick="pick(this,'tipo_mudanca')"><span class="opt-t">Outro município — mesmo estado</span><span class="opt-s">Muda a inscrição municipal — precisa de novo alvará na nova cidade</span></button>
+            <button class="opt" data-field="tipo_mudanca" data-val="Outro estado" onclick="pick(this,'tipo_mudanca')"><span class="opt-t">Outro estado</span><span class="opt-s">Processo mais complexo — transferência entre Juntas Comerciais estaduais</span></button>
           </div></div>
         <hr class="sdiv">${blkSede('novo_')}`});
   }
 
+  // ── SÓCIOS ────────────────────────────────────────────────────
   if(d.alt_socios==='sim'){
-    steps.push({name:'Movimento de Sócios',question:'Qual é a movimentação no quadro societário?',
+    steps.push({name:'Tipo de Movimento',question:'Qual é a movimentação no quadro societário?',
+      hint:'Selecione o tipo de movimento. Se houver mais de um (ex: saída de um e entrada de outro), selecione "Substituição".',
       body:`<div class="opt-list">
-        <button class="opt" data-field="mov_socios" data-val="Entrada de novo sócio" onclick="pick(this,'mov_socios')"><span class="opt-t">➕ Entrada de novo sócio</span><span class="opt-s">Um novo sócio ingressa com aporte de capital ou por cessão</span></button>
-        <button class="opt" data-field="mov_socios" data-val="Saída de sócio" onclick="pick(this,'mov_socios')"><span class="opt-t">➖ Saída de sócio</span><span class="opt-s">Um sócio cede todas as suas quotas e se retira da sociedade</span></button>
-        <button class="opt" data-field="mov_socios" data-val="Transferência entre sócios" onclick="pick(this,'mov_socios')"><span class="opt-t">🔄 Transferência entre sócios</span><span class="opt-s">Redistribuição de participação entre os sócios atuais</span></button>
-        <button class="opt" data-field="mov_socios" data-val="Substituição" onclick="pick(this,'mov_socios')"><span class="opt-t">🔁 Substituição — saída e entrada simultânea</span></button>
+        <button class="opt" data-field="mov_socios" data-val="Entrada" onclick="pick(this,'mov_socios')">
+          <span class="opt-t">➕ Entrada de novo sócio</span>
+          <span class="opt-s">Um novo sócio ingressa por aporte de capital, cessão de quotas ou integralização</span></button>
+        <button class="opt" data-field="mov_socios" data-val="Saida" onclick="pick(this,'mov_socios')">
+          <span class="opt-t">➖ Saída de sócio</span>
+          <span class="opt-s">Um sócio cede todas as suas quotas e se retira definitivamente da sociedade</span></button>
+        <button class="opt" data-field="mov_socios" data-val="Substituicao" onclick="pick(this,'mov_socios')">
+          <span class="opt-t">🔁 Substituição — saída e entrada simultânea</span>
+          <span class="opt-s">Um sócio sai e outro entra no mesmo ato de alteração</span></button>
+        <button class="opt" data-field="mov_socios" data-val="Transferencia" onclick="pick(this,'mov_socios')">
+          <span class="opt-t">🔄 Transferência entre sócios atuais</span>
+          <span class="opt-s">Redistribuição de quotas entre os sócios que já fazem parte da sociedade</span></button>
       </div>`});
-    steps.push({name:'Dados do Sócio',question:'Dados do sócio envolvido na alteração',
-      hint:'Preencha os dados completos do sócio que está entrando ou saindo.',
-      body:blkId('alt_s0_',true)});
-    steps.push({name:'Civil — Sócio',question:'Estado civil do sócio envolvido',body:blkCivil('alt_s0_')});
-    if(d['alt_s0_estado_civil']==='casado(a)'||d['alt_s0_estado_civil']==='união estável'){
-      steps.push({name:'Regime — Sócio',question:'Regime de bens do sócio',body:blkRegime('alt_s0_')});
+
+    // Sócio que SAI (Saída ou Substituição)
+    if(d.mov_socios==='Saida'||d.mov_socios==='Substituicao'){
+      steps.push({name:'Sócio que Sai — Dados',question:'Dados do sócio que está saindo da sociedade',
+        hint:'Confirme os dados do sócio cedente. O nome e CPF devem coincidir exatamente com o contrato social registrado.',
+        body:`
+          <div class="ibox">O sócio cedente transfere suas quotas e sai definitivamente da sociedade. <strong>Confirme o nome exatamente como consta no contrato social.</strong></div>
+          <div class="fw"><label class="flabel">Nome Completo *</label>
+            <div class="fhint">Exatamente como consta no contrato social registrado</div>
+            <input type="text" name="saida_nome" placeholder="Nome completo do sócio que sai" required></div>
+          <div class="row2">
+            <div class="fw"><label class="flabel">CPF *</label>
+              <input type="text" name="saida_cpf" data-mask="cpf" inputmode="numeric" placeholder="000.000.000-00" maxlength="14" required></div>
+            <div class="fw"><label class="flabel">RG / CNH *</label>
+              <input type="text" name="saida_rg" placeholder="Número do documento" required></div></div>
+          <div class="row2">
+            <div class="fw"><label class="flabel">Quotas cedidas *</label>
+              <div class="fhint">Quantidade ou % de quotas que serão cedidas</div>
+              <input type="text" name="saida_quotas" placeholder="Ex: 5.000 quotas ou 50%" required></div>
+            <div class="fw"><label class="flabel">Valor da cessão (R$)</label>
+              <div class="fhint">Valor pago pela cessão das quotas (pode ser zero)</div>
+              <input type="text" name="saida_valor_cessao" placeholder="Ex: 5.000,00 ou 0,00"></div></div>
+          <div class="fw"><label class="flabel">Forma de pagamento da cessão</label>
+            <div class="opt-list">
+              <button class="opt" data-field="saida_pagto" data-val="À vista neste ato" onclick="pick(this,'saida_pagto')">À vista neste ato</button>
+              <button class="opt" data-field="saida_pagto" data-val="A prazo conforme acordado" onclick="pick(this,'saida_pagto')">A prazo conforme acordado entre as partes</button>
+              <button class="opt" data-field="saida_pagto" data-val="Sem pagamento (doação)" onclick="pick(this,'saida_pagto')">Sem pagamento — doação / liberalidade</button>
+              <button class="opt" data-field="saida_pagto" data-val="Já quitado anteriormente" onclick="pick(this,'saida_pagto')">Já quitado anteriormente</button>
+            </div></div>
+          <div class="fw"><label class="flabel">Declarações do sócio cedente</label>
+            <div class="opt-list">
+              <button class="opt" data-field="saida_quitacao" onclick="tog(this,'saida_quitacao')"><span class="opt-t">Declara nada mais ter a receber da sociedade</span></button>
+              <button class="opt" data-field="saida_sem_func" onclick="tog(this,'saida_sem_func')"><span class="opt-t">Declara não haver empregados em seu nome</span></button>
+              <button class="opt" data-field="saida_sem_debito" onclick="tog(this,'saida_sem_debito')"><span class="opt-t">Declara inexistência de débitos fiscais a ele vinculados</span></button>
+            </div></div>`});
     }
-    steps.push({name:'Endereço — Sócio',question:'Endereço residencial do sócio',body:blkEnd('alt_s0_')});
-    steps.push({name:'Participação Pós-Alt.',question:'Participação societária após a alteração',
+
+    // Sócio que ENTRA (Entrada ou Substituição)
+    if(d.mov_socios==='Entrada'||d.mov_socios==='Substituicao'){
+      steps.push({name:'Sócio que Entra — Identificação',question:'Dados do novo sócio que está ingressando',
+        hint:'Preencha todos os dados do novo sócio. Estas informações irão diretamente para o preâmbulo do contrato social.',
+        body:blkId('ent_s0_',true)});
+      steps.push({name:'Sócio que Entra — Civil',question:'Estado civil do novo sócio',
+        body:blkCivil('ent_s0_')});
+      if(d['ent_s0_estado_civil']==='casado(a)'||d['ent_s0_estado_civil']==='união estável'){
+        steps.push({name:'Sócio que Entra — Regime',question:'Regime de bens do novo sócio',
+          body:blkRegime('ent_s0_')});
+      }
+      steps.push({name:'Sócio que Entra — Endereço',question:'Endereço residencial do novo sócio',
+        body:blkEnd('ent_s0_')});
+      steps.push({name:'Sócio que Entra — Participação',question:'Participação do novo sócio na sociedade',
+        hint:'Defina a participação societária e o cargo do novo sócio após o ingresso.',
+        body:`
+          <div class="row2">
+            <div class="fw"><label class="flabel">Quotas / % *</label>
+              <div class="fhint">Participação que o novo sócio terá após o ingresso</div>
+              <input type="text" name="ent_s0_quotas_pct" placeholder="Ex: 50% ou 5.000 quotas" required></div>
+            <div class="fw"><label class="flabel">Valor em R$ *</label>
+              <div class="fhint">Valor correspondente à participação no capital social</div>
+              <input type="text" name="ent_s0_quotas_valor" placeholder="Ex: 5.000,00" required></div></div>
+          <div class="fw"><label class="flabel">Cargo / Função *</label>
+            <div class="opt-list">
+              <button class="opt" data-field="ent_s0_cargo" data-val="Sócio Administrador" onclick="pick(this,'ent_s0_cargo')">
+                <span class="opt-t">Sócio Administrador</span><span class="opt-s">Representa e assina pela empresa</span></button>
+              <button class="opt" data-field="ent_s0_cargo" data-val="Sócio Não Administrador" onclick="pick(this,'ent_s0_cargo')">
+                <span class="opt-t">Sócio Não Administrador</span><span class="opt-s">Participa dos lucros sem poderes de representação</span></button>
+            </div></div>
+          <div class="fw"><label class="flabel">Forma de ingresso *</label>
+            <div class="opt-list">
+              <button class="opt" data-field="ent_s0_ingresso" data-val="Aporte em dinheiro" onclick="pick(this,'ent_s0_ingresso')">
+                <span class="opt-t">Aporte em dinheiro</span><span class="opt-s">O novo sócio deposita capital para ingressar</span></button>
+              <button class="opt" data-field="ent_s0_ingresso" data-val="Cessão de quotas" onclick="pick(this,'ent_s0_ingresso')">
+                <span class="opt-t">Cessão de quotas do sócio cedente</span><span class="opt-s">Adquire as quotas de quem está saindo</span></button>
+              <button class="opt" data-field="ent_s0_ingresso" data-val="Aporte em bens" onclick="pick(this,'ent_s0_ingresso')">
+                <span class="opt-t">Aporte em bens (móveis ou imóveis)</span><span class="opt-s">Integraliza com equipamentos, veículos ou imóveis</span></button>
+            </div></div>`});
+    }
+
+    // Transferência entre sócios atuais
+    if(d.mov_socios==='Transferencia'){
+      steps.push({name:'Transferência de Quotas',question:'Detalhes da transferência entre sócios',
+        hint:'Informe quem cede, quem recebe e quantas quotas serão transferidas.',
+        body:`
+          <div class="ibox">A transferência redistribui quotas entre sócios que já fazem parte da sociedade, sem entrada ou saída de pessoas.</div>
+          <div class="slabel">Sócio Cedente</div>
+          <div class="row2">
+            <div class="fw"><label class="flabel">Nome do cedente *</label>
+              <input type="text" name="transf_cedente_nome" placeholder="Quem transfere as quotas" required></div>
+            <div class="fw"><label class="flabel">CPF do cedente *</label>
+              <input type="text" name="transf_cedente_cpf" data-mask="cpf" inputmode="numeric" placeholder="000.000.000-00" maxlength="14" required></div></div>
+          <div class="row2">
+            <div class="fw"><label class="flabel">Quotas cedidas *</label>
+              <input type="text" name="transf_cedente_quotas" placeholder="Ex: 2.500 quotas ou 25%" required></div>
+            <div class="fw"><label class="flabel">% após a transferência</label>
+              <input type="text" name="transf_cedente_pct_pos" placeholder="Ex: 25%"></div></div>
+          <hr class="sdiv">
+          <div class="slabel">Sócio Cessionário (recebe as quotas)</div>
+          <div class="row2">
+            <div class="fw"><label class="flabel">Nome do cessionário *</label>
+              <input type="text" name="transf_cess_nome" placeholder="Quem recebe as quotas" required></div>
+            <div class="fw"><label class="flabel">CPF do cessionário *</label>
+              <input type="text" name="transf_cess_cpf" data-mask="cpf" inputmode="numeric" placeholder="000.000.000-00" maxlength="14" required></div></div>
+          <div class="row2">
+            <div class="fw"><label class="flabel">Quotas recebidas *</label>
+              <input type="text" name="transf_cess_quotas" placeholder="Ex: 2.500 quotas ou 25%" required></div>
+            <div class="fw"><label class="flabel">% após a transferência</label>
+              <input type="text" name="transf_cess_pct_pos" placeholder="Ex: 75%"></div></div>
+          <hr class="sdiv">
+          <div class="fw"><label class="flabel">Valor da cessão (R$)</label>
+            <div class="fhint">Valor pago pela transferência (pode ser simbólico ou zero entre sócios)</div>
+            <input type="text" name="transf_valor" placeholder="Ex: 2.500,00"></div>
+          <div class="fw"><label class="flabel">Observações</label>
+            <textarea name="transf_obs" placeholder="Descreva condições, motivo e demais detalhes..."></textarea></div>`});
+    }
+
+    // Nova composição após alteração de sócios
+    steps.push({name:'Nova Composição',question:'Como ficará o quadro societário após a alteração?',
+      hint:'Informe a composição final da sociedade após a alteração — será usada para redigir o contrato.',
       body:`
+        <div class="ibox">Informe como ficará distribuído o capital social após todas as movimentações.</div>
+        <div class="fw"><label class="flabel">Capital Social Total (R$) *</label>
+          <div class="fhint">Valor total do capital após a alteração — pode ser o mesmo ou diferente do atual</div>
+          <input type="text" name="capital_pos_alt" placeholder="Ex: 10.000,00" required></div>
+        <hr class="sdiv">
+        <div class="slabel">Composição Final — Sócio 1</div>
+        <div class="row2">
+          <div class="fw"><label class="flabel">Nome *</label>
+            <input type="text" name="pos_s0_nome" placeholder="Nome completo" required></div>
+          <div class="fw"><label class="flabel">CPF *</label>
+            <input type="text" name="pos_s0_cpf" data-mask="cpf" inputmode="numeric" placeholder="000.000.000-00" maxlength="14" required></div></div>
+        <div class="row2">
+          <div class="fw"><label class="flabel">Quotas / % *</label>
+            <input type="text" name="pos_s0_quotas" placeholder="Ex: 5.000 ou 50%" required></div>
+          <div class="fw"><label class="flabel">Valor em R$ *</label>
+            <input type="text" name="pos_s0_valor" placeholder="Ex: 5.000,00" required></div></div>
+        <div class="fw"><label class="flabel">Cargo *</label>
+          <select name="pos_s0_cargo" required><option value="">Selecione</option>
+            <option>Sócio Administrador</option><option>Sócio Não Administrador</option><option>Diretor</option></select></div>
+        <hr class="sdiv">
+        <div class="slabel">Composição Final — Sócio 2 (se houver)</div>
+        <div class="row2">
+          <div class="fw"><label class="flabel">Nome</label>
+            <input type="text" name="pos_s1_nome" placeholder="Nome completo"></div>
+          <div class="fw"><label class="flabel">CPF</label>
+            <input type="text" name="pos_s1_cpf" data-mask="cpf" inputmode="numeric" placeholder="000.000.000-00" maxlength="14"></div></div>
         <div class="row2">
           <div class="fw"><label class="flabel">Quotas / %</label>
-            <div class="fhint">Participação após a alteração. Ex: <em>50%</em></div>
-            <input type="text" name="alt_s0_quotas_pct" placeholder="Ex: 50%"></div>
+            <input type="text" name="pos_s1_quotas" placeholder="Ex: 5.000 ou 50%"></div>
           <div class="fw"><label class="flabel">Valor em R$</label>
-            <input type="text" name="alt_s0_quotas_valor" placeholder="Ex: 5.000,00"></div></div>
-        <div class="fw"><label class="flabel">Cargo / Função</label>
-          <select name="alt_s0_cargo"><option value="">Selecione</option>
-            <option>Sócio Administrador</option><option>Sócio Não Administrador</option><option>Diretor</option></select></div>
-        <div class="fw"><label class="flabel">Detalhes da operação</label>
-          <div class="fhint">Descreva condições, valor da cessão, forma de pagamento, quitações entre as partes</div>
-          <textarea name="alt_s0_obs" placeholder="Ex: O sócio João cede suas 5.000 quotas ao sócio Pedro pelo valor de R$ 5.000,00..."></textarea></div>`});
+            <input type="text" name="pos_s1_valor" placeholder="Ex: 5.000,00"></div></div>
+        <div class="fw"><label class="flabel">Cargo</label>
+          <select name="pos_s1_cargo"><option value="">Selecione</option>
+            <option>Sócio Administrador</option><option>Sócio Não Administrador</option><option>Diretor</option></select></div>`});
   }
 
+  // ── CAPITAL ────────────────────────────────────────────────────
   if(d.alt_capital==='sim'){
     steps.push({name:'Alteração de Capital',question:'Alteração do capital social',
+      hint:'O capital social pode ser aumentado por aporte dos sócios ou incorporação de lucros, e reduzido por excesso ou perdas.',
       body:`
-        <div class="fw"><label class="flabel">Tipo *</label>
+        <div class="fw"><label class="flabel">Tipo de alteração *</label>
           <div class="opt-list grid2">
-            <button class="opt" data-field="tipo_capital" data-val="Aumento" onclick="pick(this,'tipo_capital')"><span class="opt-t">📈 Aumento</span><span class="opt-s">Novo aporte pelos sócios</span></button>
-            <button class="opt" data-field="tipo_capital" data-val="Redução" onclick="pick(this,'tipo_capital')"><span class="opt-t">📉 Redução</span><span class="opt-s">Retirada de capital excessivo</span></button>
+            <button class="opt" data-field="tipo_capital" data-val="Aumento" onclick="pick(this,'tipo_capital')">
+              <span class="opt-t">📈 Aumento de Capital</span><span class="opt-s">Novo aporte pelos sócios</span></button>
+            <button class="opt" data-field="tipo_capital" data-val="Reducao" onclick="pick(this,'tipo_capital')">
+              <span class="opt-t">📉 Redução de Capital</span><span class="opt-s">Retirada por excesso ou perdas</span></button>
           </div></div>
         <div class="row2">
-          <div class="fw"><label class="flabel">Capital Atual (R$) *</label><input type="text" name="capital_atual" placeholder="Ex: 10.000,00" required></div>
-          <div class="fw"><label class="flabel">Novo Capital (R$) *</label><input type="text" name="capital_novo" placeholder="Ex: 50.000,00" required></div></div>
-        <div class="fw"><label class="flabel">Origem / Motivo</label>
-          <div class="fhint">Ex: <em>"Aporte em dinheiro pelos sócios no valor de R$ 40.000,00"</em></div>
-          <textarea name="capital_motivo" placeholder="Descreva a origem do aumento ou motivo da redução..."></textarea></div>`});
+          <div class="fw"><label class="flabel">Capital Atual (R$) *</label>
+            <div class="fhint">Valor registrado atualmente — preenchido pelo CNPJ</div>
+            <input type="text" name="capital_atual" placeholder="Ex: 10.000,00" required></div>
+          <div class="fw"><label class="flabel">Novo Capital (R$) *</label>
+            <div class="fhint">Valor que ficará registrado após a alteração</div>
+            <input type="text" name="capital_novo" placeholder="Ex: 50.000,00" required></div></div>
+        <div class="fw"><label class="flabel">Origem do aumento / Motivo da redução *</label>
+          <div class="fhint">Ex: <em>"Aporte em dinheiro pelo sócio João, no valor de R$ 40.000,00, neste ato"</em></div>
+          <textarea name="capital_motivo" placeholder="Descreva a origem ou motivo..." required></textarea></div>
+        <div class="fw"><label class="flabel">Como ficará a divisão após a alteração?</label>
+          <div class="fhint">Informe a nova participação de cada sócio no capital aumentado/reduzido</div>
+          <textarea name="capital_divisao" placeholder="Ex: João — 6.000 quotas (60%); Maria — 4.000 quotas (40%)"></textarea></div>`});
   }
 
+  // ── ATIVIDADES ─────────────────────────────────────────────────
   if(d.alt_atividades==='sim'){
     steps.push({name:'Alteração de Atividades',question:'Quais atividades serão alteradas?',
+      hint:'Informe exatamente o que entra e o que sai. Incluir atividade de comércio pode exigir Inscrição Estadual; excluir pode cancelá-la.',
       body:`
+        <div class="fw"><label class="flabel">Atividade Principal Atual</label>
+          <div class="fhint">Preenchida automaticamente pelo CNPJ — confirme se está correta</div>
+          <input type="text" name="ativ_principal_atual" placeholder="Atividade principal atual"></div>
+        <div class="fw"><label class="flabel">Nova Atividade Principal (se mudar)</label>
+          <input type="text" name="nova_ativ_principal" placeholder="Descreva a nova atividade principal"></div>
+        <hr class="sdiv">
         <div class="fw"><label class="flabel">Atividades a INCLUIR</label>
-          <div class="fhint">Descreva as novas atividades e o CNAE se souber</div>
-          <textarea name="ativ_incluir" placeholder="Ex: Comércio varejista de móveis (CNAE 47.54-7-01)"></textarea></div>
+          <div class="fhint">Descreva e informe o CNAE se souber. Ex: <em>47.54-7-01 — Comércio varejista de móveis</em></div>
+          <textarea name="ativ_incluir" placeholder="Liste as novas atividades a incluir..."></textarea></div>
         <div class="fw"><label class="flabel">Atividades a EXCLUIR</label>
-          <textarea name="ativ_excluir" placeholder="Liste as atividades a remover do contrato social"></textarea></div>
-        <div class="fw"><label class="flabel">Nova atividade principal (se mudar)</label>
-          <input type="text" name="nova_ativ_principal" placeholder="Descreva a nova atividade principal"></div>`});
+          <div class="fhint">Liste as atividades que serão removidas do contrato social</div>
+          <textarea name="ativ_excluir" placeholder="Liste as atividades a excluir..."></textarea></div>
+        <div class="fw"><label class="flabel">Impacto tributário esperado</label>
+          <div class="opt-list">
+            <button class="opt" data-field="ativ_impacto" data-val="Não altera regime" onclick="pick(this,'ativ_impacto')">Não altera o regime tributário atual</button>
+            <button class="opt" data-field="ativ_impacto" data-val="Pode alterar Simples" onclick="pick(this,'ativ_impacto')">Pode alterar o enquadramento no Simples Nacional</button>
+            <button class="opt" data-field="ativ_impacto" data-val="Precisará de IE" onclick="pick(this,'ativ_impacto')">Incluindo comércio — precisará de Inscrição Estadual</button>
+            <button class="opt" data-field="ativ_impacto" data-val="Não sei" onclick="pick(this,'ativ_impacto')">Não sei — quero orientação</button>
+          </div></div>`});
   }
 
+  // ── RAZÃO SOCIAL ────────────────────────────────────────────────
   if(d.alt_razao==='sim'){
     steps.push({name:'Novo Nome',question:'Qual o novo nome da empresa?',
-      hint:'O novo nome será verificado na Junta Comercial. Tenha sempre uma alternativa.',
+      hint:'Informe 2 opções — caso o primeiro esteja registrado por outra empresa na Junta, usaremos o segundo.',
       body:`
+        <div class="fw"><label class="flabel">Nome Atual da Empresa</label>
+          <div class="fhint">Preenchido pelo CNPJ — confirme</div>
+          <input type="text" name="razao_atual" placeholder="Nome atual (preenchido pelo CNPJ)"></div>
+        <hr class="sdiv">
         <div class="fw"><label class="flabel">Nova Razão Social — 1ª opção *</label>
-          <input type="text" name="nova_razao_1" placeholder="Nome pretendido" required></div>
+          <div class="fhint">Para LTDA inclua "Ltda" ao final. Ex: <em>Silva & Santos Comércio de Alimentos Ltda</em></div>
+          <input type="text" name="nova_razao_1" placeholder="Nome empresarial pretendido" required></div>
         <div class="fw"><label class="flabel">Nova Razão Social — 2ª opção</label>
-          <input type="text" name="nova_razao_2" placeholder="Alternativa (caso o 1º esteja indisponível)"></div>
-        <div class="fw"><label class="flabel">Novo Nome Fantasia</label>
-          <input type="text" name="novo_nome_fantasia" placeholder="Nome comercial (se alterar)"></div>`});
+          <input type="text" name="nova_razao_2" placeholder="Alternativa caso o 1º esteja indisponível"></div>
+        <div class="fw"><label class="flabel">Novo Nome Fantasia (se alterar)</label>
+          <input type="text" name="novo_nome_fantasia" placeholder="Nome comercial (opcional)"></div>
+        <div class="fw"><label class="flabel">Motivo da mudança</label>
+          <textarea name="motivo_razao" placeholder="Ex: Reposicionamento de marca, entrada de novo sócio, mudança de segmento..."></textarea></div>`});
   }
 
+  // ── ADMINISTRADOR ───────────────────────────────────────────────
   if(d.alt_admin==='sim'){
     steps.push({name:'Novo Administrador',question:'Dados do novo Administrador',
-      hint:'Preencha os dados completos do novo responsável legal da empresa.',
-      body:blkId('adm_',true)});
+      hint:'Preencha os dados completos do novo responsável legal. Se o novo administrador já é sócio, informe o mesmo nome que consta no contrato.',
+      body:`
+        <div class="fw"><label class="flabel">O novo administrador é sócio atual?</label>
+          <div class="opt-list grid2">
+            <button class="opt" data-field="adm_e_socio" data-val="Sim" onclick="pick(this,'adm_e_socio')"><span class="opt-t">Sim — já é sócio</span></button>
+            <button class="opt" data-field="adm_e_socio" data-val="Não" onclick="pick(this,'adm_e_socio')"><span class="opt-t">Não — administrador externo</span></button>
+          </div></div>
+        <hr class="sdiv">
+        ${blkId('adm_',true)}`});
     steps.push({name:'Civil — Adm.',question:'Estado civil do Administrador',body:blkCivil('adm_')});
     if(d['adm_estado_civil']==='casado(a)'||d['adm_estado_civil']==='união estável'){
       steps.push({name:'Regime — Adm.',question:'Regime de bens do Administrador',body:blkRegime('adm_')});
     }
     steps.push({name:'Endereço — Adm.',question:'Endereço residencial do Administrador',body:blkEnd('adm_')});
+  }
+
+  // ── RESUMO DA ALTERAÇÃO ─────────────────────────────────────────
+  const alteracoes = [
+    d.alt_endereco==='sim' && 'Endereço',
+    d.alt_socios==='sim'   && 'Sócios',
+    d.alt_capital==='sim'  && 'Capital Social',
+    d.alt_atividades==='sim'&& 'Atividades',
+    d.alt_razao==='sim'    && 'Razão Social',
+    d.alt_admin==='sim'    && 'Administrador'
+  ].filter(Boolean);
+
+  if(alteracoes.length>1){
+    steps.push({name:'Resumo do Processo',question:'Resumo das alterações que serão registradas',
+      hint:'Confirme os itens que serão alterados neste processo único na Junta Comercial.',
+      body:`
+        <div class="ibox">
+          <strong>Alterações incluídas neste processo:</strong><br><br>
+          ${alteracoes.map((a,i)=>'<div style="padding:4px 0;border-bottom:1px solid rgba(200,169,110,.15)">✓ ' + a + '</div>').join('')}
+          <br>Todos esses itens serão registrados em um único ato na Junta Comercial.
+        </div>
+        <div class="fw"><label class="flabel">Observações sobre o processo</label>
+          <textarea name="obs_processo" placeholder="Alguma informação adicional sobre as alterações..."></textarea></div>`});
   }
 
   steps.push(stepFinal()); return steps;

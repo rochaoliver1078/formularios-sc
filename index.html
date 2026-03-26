@@ -671,35 +671,69 @@ function validateCurrent() {
 }
 
 /* ===================================================
-   SUBMIT
+   SUBMIT — Web3Forms (envio automático, sem app de e-mail)
 =================================================== */
-function submitForm() {
+async function submitForm() {
   collectData();
+
   const labels = {
-    abertura:'ABERTURA DE EMPRESA', alteracao:'ALTERAÇÃO CONTRATUAL',
-    transformacao:'TRANSFORMAÇÃO SOCIETÁRIA', baixa:'BAIXA / ENCERRAMENTO'
+    abertura:      'ABERTURA DE EMPRESA',
+    alteracao:     'ALTERAÇÃO CONTRATUAL',
+    transformacao: 'TRANSFORMAÇÃO SOCIETÁRIA',
+    baixa:         'BAIXA / ENCERRAMENTO'
   };
 
-  let body = `FORMULÁRIO DE ${labels[STATE.process]}\n`;
-  body += `Cliente: ${STATE.clientName || '(não informado)'}\n`;
-  body += `Data: ${new Date().toLocaleString('pt-BR')}\n`;
-  body += '─'.repeat(50) + '\n\n';
+  const processo = labels[STATE.process];
 
-  // Group data nicely
-  const skip = [];
+  // Monta o corpo do e-mail em texto legível
+  let corpo = `FORMULÁRIO: ${processo}\n`;
+  corpo += `Cliente: ${STATE.clientName || '(não informado)'}\n`;
+  corpo += `Data: ${new Date().toLocaleString('pt-BR')}\n`;
+  corpo += '─'.repeat(50) + '\n\n';
   for (const [k, v] of Object.entries(STATE.data)) {
-    if (!v || v === '' || skip.includes(k)) continue;
-    body += `${k.replace(/_/g,' ').toUpperCase()}: ${v}\n`;
+    if (!v || v === '') continue;
+    corpo += `${k.replace(/_/g,' ').toUpperCase()}: ${v}\n`;
   }
 
-  const subj = encodeURIComponent(`[${labels[STATE.process]}] ${STATE.clientName} — ${new Date().toLocaleDateString('pt-BR')}`);
-  const bodyEnc = encodeURIComponent(body);
-  window.location.href = `mailto:adilson.oliveira@oscpaulistana.com.br?subject=${subj}&body=${bodyEnc}`;
+  // Desabilita botão e mostra loading
+  const btnNext = document.getElementById('btn-next');
+  btnNext.disabled = true;
+  btnNext.textContent = 'Enviando...';
 
-  setTimeout(() => {
-    document.getElementById('success-name').textContent = STATE.clientName || '';
-    showScreen('success');
-  }, 600);
+  try {
+    const res = await fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({
+        access_key: '5430a19f-6fad-412a-abb8-7fbff727c833',
+        subject: `[${processo}] ${STATE.clientName || 'Cliente'} — ${new Date().toLocaleDateString('pt-BR')}`,
+        from_name: STATE.clientName || 'Formulário SC',
+        message: corpo,
+        // Campos individuais para o painel Web3Forms
+        'Processo': processo,
+        'Cliente': STATE.clientName || '',
+        'Data': new Date().toLocaleString('pt-BR'),
+        ...Object.fromEntries(
+          Object.entries(STATE.data)
+            .filter(([,v]) => v && v !== '')
+            .map(([k,v]) => [k.replace(/_/g,' '), v])
+        )
+      })
+    });
+
+    const json = await res.json();
+
+    if (json.success) {
+      document.getElementById('success-name').textContent = STATE.clientName || '';
+      showScreen('success');
+    } else {
+      throw new Error(json.message || 'Erro no envio');
+    }
+  } catch (err) {
+    btnNext.disabled = false;
+    btnNext.textContent = '✓ Enviar formulário';
+    alert('Erro ao enviar. Verifique sua conexão e tente novamente.\n\n' + err.message);
+  }
 }
 
 /* ===================================================
